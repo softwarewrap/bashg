@@ -1,0 +1,63 @@
+#!/bin/bash
+
+@ main()
+{
+   (-):SetupEnvironment
+   (-):LoadReusableCode                                  # Ensure all reusable code has been loaded
+
+   (+:launcher): "$@"                                    # Pass all arguments to the launcher
+}
+
+- SetupEnvironment()
+{
+
+   local -g _program                                     # Full path to this script (for re-execution)
+   local -g __                                           # Basename of this script
+   local -g _base_dir                                    # Directory containing this script
+   local -g _bin_dir                                     # DISTRIBUTABLE Compiled code
+   local -g _etc_dir                                     # DISTRIBUTABLE Configuration files
+   local -g _lib_dir                                     # DISTRIBUTABLE Source code
+
+   _program="$(readlink -f "$BASH_SOURCE")"              # Get the canonical path to this script
+   __="$(basename "$_program")"                          # Get the script basename
+   _base_dir="$(dirname "$_program")"                    # base directory: where this script lives
+   _bin_dir="$(readlink -f "$_base_dir/../bin")"         # bin directory: where compiled code resides
+   _etc_dir="$(readlink -f "$_base_dir/../etc")"         # etc directory: where configuration data live
+   _lib_dir="$(readlink -f "$_base_dir/../lib")"         # lib directory: where distributable source code lives
+
+   local -g _invocation_dir                              # The directory from which the script was invoked
+   _invocation_dir="$(readlink -f .)"
+}
+
+- LoadReusableCode()
+{
+   set -o errexit                                        # Fail on any error
+   set -o pipefail                                       # Fail on any pipe error
+   set -o errtrace                                       # Enable error tracing
+
+   if [[ -z $BASH_SOURCE ]]; then                        # Example: bash < THIS_FILE
+      echo 'This script cannot be executed from stdin' >&2
+      return 1
+   fi
+   if [[ $BASH_SOURCE =~ ^/proc/self/fd ]]; then         # Example: bash <(cat THIS_FILE)
+      echo 'This script cannot be run as a file created by process substitution' >&2
+      return 2
+   fi
+
+   # Get an ordered list of files: all .bash files followed by all .sh files under <project>/<component>
+   # All executable code is one directory below the $_bin_dir directory
+   local -a (.)_BinFiles
+   readarray -t (.)_BinFiles < <(
+      cd "$_bin_dir"
+      find . -mindepth 2 -name '@*' -prune -o -type f -name '*.bash' -print
+      find . -mindepth 2 -name '@*' -prune -o -type f -name '*.sh' -print
+   )
+
+   :tag() { true; }                                      # The :tag function is used only for building: mask it out
+   local (.)_BinFile                                     # Iterator
+   for (.)_BinFile in "${(.)_BinFiles[@]}"; do
+      source "$_bin_dir/$(.)_BinFile"                    # Source this file
+   done
+}
+
+(@):main "$@"; exit

@@ -1,0 +1,6 @@
+#!/bin/bash
+
++ ()
+{
+   eval echo "$@"
+}
