@@ -377,7 +377,7 @@
       "path": "_/_/localuser/matches.sh"
     },
     ":log:": {
-      "hash": "172e7974f50c9dca472ec6f2f8f8e514",
+      "hash": "937f1e6e6936d51d9f8c20dc67d3d3a4",
       "path": "_/_/log/_.sh"
     },
     ":log:%STARTUP-1": {
@@ -385,7 +385,7 @@
       "path": "_/_/log/_.sh"
     },
     ":log:%TEST": {
-      "hash": "d32f53aeab957725e129ae0c377a7c75",
+      "hash": "75f4cd7c0b569998168317c2ef2242eb",
       "path": "_/_/log/_.sh"
     },
     ":mkdir:": {

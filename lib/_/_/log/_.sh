@@ -46,7 +46,7 @@
          :log: "$@"
       fi
 
-      (+)_Level="$(((+)_Level-1))"
+      (+)_Level="$(( (+)_Level-1 ))"
    fi
 
    local (.)_Date
@@ -57,7 +57,7 @@
    fi
 
    if (( (+)_Level > 0 )); then
-      echo -e "[$(.)_Date] $(printf '#%0.s' $( seq $(( (+)_Level*2 )) ) ) $(.)_Prefix${(+)_Message[$(+)_Level]}"
+      echo -e "[$(.)_Date] $(printf '#%0.s' $( seq -s ' ' 1 $(+)_Level ) ) $(.)_Prefix${(+)_Message[$(+)_Level]}"
                                                          # Add indent
    else
       echo -e "[$(.)_Date] $(.)_Prefix${(+)_Message[$(+)_Level]}"
@@ -68,7 +68,7 @@
    fi
 
    if $(.)_Push; then                                    # Do any log level increases after outputting message
-      (+)_Level="$(((+)_Level+1))"
+      (+)_Level="$(( (+)_Level+1 ))"
    fi
 }
 
@@ -79,5 +79,18 @@
    echo 'Emit to stdout'
    echo 'Emit to stderr' >&2
 
+   :log: --pop
+
+   :log: --push-section 'SECTION A'
+   :log: 'A'
+   :log: --push-section 'SECTION B'
+   :log: 'B'
+   :log: --push-section 'SECTION C1'
+   :log: 'C1'
+   :log: --pop
+   :log: --push-section 'SECTION C2'
+   :log: 'C2'
+   :log: --pop
+   :log: --pop
    :log: --pop
 }
