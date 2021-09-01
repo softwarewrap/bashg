@@ -60,6 +60,18 @@
       "hash": "f111900d5c77214aad5c9e04a2e7a9ec",
       "path": "_/_/array/has_element.sh"
     },
+    ":array:sort": {
+      "hash": "057bba518dc56ad522ad6e0bb095223e",
+      "path": "_/_/array/sort.sh"
+    },
+    ":array:sort%TEST": {
+      "hash": "751969d1bfd4d80f20a794354d1327d1",
+      "path": "_/_/array/sort.sh"
+    },
+    ":array:sort:assert": {
+      "hash": "026f1f915f03c3248f278f0cc4e960e9",
+      "path": "_/_/array/sort.sh"
+    },
     ":array:to_set": {
       "hash": "2ba635d28e4bacb0f2bfec39f91c6fa7",
       "path": "_/_/array/to_set.sh"
@@ -69,7 +81,7 @@
       "path": "_/_/array/to_set.sh"
     },
     ":curl:": {
-      "hash": "d6d5ef2f59af61b6e9aa25ca0e13c8b9",
+      "hash": "3ca5db31d644cbfc78b79ec66184406d",
       "path": "_/_/curl/_.sh"
     },
     ":curl:%HELP": {

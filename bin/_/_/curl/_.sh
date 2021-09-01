@@ -245,7 +245,7 @@ EOF
          ___curl________GetVars+=( 'http_code' )
       fi
 
-      __array_sort --var ___curl________GetVars --unique            # Ensure only unique curl vars are requested
+      :array:sort --var ___curl________GetVars --unique             # Ensure only unique curl vars are requested
 
       for ___curl________GetVar in "${___curl________GetVars[@]}"; do
          ___curl________Format+="\n$___curl________CodePrefix $___curl________GetVar: %{$___curl________GetVar}$___curl________CodeSuffix"
