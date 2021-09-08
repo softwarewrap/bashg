@@ -89,11 +89,11 @@ EOF
       ##############################################
       # One-Time Initialization of Stack Variables #
       ##############################################
-      local -ig (-)_t=-1                            # TOP:     Set stack top to unused (-1)
-      local -ag (-)_o=()                            # OPTIONS: All options as encoded associative array
-      local -ag (-)_s=()                            # SHORT:   Short options as a string
-      local -ag (-)_a=()                            # ARGS:    Store arguments to be processed
-      local -ag (-)_i=()                            # OPTIND:  store OPTIND index
+      local -ig (-)_t=-1                                 # TOP:     Set stack top to unused (-1)
+      local -ag (-)_o=()                                 # OPTIONS: All options as encoded associative array
+      local -ag (-)_s=()                                 # SHORT:   Short options as a string
+      local -ag (-)_a=()                                 # ARGS:    Store arguments to be processed
+      local -ag (-)_i=()                                 # OPTIND:  store OPTIND index
    fi
 
    if [[ -z $1 ]]; then                                  # If no directive is present, then report an error
@@ -193,7 +193,7 @@ EOF
 {
    local (.)_OptionVar="$1"                              # Place short/long option into this variable: -s or --long
    local (.)_ValueVar="$2"                               # Place arg into this variable for options taking a value
-   local (.)_StopVar="$3"                                # Stop processing due to explicit --
+   local (.)_StopVar="${3:-(.)_UnspecifiedStopVar}"      # Place status for Stop processing (explicit --)
 
    ##############################
    # Set up the Option Variable #
@@ -220,27 +220,48 @@ EOF
                                                          # Load all options from the associative array
 
    local (.)_OptChar                                     # The single-char iterator
-   local (.)_Status=0                                    # Assume that getopts will succeed
+   local -i (.)_Status=0                                 # Assume that getopts will succeed
 
    ###########################
    # Call underlying getopts #
    ###########################
    getopts "$(.)_ShortOptions" (.)_OptChar "${(.)_Args[@]}" || (.)_Status=$?
-                                                         # Can fail when encountering unrecognized arg or option
-   if [[ -n $(.)_StopVar ]]; then
-      [[ -v $(.)_StopVar ]] || local -g "$(.)_StopVar"
-      if [[ $OPTIND -ge 2 && ${(.)_Args[OPTIND-2]} = -- ]]; then
-         printf -v "$(.)_StopVar" '%s' true
-      else
-         printf -v "$(.)_StopVar" '%s' false
+
+   ################################
+   # IMPORTANT OPTIND EXPLANATION #
+   ################################
+   # The getopts Bash builtin parses POSITIONAL parameters. These being with index 1, not 0.
+   #
+   # OPTIND is the index following the parsed argument as part of determining whether it is
+   # matches option syntax -<optchar> or a non-option argument (that doesn't begin with -).
+   #
+   # The (.)_Args array is a copy of the positional parameters.
+   # IMPORTANT: This array is 0 indexed.
+   #
+   # The combination of the above two facts means that OPTIND - 2 is the index into the
+   # (.)_Args array of the CURRENT OPTION string being parsed.
+   # So, the idiom ${(.)_Args[OPTIND-2]} and variations of it refer to the current option string.
+
+   if (( (.)_Status != 0 )); then                        # If the argument is not an option or -- then return
+      if (( OPTIND >= 2 )) && [[ -z ${(.)_Args[OPTIND-2]#--} ]]; then
+                                                         # Explicit -- found?
+         printf -v "$(.)_StopVar" '%s' true              # Yes: store true and return
+         printf -v "(-)_i[$(-)_t]" '%s' "$OPTIND"        # Save the OPTIND back to the stack
       fi
+
+      return 1
    fi
+                                                         # Can fail when encountering unrecognized arg or option
+   [[ -v $(.)_StopVar ]] || local -g "$(.)_StopVar"=     # Ensure the StopVar is set; presume not found
+   printf -v "$(.)_StopVar" '%s' false
+
+   [[ $(.)_OptChar != '?' ]] || return 1                 # Return on unrecognized Bash getopts option
 
    ### LONG OPTION HANDLING ###
    if [[ $(.)_OptChar = - ]]; then
+
       printf -v "$(.)_OptionVar" "%s" "${(.)_Args[OPTIND-2]}"
                                                          # Save the full option string to be used in a case statement
-
       if [[ ${(.)_Options[${(.)_Args[OPTIND-2]#--}]} = true ]]; then
                                                          # If this option takes an argument,
          printf -v "$(.)_ValueVar" "%s" "${(.)_Args[$OPTIND-1]}"
@@ -253,8 +274,9 @@ EOF
 
    ### SHORT OPTION HANDLING ###
    else
-      printf -v "$(.)_OptionVar" "%s" "-$(.)_OptChar"
-                                                         # Save the full option string to be used in a case statement
+      [[ -n ${(.)_Options[$(.)_OptChar]} ]] || return 1  # Return if unrecognized :getopts: short option
+
+      printf -v "$(.)_OptionVar" "%s" "-$(.)_OptChar"    # Save the full option string to be used in a case statement
 
       if ${(.)_Options[$(.)_OptChar]}; then              # If this option takes an argument,
          printf -v "$(.)_ValueVar" "%s" "$OPTARG"        # ... save the value string to be used in a case statement
@@ -326,6 +348,30 @@ EOF
    else
       local (.)_UsingDefaultTest=false
    fi
+
+   cat <<EOF |
+<B>
+   set -- ${(.)_TestArgs[@]}
+
+   :getopts: begin -o 'fa:' -l 'flag,arg:,long-flag-only,long-arg-only:' -- "\$@"
+
+   while :getopts: next \(.)_Option \(.)_Value; do
+      case "\$\(.)_Option" in
+      -f|--flag)        \(.)_Flag=true;;
+      -a|--arg)         \(.)_Arg="\$\(.)_Value";;
+      --long-flag-only) \(.)_LongFlag=true;;
+      --long-arg-only)  \(.)_LongArg="\$\(.)_Value";;
+
+      *)                break;;
+      esac
+   done
+
+   local -a \(.)_Remaining=( 'starts' 'with' )
+
+   :getopts: end --save \(.)_Remaining --append
+</B>
+EOF
+:highlight:
 
    local (.)_Flag=false                                  # Short flag option default value
    local (.)_Arg=                                        # Short arg option default value

@@ -24,7 +24,12 @@
       } |
       tail -n +2 |                                       # The first line is a restatement of the eval: discard
       head -1 |                                          # The next line is the actual test result: keep only that
-      sed 's|++ \(.*\)|      <R>\1</R>|' |               # Remove set -x artifacts and format for highlighting
+      sed -e '
+         s|++\s*\(\[\[\s*\)\(.*\)|      \2|              # Remove set -x artifacts and leading [[
+         s|\s*\]\]\s*$||                                 # Remove trailing ]]
+         s|.*|<R>&</R>|                                  # Add red markup
+      ' |
+      :sed:escape |
       :highlight:                                        # Highlight
    fi
 }

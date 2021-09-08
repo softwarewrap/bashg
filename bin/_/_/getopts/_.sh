@@ -89,11 +89,11 @@ EOF
       ##############################################
       # One-Time Initialization of Stack Variables #
       ##############################################
-      local -ig ___getopts______t=-1                            # TOP:     Set stack top to unused (-1)
-      local -ag ___getopts______o=()                            # OPTIONS: All options as encoded associative array
-      local -ag ___getopts______s=()                            # SHORT:   Short options as a string
-      local -ag ___getopts______a=()                            # ARGS:    Store arguments to be processed
-      local -ag ___getopts______i=()                            # OPTIND:  store OPTIND index
+      local -ig ___getopts______t=-1                                 # TOP:     Set stack top to unused (-1)
+      local -ag ___getopts______o=()                                 # OPTIONS: All options as encoded associative array
+      local -ag ___getopts______s=()                                 # SHORT:   Short options as a string
+      local -ag ___getopts______a=()                                 # ARGS:    Store arguments to be processed
+      local -ag ___getopts______i=()                                 # OPTIND:  store OPTIND index
    fi
 
    if [[ -z $1 ]]; then                                  # If no directive is present, then report an error
@@ -193,7 +193,7 @@ EOF
 {
    local ___getopts_____Directive_next___OptionVar="$1"                              # Place short/long option into this variable: -s or --long
    local ___getopts_____Directive_next___ValueVar="$2"                               # Place arg into this variable for options taking a value
-   local ___getopts_____Directive_next___StopVar="$3"                                # Stop processing due to explicit --
+   local ___getopts_____Directive_next___StopVar="${3:-___getopts_____Directive_next___UnspecifiedStopVar}"      # Place status for Stop processing (explicit --)
 
    ##############################
    # Set up the Option Variable #
@@ -220,27 +220,48 @@ EOF
                                                          # Load all options from the associative array
 
    local ___getopts_____Directive_next___OptChar                                     # The single-char iterator
-   local ___getopts_____Directive_next___Status=0                                    # Assume that getopts will succeed
+   local -i ___getopts_____Directive_next___Status=0                                 # Assume that getopts will succeed
 
    ###########################
    # Call underlying getopts #
    ###########################
    getopts "$___getopts_____Directive_next___ShortOptions" ___getopts_____Directive_next___OptChar "${___getopts_____Directive_next___Args[@]}" || ___getopts_____Directive_next___Status=$?
-                                                         # Can fail when encountering unrecognized arg or option
-   if [[ -n $___getopts_____Directive_next___StopVar ]]; then
-      [[ -v $___getopts_____Directive_next___StopVar ]] || local -g "$___getopts_____Directive_next___StopVar"
-      if [[ $OPTIND -ge 2 && ${___getopts_____Directive_next___Args[OPTIND-2]} = -- ]]; then
-         printf -v "$___getopts_____Directive_next___StopVar" '%s' true
-      else
-         printf -v "$___getopts_____Directive_next___StopVar" '%s' false
+
+   ################################
+   # IMPORTANT OPTIND EXPLANATION #
+   ################################
+   # The getopts Bash builtin parses POSITIONAL parameters. These being with index 1, not 0.
+   #
+   # OPTIND is the index following the parsed argument as part of determining whether it is
+   # matches option syntax -<optchar> or a non-option argument (that doesn't begin with -).
+   #
+   # The ___getopts_____Directive_next___Args array is a copy of the positional parameters.
+   # IMPORTANT: This array is 0 indexed.
+   #
+   # The combination of the above two facts means that OPTIND - 2 is the index into the
+   # ___getopts_____Directive_next___Args array of the CURRENT OPTION string being parsed.
+   # So, the idiom ${___getopts_____Directive_next___Args[OPTIND-2]} and variations of it refer to the current option string.
+
+   if (( ___getopts_____Directive_next___Status != 0 )); then                        # If the argument is not an option or -- then return
+      if (( OPTIND >= 2 )) && [[ -z ${___getopts_____Directive_next___Args[OPTIND-2]#--} ]]; then
+                                                         # Explicit -- found?
+         printf -v "$___getopts_____Directive_next___StopVar" '%s' true              # Yes: store true and return
+         printf -v "___getopts______i[$___getopts______t]" '%s' "$OPTIND"        # Save the OPTIND back to the stack
       fi
+
+      return 1
    fi
+                                                         # Can fail when encountering unrecognized arg or option
+   [[ -v $___getopts_____Directive_next___StopVar ]] || local -g "$___getopts_____Directive_next___StopVar"=     # Ensure the StopVar is set; presume not found
+   printf -v "$___getopts_____Directive_next___StopVar" '%s' false
+
+   [[ $___getopts_____Directive_next___OptChar != '?' ]] || return 1                 # Return on unrecognized Bash getopts option
 
    ### LONG OPTION HANDLING ###
    if [[ $___getopts_____Directive_next___OptChar = - ]]; then
+
       printf -v "$___getopts_____Directive_next___OptionVar" "%s" "${___getopts_____Directive_next___Args[OPTIND-2]}"
                                                          # Save the full option string to be used in a case statement
-
       if [[ ${___getopts_____Directive_next___Options[${___getopts_____Directive_next___Args[OPTIND-2]#--}]} = true ]]; then
                                                          # If this option takes an argument,
          printf -v "$___getopts_____Directive_next___ValueVar" "%s" "${___getopts_____Directive_next___Args[$OPTIND-1]}"
@@ -253,8 +274,9 @@ EOF
 
    ### SHORT OPTION HANDLING ###
    else
-      printf -v "$___getopts_____Directive_next___OptionVar" "%s" "-$___getopts_____Directive_next___OptChar"
-                                                         # Save the full option string to be used in a case statement
+      [[ -n ${___getopts_____Directive_next___Options[$___getopts_____Directive_next___OptChar]} ]] || return 1  # Return if unrecognized :getopts: short option
+
+      printf -v "$___getopts_____Directive_next___OptionVar" "%s" "-$___getopts_____Directive_next___OptChar"    # Save the full option string to be used in a case statement
 
       if ${___getopts_____Directive_next___Options[$___getopts_____Directive_next___OptChar]}; then              # If this option takes an argument,
          printf -v "$___getopts_____Directive_next___ValueVar" "%s" "$OPTARG"        # ... save the value string to be used in a case statement
@@ -326,6 +348,30 @@ EOF
    else
       local ___getopts_____TEST___UsingDefaultTest=false
    fi
+
+   cat <<EOF |
+<B>
+   set -- ${___getopts_____TEST___TestArgs[@]}
+
+   :getopts: begin -o 'fa:' -l 'flag,arg:,long-flag-only,long-arg-only:' -- "\$@"
+
+   while :getopts: next (.)_Option (.)_Value; do
+      case "\$(.)_Option" in
+      -f|--flag)        (.)_Flag=true;;
+      -a|--arg)         (.)_Arg="\$(.)_Value";;
+      --long-flag-only) (.)_LongFlag=true;;
+      --long-arg-only)  (.)_LongArg="\$(.)_Value";;
+
+      *)                break;;
+      esac
+   done
+
+   local -a (.)_Remaining=( 'starts' 'with' )
+
+   :getopts: end --save (.)_Remaining --append
+</B>
+EOF
+:highlight:
 
    local ___getopts_____TEST___Flag=false                                  # Short flag option default value
    local ___getopts_____TEST___Arg=                                        # Short arg option default value

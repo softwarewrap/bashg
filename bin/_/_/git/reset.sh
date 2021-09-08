@@ -83,6 +83,5 @@ EOF
       :sudo "$___git__reset__reset___Owner" git clean -f -d
    fi
 
-   :sudo "$___git__reset__reset___Owner" git fetch --all
-   :sudo "$___git__reset__reset___Owner" git pull
+   :sudo "$___git__reset__reset___Owner" git pull --all
 }

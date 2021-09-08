@@ -153,7 +153,7 @@
       "path": "_/_/getopts/_.sh"
     },
     ":getopts:%TEST": {
-      "hash": "9adaba7ab37b3f5dcc6a24e21dd16ce5",
+      "hash": "63bfe476f38908f1de06d64830cafb98",
       "path": "_/_/getopts/_.sh"
     },
     ":getopts:Directive_begin": {
@@ -165,11 +165,55 @@
       "path": "_/_/getopts/_.sh"
     },
     ":getopts:Directive_next": {
-      "hash": "75fc27c4947b142108f2ce0ffc89718f",
+      "hash": "28899cfc2417460b7d041062cba33621",
       "path": "_/_/getopts/_.sh"
     },
+    ":git:is_local_branch": {
+      "hash": "8f1d2649302208812ba3e3dd8cf7ada4",
+      "path": "_/_/git/is_local_branch.sh"
+    },
+    ":git:is_local_branch%HELP": {
+      "hash": "eddeeb0e8df2fac65da52a2005a494b2",
+      "path": "_/_/git/is_local_branch.sh"
+    },
+    ":git:is_remote_branch": {
+      "hash": "517821ce91313c0d8a6e8ed8bf2408e7",
+      "path": "_/_/git/is_remote_branch.sh"
+    },
+    ":git:is_remote_branch%HELP": {
+      "hash": "0b6070ad35fe8d743a34612bb79be1eb",
+      "path": "_/_/git/is_remote_branch.sh"
+    },
+    ":git:log": {
+      "hash": "69b7565acb1c8d7a2fd189d7c95799b3",
+      "path": "_/_/git/log.sh"
+    },
+    ":git:log%HELP": {
+      "hash": "3023cd37ffe5f22e10c9bd59a7d0c2ac",
+      "path": "_/_/git/log.sh"
+    },
+    ":git:merge": {
+      "hash": "120e1eff83f70b7b9725d8a004f4d682",
+      "path": "_/_/git/merge.sh"
+    },
+    ":git:merge%HELP": {
+      "hash": "f5b8999b826d8b7d0a891df072819e45",
+      "path": "_/_/git/merge.sh"
+    },
+    ":git:merge:CheckOrCleanBranch": {
+      "hash": "068faaac5160f9201ce7c151a984e7cf",
+      "path": "_/_/git/merge.sh"
+    },
+    ":git:merge:PerformMerge": {
+      "hash": "cbe1a3e78185f505d2a977099c0cbd0e",
+      "path": "_/_/git/merge.sh"
+    },
+    ":git:merge:ProcessOptionsAndValidate": {
+      "hash": "6dc266523a902ac654ea60cc465afc96",
+      "path": "_/_/git/merge.sh"
+    },
     ":git:reset": {
-      "hash": "f378a69e5f39b42fc0ff0f7e54235736",
+      "hash": "fd96e72975f742ca8621d291dcba59eb",
       "path": "_/_/git/reset.sh"
     },
     ":git:reset%HELP": {
@@ -336,6 +380,22 @@
       "hash": "d892e589e3a69e409d71c7a172876b52",
       "path": "_/_/launcher/_.sh"
     },
+    ":launcher:persist": {
+      "hash": "15476af9f789b736ee1de7460e3197d9",
+      "path": "_/_/launcher/persist.sh"
+    },
+    ":launcher:persist%HELP": {
+      "hash": "a18239ead88dad953af8dd8f4a68aaa6",
+      "path": "_/_/launcher/persist.sh"
+    },
+    ":launcher:persist%TEST": {
+      "hash": "2e1401503181f61fb3da3c094334726a",
+      "path": "_/_/launcher/persist.sh"
+    },
+    ":launcher:persist:alter_user_function": {
+      "hash": "e6f77f52f35bb719786b9570228d34d7",
+      "path": "_/_/launcher/persist.sh"
+    },
     ":localgroup:add": {
       "hash": "f6a5426be4549e70fc34a8cad3165115",
       "path": "_/_/localgroup/add.sh"
@@ -484,6 +544,10 @@
       "hash": "f4d66c402531ffe42e1f530175026da5",
       "path": "_/_/run_as.sh"
     },
+    ":sed:escape": {
+      "hash": "6dcd1bab3ed8f8da278374d21cc66eca",
+      "path": "_/_/sed/escape.sh"
+    },
     ":set:%STARTUP-1": {
       "hash": "c30d82428df56f084f4ffe5657b5ac7d",
       "path": "_/_/set/_.sh"
@@ -545,7 +609,7 @@
       "path": "_/_/sudo.sh"
     },
     ":test:assert": {
-      "hash": "c20cdf43866f7e31cf89a41dbcd88129",
+      "hash": "6cff8548862a7d113c8209c8e504263f",
       "path": "_/_/test/assert.sh"
     },
     ":test:can_sudo": {

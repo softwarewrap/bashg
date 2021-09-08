@@ -83,6 +83,5 @@ EOF
       :sudo "$(.)_Owner" git clean -f -d
    fi
 
-   :sudo "$(.)_Owner" git fetch --all
-   :sudo "$(.)_Owner" git pull
+   :sudo "$(.)_Owner" git pull --all
 }
