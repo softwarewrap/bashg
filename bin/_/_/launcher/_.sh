@@ -207,8 +207,23 @@
    local -g _err=5                                       # Script duplicate of stderr
    local -g _data=6                                      # Script addition of a data file descriptor
 
-   :launcher:_:DupFDs                                            # Duplicate the additional FDs
+   ######################################
+   # Define Additional File Descriptors #
+   ######################################
+   # FDs 3, 4, and 5 preserve original FDs as is needed when input/output are being redirected to the log file
+   { <&3; } 2>/dev/null || exec 3<&0                     # 3: scrin:  Duplicate of stdin
+   { >&4; } 2>/dev/null || exec 4>&1                     # 4: scrout: Duplicate of stdout
+   { >&5; } 2>/dev/null || exec 5>&2                     # 5: screrr: Duplicate of stderr
 
+   # Additional FDs to be used as needed
+   { >&6; } 2>/dev/null || exec 6>/dev/null              # 6: Data payload file descriptor
+   { >&7; } 2>/dev/null || exec 7>/dev/null              # 7: API-specific purpose
+   { >&8; } 2>/dev/null || exec 8>/dev/null              # 8: API-specific purpose
+   { >&9; } 2>/dev/null || exec 9>/dev/null              # 9: API-specific purpose
+
+   ################################
+   # Perform Logging Redirections #
+   ################################
    if [[ -n ${___launcher___Config[Log]} ]]; then                  # Writing to a log file has been requested
       if [[ ! -f ${___launcher___Config[Log]} ]]; then
          local ___launcher_____RedirectIO___LogDir="$(dirname "${___launcher___Config[Log]}")"
@@ -228,27 +243,14 @@
                                                          # Remove color characters from log file
          fi
 
+         # See: https://stackoverflow.com/questions/30687504/redirected-output-hangs-when-using-tee
          sleep 0                                         # Workaround for blocking prompt
                                                          # Ensure stdout and stderr go to both stdout and the log file
 
       else
          :error: "Could not open log file for writing: ${___launcher___Config[Log]}"
-      fi
-
-   else
-      :launcher:_:DupFDs
+      fi                                                 # The log file was not writable
    fi
-}
-
-:launcher:_:DupFDs()
-{
-   # FDs 3, 4, and 5 preserve original FDs as is needed when input/output are being redirected to the log file
-   { <&3; } 2>/dev/null || exec 3<&0                     # 3: Provide a default duplicate of the original stdin
-   { >&4; } 2>/dev/null || exec 4>&1                     # 4: Provide a default duplicate of the original stdout
-   { >&5; } 2>/dev/null || exec 5>&2                     # 5: Provide a default duplicate of the original stderr
-
-   # FD 6 is provided for capturing API return payloads
-   { >&6; } 2>/dev/null || exec 6>/dev/null              # 6: Add a default data file descriptor
 }
 
 :launcher:_:DispatchRequests()
@@ -330,7 +332,10 @@
    exec 3<&-                                             # Close duplicate of stdin or user-provided input file
    exec 4>&-                                             # Close duplicate of stdout our user-provided output file
    exec 5>&-                                             # Close duplicate of stderr our user-provided output file
-   exec 6>&-                                             # Close data file descriptor
+   exec 6>&-                                             # Close data payload file descriptor
+   exec 7>&-                                             # Close API-specific file descriptor
+   exec 8>&-                                             # Close API-specific file descriptor
+   exec 9>&-                                             # Close API-specific file descriptor
 
    # When using tee with multiple file descriptors, output synchronization problems may occur.
    # Running a trivial command in a subshell is a workaround to force correct synchronization so

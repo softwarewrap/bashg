@@ -344,10 +344,6 @@
       "hash": "cbb21150a1b6a6874de324b598851156",
       "path": "_/_/launcher/_.sh"
     },
-    ":launcher:_:DupFDs": {
-      "hash": "0efc5f1a2cbafb3ec5b7f62e94e9e30f",
-      "path": "_/_/launcher/_.sh"
-    },
     ":launcher:_:PreStartup": {
       "hash": "5314825bbbd82a711756d215dc2a2c2f",
       "path": "_/_/launcher/_.sh"
@@ -369,11 +365,11 @@
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:RedirectIO": {
-      "hash": "a73293e662c032311d1091f3ac908f63",
+      "hash": "e92ab566c84f8659d06ef1c138520041",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:Shutdown": {
-      "hash": "e8d658df7aeaf880405019df07208b02",
+      "hash": "89725bd03cfd03aec95cad103a91c06f",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:Startup": {
