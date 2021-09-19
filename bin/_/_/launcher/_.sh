@@ -38,11 +38,7 @@
 {
    :get:os --var _os                                     # Get an associative array providing os (distro) information
 
-   local -Ag ___launcher___Config=(                                # Launcher configuration parameters with defaults:
-      [HasColor]=true                                    # Color output is available
-      [DupLogToStdout]=false                             # Send stdout/stderr to both the log file and stdout
-      [Log]=                                             # Do not write to a log file (non-empty is the log file path)
-   )
+   local -Ag ___launcher___Config                                  # Launcher configuration parameters
 
    ### DEFAULT REENTRY AND DISPATCH DEFINITIONS
    local -g _entry_user="$(id -un "$UID")"               # The user corresponding to the current UID
@@ -65,6 +61,7 @@
    ### PERSIST THESE VARIABLES FOR USE BY :reenter
    local -a ___launcher_____PreStartup___PersistVars=(
       ___launcher___Config
+      _whoami
       _entry_user
       _entry_group
       _entry_home
@@ -170,19 +167,33 @@
 
 :launcher:_:Startup()
 {
-   :launcher:_:RedirectIO                                        # Define variables, redirection, and Bash settings
-
    local -a ___launcher_____Startup___StartupFunctions
 
    :find:functions --meta STARTUP --var ___launcher_____Startup___StartupFunctions
                                                          # Get ordered list of startup functions
-
    local ___launcher_____Startup___StartupFunction
    for ___launcher_____Startup___StartupFunction in "${___launcher_____Startup___StartupFunctions[@]}"; do
       "$___launcher_____Startup___StartupFunction" "$@"
    done
 
-   :require:packages epel-release jq yum-utils           # These packages must be installed to continue
+   # If not specified, set these configuration defaults
+   local -A ___launcher_____Startup___ConfigDefaults=(
+      [HasColor]=true                                    # Color output is available
+      [DupLogToStdout]=false                             # Send stdout/stderr to both the log file and stdout
+      [Log]=                                             # Do not write to a log file (non-empty is the log file path)
+   )
+
+   local ___launcher_____Startup___ConfigDefault
+   for ___launcher_____Startup___ConfigDefault in "${!___launcher_____Startup___ConfigDefaults[@]}"; do
+      if [[ -z ${___launcher___Config[$___launcher_____Startup___ConfigDefault]} ]]; then
+         ___launcher___Config[$___launcher_____Startup___ConfigDefault]="${___launcher_____Startup___ConfigDefaults[___launcher_____Startup___ConfigDefault]}"
+      fi
+   done
+
+   :launcher:_:RedirectIO                                        # Define variables, redirection, and Bash settings
+
+   :test:has_command jq || :require:packages epel-release
+   :require:packages jq                                  # These packages must be installed to continue
 }
 
 :launcher:_:RedirectIO()
@@ -196,6 +207,8 @@
    local -g _err=5                                       # Script duplicate of stderr
    local -g _data=6                                      # Script addition of a data file descriptor
 
+   :launcher:_:DupFDs                                            # Duplicate the additional FDs
+
    if [[ -n ${___launcher___Config[Log]} ]]; then                  # Writing to a log file has been requested
       if [[ ! -f ${___launcher___Config[Log]} ]]; then
          local ___launcher_____RedirectIO___LogDir="$(dirname "${___launcher___Config[Log]}")"
@@ -203,18 +216,20 @@
 
       if [[ -w ${___launcher___Config[Log]} || ( ! -f ${___launcher___Config[Log]} && -w $(dirname "${___launcher___Config[Log]}") ) ]]; then
                                                          # Is the log file writable?
-         if ${___launcher___Config[DupLogToStdout]}; then          # Yes. Now, should the output also go to stdout?
-            exec > >(tee -a -i "${___launcher___Config[Log]}") 2>&1
-            sleep 0                                      # Workaround for blocking prompt
-                                                         # Ensure stdout and stderr go to both stdout and the log file
+         if [[ ${___launcher___Config[DupLogToStdout]} = true ]]; then
+                                                         # Yes. Now, should the output also go to stdout?
+            exec > >( tee -a -i >( sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" >>"${___launcher___Config[Log]}" ) ) 2>&1
+                                                         # Tee to stdout/file; Remove color characters from log file
 
-            :launcher:_:DupFDs                                   # Now duplicate the additional FDs
 
          else
-            :launcher:_:DupFDs                                   # Duplicate FDs to access original meanings
-
-            exec &>>"${___launcher___Config[Log]}"                 # Now the revised stdout and stderr will go only to the log file
+            exec > >( sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" >>"${___launcher___Config[Log]}" ) 2>&1
+                                                         # Now the revised stdout and stderr will go only to the log file
+                                                         # Remove color characters from log file
          fi
+
+         sleep 0                                         # Workaround for blocking prompt
+                                                         # Ensure stdout and stderr go to both stdout and the log file
 
       else
          :error: "Could not open log file for writing: ${___launcher___Config[Log]}"
@@ -320,7 +335,7 @@
    # When using tee with multiple file descriptors, output synchronization problems may occur.
    # Running a trivial command in a subshell is a workaround to force correct synchronization so
    # that problems such as the prompt not showing up are avoided.
-   if [[ -n ${___launcher___Config[Log]} ]] && ${___launcher___Config[DupLogToStdout]}; then
+   if [[ -n ${___launcher___Config[Log]} && ${___launcher___Config[DupLogToStdout]} = true ]]; then
                                                          # The condition in which tee is used with multiple FDs
       $(true)
    fi

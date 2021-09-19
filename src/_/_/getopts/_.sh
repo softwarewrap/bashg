@@ -94,6 +94,7 @@ EOF
       local -ag (-)_s=()                                 # SHORT:   Short options as a string
       local -ag (-)_a=()                                 # ARGS:    Store arguments to be processed
       local -ag (-)_i=()                                 # OPTIND:  store OPTIND index
+      local -ig (-)_r=0                                  # RETURN:  store the return status
    fi
 
    if [[ -z $1 ]]; then                                  # If no directive is present, then report an error

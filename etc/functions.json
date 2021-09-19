@@ -85,7 +85,7 @@
       "path": "_/_/curl/_.sh"
     },
     ":curl:%HELP": {
-      "hash": "6fe37906dbc106cb2522168bcbd0c893",
+      "hash": "55d75f8dacc6cfd2c64fee63294e7ce0",
       "path": "_/_/curl/_.sh"
     },
     ":curl:auth_tmpl": {
@@ -145,7 +145,7 @@
       "path": "_/_/get/os.sh"
     },
     ":getopts:": {
-      "hash": "2fa2d81be69220a14fbe50c81c738d50",
+      "hash": "08e7c54297312f135a7c639244b8eb96",
       "path": "_/_/getopts/_.sh"
     },
     ":getopts:%HELP": {
@@ -349,7 +349,7 @@
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:PreStartup": {
-      "hash": "c895a32168d53d4b44004faec06558ff",
+      "hash": "5314825bbbd82a711756d215dc2a2c2f",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:ProcessOptions": {
@@ -369,15 +369,15 @@
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:RedirectIO": {
-      "hash": "e6e56fab2f469b45cfb7b27f61a05d58",
+      "hash": "a73293e662c032311d1091f3ac908f63",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:Shutdown": {
-      "hash": "a4fd34fe560e76694286a193a466458f",
+      "hash": "e8d658df7aeaf880405019df07208b02",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:Startup": {
-      "hash": "d892e589e3a69e409d71c7a172876b52",
+      "hash": "7060df854bacaf90db356420e537efd3",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:persist": {

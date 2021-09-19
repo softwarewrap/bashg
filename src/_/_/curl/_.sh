@@ -6,10 +6,10 @@
 OPTIONS:
    --callback <callback-name>    ^Call <callback-name> that can add or modify curl(1) args before calling curl
 
-   --info-var <info-array>       ^Store metadata information in the indicated Bash associative <array>
-   --get <curl-variable-name>    ^Get metadata information for the indicated <curl-variable-name>
+   --info-var <info-var>>        ^Store metadata information in the indicated Bash associative <array>
+   --body-var <body-var>         ^Store the result body in the indicated Bash <body-var>
+   --get <curl-output-name>      ^Get metadata information for the indicated <curl-output-name>
 
-   --body-var <variable>         ^Store the result body in the indicated Bash <variable>
    --filter <filter>             ^Apply JSON <filter> to result body
 
    --timeout <duration>          ^Terminate the curl command if it is still running after <duration> seconds
@@ -42,8 +42,17 @@ DESCRIPTION:
    If the <http-expect> code is a single digit, then [0-9][0-9] is automatically appended.
    For example, <B>--expect 2</B> is equivalent to <B>--expect '2[0-9][0-9]'</B>.
 
-   Note: Quoting must be used when passing regex strings that include characters that might otherwise
-   be interpreted immediately by the shell.
+   Notes:
+      Quoting must be used when passing regex strings that include characters that might otherwise
+      be interpreted immediately by the shell.
+
+      The <info-var> variable should not be declared before use. It is automatically unset and then declared.
+      The <body-var> variable may be declared in advance, but if it is not declared, it will automatically
+      be declared.
+      Both of the above variables are declared with global scope.
+
+      If -- is present as an argument, then all arguments before it are parsed as (+): arguments.
+      Those that follow -- are passed directly to the underlying curl command.
 
 CALLBACK VARIABLES:
    \(++:curl)_Args               ^The options to pass to curl that can be modified by callbacks
@@ -51,18 +60,16 @@ CALLBACK VARIABLES:
 RETURN STATUS:
    0  ^Success
    1  ^Error with the invocation of :curl:
-   2  ^The native curl returned non-zero and is stored in the <info-array> <b>status</b> element.
-   3  ^JSON <filter> returned non-zero and is stored in the <info-array> <b>status</b> element.
-   4  ^The <http-expect> test returned non-zero: consult the <info-array> <b>http_code</b> element.
+   2  ^The native curl returned non-zero and is stored in the <info-var>> <b>status</b> element.
+   3  ^JSON <filter> returned non-zero and is stored in the <info-var>> <b>status</b> element.
+   4  ^The <http-expect> test returned non-zero: consult the <info-var>> <b>http_code</b> element.
 
 EXAMPLE:
-   local -A Info                 ^Store metadata information
-
-   local Options=(               ^^>GThe first block of args are consumed by :curl:
+   local -a Options=(            ^^>GThe first block of args are consumed by :curl:
       --info-var  Info           ^Use the Info variable to store metadata information
+      --body-var  Body           ^Store the response body in the Body variable
       --get       http_code      ^Get the response HTTP code
       --get       url_effective  ^Get the effective URL, if present
-      --body-var  Body           ^Store the response body in the Body variable
       --                         ^^>GThe second block of args are consumed directly by curl(1)
       -s -k                      ^Additional arguments
    )^

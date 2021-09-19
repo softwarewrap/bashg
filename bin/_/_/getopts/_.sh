@@ -94,6 +94,7 @@ EOF
       local -ag ___getopts______s=()                                 # SHORT:   Short options as a string
       local -ag ___getopts______a=()                                 # ARGS:    Store arguments to be processed
       local -ag ___getopts______i=()                                 # OPTIND:  store OPTIND index
+      local -ig ___getopts______r=0                                  # RETURN:  store the return status
    fi
 
    if [[ -z $1 ]]; then                                  # If no directive is present, then report an error
