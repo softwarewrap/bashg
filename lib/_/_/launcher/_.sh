@@ -233,12 +233,12 @@
                                                          # Is the log file writable?
          if [[ ${(+)_Config[DupLogToStdout]} = true ]]; then
                                                          # Yes. Now, should the output also go to stdout?
-            exec > >( tee -a -i >( sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" >>"${(+)_Config[Log]}" ) ) 2>&1
-                                                         # Tee to stdout/file; Remove color characters from log file
+            exec > >( stdbuf -i0 -o0 -e0 tee -a -i >( sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" >>"${(+)_Config[Log]}" ) ) 2>&1
+                                                         # Unbuffered tee to stdout/file; Remove color characters from log file
 
 
          else
-            exec > >( sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" >>"${(+)_Config[Log]}" ) 2>&1
+            exec > >( stdbuf -i0 -o0 -e0 sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" >>"${(+)_Config[Log]}" ) 2>&1
                                                          # Now the revised stdout and stderr will go only to the log file
                                                          # Remove color characters from log file
          fi

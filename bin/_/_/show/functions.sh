@@ -95,13 +95,13 @@
          if $___show__functions__functions___Short; then
             local ___show__functions__functions___OneColumn                          # The initial listing is just a single column
             local -i ___show__functions__functions___MaxLength                       # Get the maximum line length here
-            local -i ___show__functions__functions___MaxColumns                      # Get the terminal maximum (current) width
+            local -i ___show__functions__functions___MaxColumns="$_COLS"             # Get the terminal maximum (current) width
             local -i ___show__functions__functions___Columns                         # Determine how many columns can be created
             local -i ___show__functions__functions___Width                           # Determine the width of each column
 
             ___show__functions__functions___OneColumn="$(cat)"                       # Store the current stream
             ___show__functions__functions___MaxLength=$(wc -L <<<"$___show__functions__functions___OneColumn")
-            ___show__functions__functions___MaxColumns="$(tput cols)"                # Get the number of columns in the present terminal
+
             ___show__functions__functions___Columns=$(( ___show__functions__functions___MaxColumns / ( ___show__functions__functions___MaxLength + 1 ) ))
                                                          # Add one character to be a space between columns
             ___show__functions__functions___Width=$(( ___show__functions__functions___MaxColumns / ___show__functions__functions___Columns ))

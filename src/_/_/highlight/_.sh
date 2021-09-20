@@ -97,6 +97,12 @@ EXAMPLES:
 EOF
 }
 
++ %STARTUP()
+{
+   local -g _COLS
+   :tput:set _COLS cols
+}
+
 + ()
 {
    local (.)_Options
@@ -192,28 +198,29 @@ EOF
    local _BOLD= _BOLD_OFF= _REVERSE= _REVERSE_OFF= _UNDERLINE= _UNDERLINE_OFF= _RESET=
    local _HRULE='====================================='  # Assume width of 37 for dumb terminals
 
-   if ${(+:launcher)_Config[HasColor]}; then
+   if ${(+:launcher)_Config[HasColor]} && tput setaf 1 &>/dev/null; then
       # Colors
-      _RED="$(tput setaf 1)"                             # R   Red
-      _GREEN="$(tput setaf 2)"                           # G   Green
-      _BLUE="$(tput setaf 4)"                            # B   Blue
-      _CYAN="$(tput setaf 6)"                            # C   Cyan
-      _MAGENTA="$(tput setaf 5)"                         # M   Magenta
-      _YELLOW="$(tput setaf 3)"                          # Y   Yellow
-      _BLACK="$(tput setaf 0)"                           # K   Black
-      _WHITE="$(tput setaf 7)"                           # W   White
+      :tput:set _RED setaf 1
+      :tput:set _RED setaf 1                             # R   Red
+      :tput:set _GREEN setaf 2                           # G   Green
+      :tput:set _BLUE setaf 4                            # B   Blue
+      :tput:set _CYAN setaf 6                            # C   Cyan
+      :tput:set _MAGENTA setaf 5                         # M   Magenta
+      :tput:set _YELLOW setaf 3                          # Y   Yellow
+      :tput:set _BLACK setaf 0                           # K   Black
+      :tput:set _WHITE setaf 7                           # W   White
 
       # Modes
       # Some are not available via tput, see: https://en.wikipedia.org/wiki/ANSI_escape_code#CSI_codes
-      _BOLD="$(tput bold)"                               # Bold ON
-      _BOLD_OFF=$'\e[22m'                                # Bold OFF, see above link
-      _REVERSE="$(tput smso)"                            # Reverse ON
-      _REVERSE_OFF="$(tput rmso)"                        # Reverse OFF
-      _UNDERLINE="$(tput smul)"                          # Underline ON
-      _UNDERLINE_OFF="$(tput rmul)"                      # Underline OFF
-      _RESET="$(tput sgr0)"                              # Reset all colors and modes
+      :tput:set _BOLD bold                               # Bold ON
+      :tput:set _BOLD_OFF -- $'\e[22m'                   # Bold OFF, see above link
+      :tput:set _REVERSE smso                            # Reverse ON
+      :tput:set _REVERSE_OFF rmso                        # Reverse OFF
+      :tput:set _UNDERLINE smul                          # Underline ON
+      :tput:set _UNDERLINE_OFF rmul                      # Underline OFF
+      :tput:set _RESET sgr0                              # Reset all colors and modes
 
-      _HRULE="$( printf '%*s' $( tput cols ) | tr ' ' '=' )"
+      _HRULE="$( printf '%*s' $_COLS | tr ' ' '=' )"
    fi
    ###
 

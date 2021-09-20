@@ -252,12 +252,16 @@
       "hash": "b86bd7e4baf484eea10c12a589d1f37f",
       "path": "_/_/highlight/_.sh"
     },
+    ":highlight:%STARTUP": {
+      "hash": "23d31f15e4f0e9654674eaca89f2092e",
+      "path": "_/_/highlight/_.sh"
+    },
     ":highlight:%TEST": {
       "hash": "a41a691b48ccf1c48757f11533517e6a",
       "path": "_/_/highlight/_.sh"
     },
     ":highlight:_:Man": {
-      "hash": "b5aadfef37c0afa3480a66d23f208050",
+      "hash": "e3ddc246f31a107c420cae65cc2c5da1",
       "path": "_/_/highlight/_.sh"
     },
     ":json:escape": {
@@ -365,7 +369,7 @@
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:RedirectIO": {
-      "hash": "e92ab566c84f8659d06ef1c138520041",
+      "hash": "1efcbe83db8b987ab2c05a32275b4899",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:Shutdown": {
@@ -569,7 +573,7 @@
       "path": "_/_/shopt/_.sh"
     },
     ":show:functions": {
-      "hash": "48aca7883aa9910cbd21dd1a79289594",
+      "hash": "62706779e1d256ab76cf30130b0f4e4d",
       "path": "_/_/show/functions.sh"
     },
     ":show:vars": {
@@ -683,6 +687,10 @@
     ":text:align": {
       "hash": "f526e8c2c465acfa538477c603f3b6c3",
       "path": "_/_/text/align.sh"
+    },
+    ":tput:set": {
+      "hash": "b46b5114f2a6f47cfd1c8c1175d3d03d",
+      "path": "_/_/tput/_.sh"
     },
     ":try%STARTUP-0": {
       "hash": "8ee2aa76c9a59cf574bfbe79cf7b306f",

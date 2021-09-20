@@ -95,13 +95,13 @@
          if $(.)_Short; then
             local (.)_OneColumn                          # The initial listing is just a single column
             local -i (.)_MaxLength                       # Get the maximum line length here
-            local -i (.)_MaxColumns                      # Get the terminal maximum (current) width
+            local -i (.)_MaxColumns="$_COLS"             # Get the terminal maximum (current) width
             local -i (.)_Columns                         # Determine how many columns can be created
             local -i (.)_Width                           # Determine the width of each column
 
             (.)_OneColumn="$(cat)"                       # Store the current stream
             (.)_MaxLength=$(wc -L <<<"$(.)_OneColumn")
-            (.)_MaxColumns="$(tput cols)"                # Get the number of columns in the present terminal
+
             (.)_Columns=$(( (.)_MaxColumns / ( (.)_MaxLength + 1 ) ))
                                                          # Add one character to be a space between columns
             (.)_Width=$(( (.)_MaxColumns / (.)_Columns ))
