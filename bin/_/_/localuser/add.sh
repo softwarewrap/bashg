@@ -246,6 +246,7 @@ EOF
          -o
          -d "/home/${___localuser__add___U[user_name]}"
          -m
+         -p '!!'
          -s /bin/bash
       )
 
@@ -279,6 +280,7 @@ EOF
          -g "${___localuser__add___G[nss_group_id]}"
          -d "/home/${___localuser__add___U[user_name]}"
          -m
+         -p '!!'
          -s /bin/bash
       )
 
@@ -293,6 +295,15 @@ EOF
 
       :error: 2 "Failed to add user: ${___localuser__add___U[user_name]}"
       return
+   fi
+
+   if [[ -f /etc/shadow ]] &&
+      grep -q "${___localuser__add___U[user_name]}" /etc/shadow &&
+      [[ -z $( grep "${___localuser__add___U[user_name]}" /etc/shadow | cut -d: -f2 ) ]]; then
+
+      :log: "No password set for ${___localuser__add___U[user_name]}: locking (disabling) the password field"
+
+      usermod -p '!!' "${___localuser__add___U[user_name]}"
    fi
 
    ___localuser__add___U[nss_user_id]="${___localuser__add___U[user_id]}"                # Update with new UID

@@ -4,6 +4,8 @@
 {
    :sudo || :reenter                                     # This function must run as root
 
+   :log: --push-section 'Mounting files:' '/etc/fstab' "$FUNCNAME $@"
+
    local ___need__mount_all_____Before
    local ___need__mount_all_____After
    ___need__mount_all_____Before="$(mktemp)"
@@ -19,4 +21,6 @@
    fi
 
    rm -f "$___need__mount_all_____Before" "$___need__mount_all_____After"
+
+   :log: --pop
 }

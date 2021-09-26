@@ -25,7 +25,7 @@
 
    [[ $(.)_Timezone != $(.)_CurrentTimezone ]] || return 0
 
-   :log: --push "Requesting timezone: $(.)_Timezone"
+   :log: --push-section "Requesting timezone: $(.)_Timezone" "$FUNCNAME $@"
 
    if timedatectl list-timezones | grep "^$(.)_Timezone$" &>/dev/null; then
       timedatectl set-timezone "$(.)_Timezone"           # Change the timezone

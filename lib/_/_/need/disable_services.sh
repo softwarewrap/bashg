@@ -1,30 +1,5 @@
 #!/bin/bash
 
-- linux-6()
-{
-   :sudo || :reenter                                     # This function must run as root
-
-   local (.)_Service="$1"
-
-   if [[ -f /etc/init.d/$(.)_Service ]]; then
-      if [[ $(service "$(.)_Service" status) =~ 'is running' ]]; then
-         :log: --push "Stopping service: $(.)_Service"
-
-         service "$(.)_Service" stop                     # Stop the service
-
-         if [[ $(service "$(.)_Service" status) =~ 'is running' ]]; then
-            :log: "Failed to stop service: $(.)_Service"
-         fi
-
-         rm -f "/etc/init.d/$(.)_Service.disabled"       # Remove any existing 'disabled' file
-         mv -f "/etc/init.d/$(.)_Service" "/etc/init.d/$(.)_Service.disabled"
-         :log: "Renamed service to /etc/init.d/$(.)_Service.disabled"
-
-         :log: --pop
-      fi
-   fi
-}
-
 - linux()
 {
    :sudo || :reenter                                     # This function must run as root
@@ -45,6 +20,8 @@
       esac
    done
 
+   :log: --push-section 'Disabling services' "$FUNCNAME $@"
+
    local (.)_Service
    for (.)_Service in "$@"; do
       (.)_Service+="$(.)_Suffix"                         # Service names end with .service
@@ -63,4 +40,6 @@
          :log: --pop
       fi
    done
+
+   :log: --pop
 }

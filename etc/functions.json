@@ -80,6 +80,10 @@
       "hash": "d29909e254bc00f8c85fd6836c4bb22a",
       "path": "_/_/array/to_set.sh"
     },
+    ":comp:unit:func": {
+      "hash": "b3c3ad858f51da07821a60378d5dd75f",
+      "path": "_/_/comp/unit/demo.sh"
+    },
     ":curl:": {
       "hash": "3ca5db31d644cbfc78b79ec66184406d",
       "path": "_/_/curl/_.sh"
@@ -437,7 +441,7 @@
       "path": "_/_/localuser/add.sh"
     },
     ":localuser:add:ProcessUserAdd": {
-      "hash": "d48a2bdb74a07d46b7b85c2dcac62565",
+      "hash": "35dbdec7a051f443ee28069b41080ccc",
       "path": "_/_/localuser/add.sh"
     },
     ":localuser:matches": {
@@ -465,19 +469,15 @@
       "path": "_/_/mkdir/_.sh"
     },
     ":need:disable_selinux:": {
-      "hash": "d4b69c7797c15fada247970ed1172b7b",
+      "hash": "c53cbf314d5cac119064bd2331a66612",
       "path": "_/_/need/disable_selinux.sh"
     },
     ":need:disable_services:linux": {
-      "hash": "bb3224342ee77043910fa3782398f0aa",
-      "path": "_/_/need/disable_services.sh"
-    },
-    ":need:disable_services:linux-6": {
-      "hash": "14223afcfa5d9f55330ed6e8054cdb35",
+      "hash": "78a4e97da4d01a7cacab28010914b593",
       "path": "_/_/need/disable_services.sh"
     },
     ":need:mount_all:": {
-      "hash": "4046cdc89e4c79834120e9fc588bb21e",
+      "hash": "6bc5e101b35fd478aa477d39a42a7d25",
       "path": "_/_/need/mount_all.sh"
     },
     ":need:packages:": {
@@ -489,7 +489,7 @@
       "path": "_/_/need/set_timezone.sh"
     },
     ":need:set_timezone:linux-7": {
-      "hash": "f17230002f784aeaddf3765f4a2269c9",
+      "hash": "f1c289da827d76c35ea258e8430ee799",
       "path": "_/_/need/set_timezone.sh"
     },
     ":nop:": {
@@ -509,15 +509,11 @@
       "path": "_/_/nop/_.sh"
     },
     ":overlay:": {
-      "hash": "39b3b0dd22d8a4daad119f370045d302",
+      "hash": "0e9c3fc92ce208f7c387478694292372",
       "path": "_/_/overlay/_.sh"
     },
     ":overlay:%HELP": {
       "hash": "cccebb88614c9d9bad2232f55c98a8f2",
-      "path": "_/_/overlay/_.sh"
-    },
-    ":overlay:_:Copy": {
-      "hash": "936fa5a8bea6dee94b79c3b344f11640",
       "path": "_/_/overlay/_.sh"
     },
     ":require:packages": {
@@ -545,7 +541,7 @@
       "path": "_/_/run_as.sh"
     },
     ":sed:escape": {
-      "hash": "6dcd1bab3ed8f8da278374d21cc66eca",
+      "hash": "523599e47e890cad396a06c80d59df1a",
       "path": "_/_/sed/escape.sh"
     },
     ":set:%STARTUP-1": {
@@ -689,7 +685,7 @@
       "path": "_/_/text/align.sh"
     },
     ":tput:set": {
-      "hash": "b46b5114f2a6f47cfd1c8c1175d3d03d",
+      "hash": "86169f1a5927fdd69b0a0c02f49468a2",
       "path": "_/_/tput/_.sh"
     },
     ":try%STARTUP-0": {
@@ -731,10 +727,6 @@
     "_dev:need:%STARTUP-1": {
       "hash": "a30954ad4c6367bf39f2522b5a9f61db",
       "path": "_/dev/need/_.sh"
-    },
-    "_dev:need:graphical_environment:": {
-      "hash": "78bd59d97e5c217fc8aa5f17e80d68d8",
-      "path": "_/dev/need/graphical_environment.sh"
     },
     "_dev:need:install_package_epel_release:EPELisInstalled": {
       "hash": "15318920f2efd2963a24ca2dddab822b",
@@ -785,7 +777,7 @@
       "path": "_/dev/need/install_package_jq.sh"
     },
     "_dev:need:install_package_jq:install_jq": {
-      "hash": "1031b31160d2473dd85dbdd5ec0f39d1",
+      "hash": "481bd44933818917b301ef3c3bfa2882",
       "path": "_/dev/need/install_package_jq.sh"
     },
     "_dev:need:install_package_yum_utils:": {
@@ -793,72 +785,68 @@
       "path": "_/dev/need/install_package_yum_utils.sh"
     },
     "_dev:need:iptables:linux-7": {
-      "hash": "98a9175a37b65d1d79664bc88981bb33",
+      "hash": "6cb2b4389870039982ca0eaa24ae4532",
       "path": "_/dev/need/iptables.sh"
+    },
+    "_dev:need:os_packages:": {
+      "hash": "b0f0245fb0a98749cadfa5a73586f148",
+      "path": "_/dev/need/os_packages.sh"
     },
     "_dev:need:rsh:linux-6": {
       "hash": "74469608a801546e91480ad6e22c21f5",
       "path": "_/dev/need/rsh.sh"
     },
     "_dev:need:rsh:linux-7": {
-      "hash": "a11a4209869ff4d34e16d3522fb8e24e",
+      "hash": "6c9f7953cb705a88228369a514935c9e",
       "path": "_/dev/need/rsh.sh"
     },
     "_dev:need:vim:": {
-      "hash": "1655d107966b00268879b6952ae1cabc",
+      "hash": "a4ec691a7ed472beb6474102ae00964c",
       "path": "_/dev/need/vim.sh"
     },
     "_dev:need:zsh:": {
-      "hash": "8023ba3a387a25793134c8d0ebf0ba61",
+      "hash": "c505ec28d4917b665ec43d2414693fbf",
       "path": "_/dev/need/zsh.sh"
     },
-    "_dev:vim:": {
-      "hash": "542a1b47f5b690181ee65cce4901946b",
-      "path": "_/dev/vim/_.sh"
-    },
-    "_dev:vim:%HELP": {
-      "hash": "8847cf52e548ade9efc7be33e186bbbe",
-      "path": "_/dev/vim/_.sh"
-    },
     "_dev:vim:configure": {
-      "hash": "3e19e210db0e672b5edeb7e00f12493a",
-      "path": "_/dev/vim/_.sh"
+      "hash": "ac4dc1393637c522b0ac4e880c0f1c70",
+      "path": "_/dev/vim/configure.sh"
     },
     "_dev:vim:configure%HELP": {
-      "hash": "3b0a24cfb3e2bd679322f6de4b9d3716",
-      "path": "_/dev/vim/_.sh"
+      "hash": "6adb9692bb3c36d5e215160e983e7260",
+      "path": "_/dev/vim/configure.sh"
     },
-    "_dev:zsh:": {
-      "hash": "2e450c12aa3427e1414a9b83054b29e1",
-      "path": "_/dev/zsh/_.sh"
+    "_dev:vim:install": {
+      "hash": "94b3080d6eb1542ee482711ff9a8a920",
+      "path": "_/dev/vim/install.sh"
     },
-    "_dev:zsh:%HELP": {
-      "hash": "0c14edae356fb158c18ff39a14b90cc0",
-      "path": "_/dev/zsh/_.sh"
+    "_dev:vim:install%HELP": {
+      "hash": "357d16ebd926c73f3b8d2e9c353c1609",
+      "path": "_/dev/vim/install.sh"
     },
     "_dev:zsh:configure": {
-      "hash": "ee11f00e7131c543ba8bed0b9455cf74",
-      "path": "_/dev/zsh/_.sh"
+      "hash": "7449bcb7d76623a53e6872c374d8661f",
+      "path": "_/dev/zsh/configure.sh"
     },
     "_dev:zsh:configure%HELP": {
-      "hash": "dd3b9774ea43cede4328f7a13bd03f8a",
-      "path": "_/dev/zsh/_.sh"
+      "hash": "efc72ba1f2a4a0259c0dfc3b2120ecb4",
+      "path": "_/dev/zsh/configure.sh"
     },
-    "_doc:::demofunc": {
-      "hash": "baf0e93fd0a7547c76c22b17fc13aabd",
-      "path": "_/doc/demo.sh"
+    "_dev:zsh:install": {
+      "hash": "cbbddb45e71ddeb6ef82001ae0ce28f8",
+      "path": "_/dev/zsh/install.sh"
     },
-    "_doc:macros:demo:demofunc": {
-      "hash": "dae90add169560ce7e1b650080eaae33",
-      "path": "_/doc/macros/demo.sh"
+    "_dev:zsh:install%HELP": {
+      "hash": "23aec93f3bb7541e30c5fac55b6e62b5",
+      "path": "_/dev/zsh/install.sh"
     },
-    "_doc:macros:unit:demofunc": {
-      "hash": "020330f61910f2adae632a87f3e1cedb",
-      "path": "_/doc/macros/unit/demo.sh"
+    "_doc:comp:unit:func": {
+      "hash": "dd57cb9a12c161b0bc62fdc98e8929f3",
+      "path": "_/doc/comp/unit/demo.sh"
     },
-    "_doc:show:examples": {
-      "hash": "0f35948641ce6e90cda8606e0816bbb8",
-      "path": "_/doc/show/examples.sh"
+    "_doc:roadmap": {
+      "hash": "1cc991f38435177916cd3c857fcf39ef",
+      "path": "_/doc/roadmap.sh"
     }
   }
 }

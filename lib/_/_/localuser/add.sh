@@ -246,6 +246,7 @@ EOF
          -o
          -d "/home/${(-)_U[user_name]}"
          -m
+         -p '!!'
          -s /bin/bash
       )
 
@@ -279,6 +280,7 @@ EOF
          -g "${(-)_G[nss_group_id]}"
          -d "/home/${(-)_U[user_name]}"
          -m
+         -p '!!'
          -s /bin/bash
       )
 
@@ -293,6 +295,15 @@ EOF
 
       :error: 2 "Failed to add user: ${(-)_U[user_name]}"
       return
+   fi
+
+   if [[ -f /etc/shadow ]] &&
+      grep -q "${(-)_U[user_name]}" /etc/shadow &&
+      [[ -z $( grep "${(-)_U[user_name]}" /etc/shadow | cut -d: -f2 ) ]]; then
+
+      :log: "No password set for ${(-)_U[user_name]}: locking (disabling) the password field"
+
+      usermod -p '!!' "${(-)_U[user_name]}"
    fi
 
    (-)_U[nss_user_id]="${(-)_U[user_id]}"                # Update with new UID

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-+ examples()
+_doc:roadmap()
 {
    cat <<'EOF'
 
@@ -26,74 +26,75 @@
 
 1. NAMESPACE PROTECTION
 
-1.1 Function Declarations
+1.1 References
 
-   PACKAGE DECL            @ func() { ... }
-   COMPONENT DECL          + func() { ... }
-   UNIT DECL               - func() { ... }
-
-@ func()
-+ func()
-- func()
-
-1.2 References
+   p: package s: sub-package
+   c: component
+   u: unit
 
    PACKAGE
 
-      \\(@)_Var         \(@)_Var          (@)_Var
-      \\(@:p)_Var       \(@:p)_Var        (@:p)_Var
-      \\(@:.p)_Var      \(@:.p)_Var       (@:.p)_Var
-      \\(@@)_Var        \(@@)_Var         (@@)_Var
+   \(@)_Var         (@)_Var          _doc___Var
+   \(@:.s)_Var      (@:.s)_Var       _doc_s___Var
+   \(@:p)_Var       (@:p)_Var        p___Var
+   \(@@)_Var        (@@)_Var         ___Var
+   \\(@@:.s)_Var     \(@@:.s)_Var      (@@:.s)_Var
 
-      \\(@):Func        \(@):Func         (@):Func
-      \\(@:p):Func      \(@:p):Func       (@:p):Func
-      \\(@:.p):Func     \(@:.p):Func      (@:.p):Func
-      \\(@@):Func       \(@@):Func        (@@):Func
+   \(@):Func        (@):Func         _doc:Func
+   \(@:.s):Func     (@:.s):Func      _doc.s:Func
+   \(@:p):Func      (@:p):Func       p:Func
+   \(@@):Func       (@@):Func        :Func
+   \\(@@:.s):Func    \(@@:.s):Func     (@@:.s):Func
 
-      \\(@)/Path        \(@)/Path         (@)/Path
-      \\(@:t/s)/Path    \(@:t/s)/Path     (@:t/s)/Path
-      \\(@:.p)/Path     \(@:.p)/Path      (@:.p)/Path
-      \\(@@)/Path       \(@@)/Path        (@@)/Path
+   \(@)/Path        (@)/Path         "$_lib_dir/_/doc"/Path
+   \(@:.s)/Path     (@:.s)/Path      "$_lib_dir"/doc/s/Path
+   \(@:p/s)/Path    (@:p/s)/Path     "$_lib_dir"/p/s/Path
+   \(@@)/Path       (@@)/Path        "$_lib_dir"/_/_/Path
+   \\(@@:.s)/Path    \(@@:.s)/Path     (@@:.s)/Path
 
    COMPONENT
 
-      \\(+)_Var         \(+)_Var          (+)_Var
-      \\(+:c)_Var       \(+:c)_Var        (+:c)_Var
-      \\(+:p:c)_Var     \(+:p:c)_Var      (+:p:c)_Var
-      \\(+:.p:c)_Var    \(+:.p:c)_Var     (+:.p:c)_Var
-      \\(++:c)_Var      \(++:c)_Var       (++:c)_Var
+   \(+)_Var         (+)_Var          _doc_____Var
+   \(+:c)_Var       (+:c)_Var        _doc__c___Var
+   \(+:.s:c)_Var    (+:.s:c)_Var     _doc_s__c___Var
+   \(+:p:c)_Var     (+:p:c)_Var      p__c___Var
+   \(++:c)_Var      (++:c)_Var       ___c___Var
+   \(++:.s:c)_Var   (++:.s:c)_Var    ___.s:c___Var
 
-      \\(+):Func        \(+):Func         (+):Func
-      \\(+:c):Func      \(+:c):Func       (+:c):Func
-      \\(+:p:c):Func    \(+:p:c):Func     (+:p:c):Func
-      \\(+:.p:c):Func   \(+:.p:c):Func    (+:.p:c):Func
-      \\(++:c):Func     \(++:c):Func      (++:c):Func
+   \(+):Func        (+):Func         _doc::Func
+   \(+:c):Func      (+:c):Func       _doc:c:Func
+   \(+:.s:c):Func   (+:.s:c):Func    _doc.s:c:Func
+   \(+:p:c):Func    (+:p:c):Func     p:c:Func
+   \(++:c):Func     (++:c):Func      :c:Func
+   \(++:.s:c):Func  (++:.s:c):Func   :.s:c:Func
 
-      \\(+)/Path        \(+)/Path         (+)/Path
-      \\(+:c)/Path      \(+:c)/Path       (+:c)/Path
-      \\(+:t/s:c)/Path  \(+:t/s:c)/Path   (+:t/s:c)/Path
-      \\(+:.p:c)/Path   \(+:.p:c)/Path    (+:.p:c)/Path
-      \\(++:c)/Path     \(++:c)/Path      (++:c)/Path
+   \(+)/Path        (+)/Path         "$_lib_dir/_/doc/"/Path
+   \(+:c)/Path      (+:c)/Path       "$_lib_dir/_/doc/c"/Path
+   \(+:.s:c)/Path   (+:.s:c)/Path    "$_lib_dir/doc/s/c"/Path
+   \(+:p/s:c)/Path  (+:p/s:c)/Path   "$_lib_dir/p/s/c"/Path
+   \(++:c)/Path     (++:c)/Path      "$_lib_dir/_/_/c"/Path
+   \(++:.s:c)/Path  (++:.s:c)/Path   "$_lib_dir/_/_/.s:c"/Path
 
    UNIT
 
-      \\(-)_Var         \(-)_Var          (-)_Var
-      \\(-:u)_Var       \(-:u)_Var        (-:u)_Var
-      \\(-:c:u)_Var     \(-:c:u)_Var      (-:c:u)_Var
-      \\(--:c:u)_Var    \(--:c:u)_Var     (--:c:u)_Var
+   \(-)_Var         (-)_Var          _doc_______Var
+   \(-:u)_Var       (-:u)_Var        _doc____u___Var
+   \(-:c:u)_Var     (-:c:u)_Var      _doc__c__u___Var
+   \(--:c:u)_Var    (--:c:u)_Var     ___c__u___Var
 
-      \\(-):Func        \(-):Func         (-):Func
-      \\(-:u):Func      \(-:u):Func       (-:u):Func
-      \\(-:c:u):Func    \(-:c:u):Func     (-:c:u):Func
-      \\(--:c:u):Func   \(--:c:u):Func    (--:c:u):Func
+   \(-):Func        (-):Func         _doc:::Func
+   \(-:u):Func      (-:u):Func       _doc::u:Func
+   \(-:c:u):Func    (-:c:u):Func     _doc:c:u:Func
+   \(--:c:u):Func   (--:c:u):Func    :c:u:Func
 
-      \\(-)/Path        \(-)/Path         (-)/Path
-      \\(-:u)/Path      \(-:u)/Path       (-:u)/Path
-      \\(-:c:u)/Path    \(-:c:u)/Path     (-:c:u)/Path
-      \\(--:c:u)/Path   \(--:c:u)/Path    (--:c:u)/Path
+   \(-)/Path        (-)/Path         "$_lib_dir/_/doc//"/Path
+   \(-:u)/Path      (-:u)/Path       "$_lib_dir/_/doc//u"/Path
+   \(-:c:u)/Path    (-:c:u)/Path     "$_lib_dir/_/doc/c/u"/Path
+   \(--:c:u)/Path   (--:c:u)/Path    "$_lib_dir/_/_/c/u"/Path
 
    FUNCTION VARIABLES
-      \\(.)_Var         \(.)_Var          (.)_Var
+
+   \(.)_Var         (.)_Var          _doc____roadmap__roadmap___Var
 
 1.3 Directory Layout
 
@@ -111,6 +112,16 @@
       <COMPONENT> ::= { component namespace name }
       <UNIT>      ::= { unit namespace name }
       <FILE>      ::= { file name }
+
+1.2 Function Declarations
+
+   PACKAGE DECL            @ func() { ... }
+   COMPONENT DECL          + func() { ... }
+   UNIT DECL               - func() { ... }
+
+_doc:pfunc() { true; }
+_doc::cfunc() { true; }
+_doc:::ufunc() { true; }
 
 ======================================================================================================================
 
@@ -238,8 +249,8 @@
 
    Code can be written using the hooks and callbacks design pattern.
 
-   = add HookName (+):List <add-args>                    # Add callbacks to the HookName hook with add-provided args
-   = del HookName (+):List                               # Delete callbacks from the HookName hook
+   = add HookName _doc::List <add-args>                    # Add callbacks to the HookName hook with add-provided args
+   = del HookName _doc::List                               # Delete callbacks from the HookName hook
    = run HookName <run-args>                             # Run HookName callbacks with add- and run-provided args
 
 ======================================================================================================================

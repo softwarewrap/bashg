@@ -4,6 +4,8 @@
 {
    :sudo || :reenter                                     # This function must run as root
 
+   :log: --push-section 'Mounting files:' '/etc/fstab' "$FUNCNAME $@"
+
    local (.)_Before
    local (.)_After
    (.)_Before="$(mktemp)"
@@ -19,4 +21,6 @@
    fi
 
    rm -f "$(.)_Before" "$(.)_After"
+
+   :log: --pop
 }

@@ -17,7 +17,10 @@
 
    local (.)_InstallIsRequired=false                     # Assume that it is not necessary to install zsh
 
-   if ! $(.)_Force && :test:has_command zsh; then
+   if $(.)_Force || ! :test:has_command zsh; then
+      (.)_InstallIsRequired=true                         # Forcing install or zsh is not installed
+
+   else
       local (.)_Version
       (.)_Version="$(
          zsh --version |                                 # Many lines; first line has the version number in it
@@ -25,15 +28,16 @@
          sed -e 's|^[^0-9]*||' -e 's| .*||'              # The first number begins the version and ends with a space
       )"
 
-      if :test:version_compare "$(.)_Version" -lt 5; then
+      if [[ ! -f /etc/skel/.zshrc ]] ||
+         [[ ! -f /usr/local/bin/path ]] ||
+         :test:version_compare "$(.)_Version" -lt 5 ||
+         ! cmp -s (+:zsh)/@files/etc/skel/.zshrc /etc/skel/.zshrc; then
+
          (.)_InstallIsRequired=true                      # It is an old version: update to current
       fi
-
-   else
-      (.)_InstallIsRequired=true                         # zsh is not installed: install
    fi
 
    if $(.)_InstallIsRequired; then
-      (+:zsh):
+      (+:zsh):install
    fi
 }

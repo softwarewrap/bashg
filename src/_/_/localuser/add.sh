@@ -297,6 +297,15 @@ EOF
       return
    fi
 
+   if [[ -f /etc/shadow ]] &&
+      grep -q "${(-)_U[user_name]}" /etc/shadow &&
+      [[ -z $( grep "${(-)_U[user_name]}" /etc/shadow | cut -d: -f2 ) ]]; then
+
+      :log: "No password set for ${(-)_U[user_name]}: locking (disabling) the password field"
+
+      usermod -p '!!' "${(-)_U[user_name]}"
+   fi
+
    (-)_U[nss_user_id]="${(-)_U[user_id]}"                # Update with new UID
    (-)_U[spec_matches]=true                              # Spec now matches
 }
