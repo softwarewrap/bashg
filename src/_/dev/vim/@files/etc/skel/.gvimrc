@@ -61,8 +61,8 @@ fu! RefreshEggHighlighting()
    let P_Dir_RE='\(' . '@\?' . '\|' . P_Dir_Name . '\|' . '@' . P_Dir_Name . '\)'
 
    let C_Name=':[%a-zA-Z][%a-zA-Z0-9_\.-]*'
-   let C_RE='\(' . '\(' . C_Name . '\)\?' . '\|' . '\(' . '+' . '\|' . P_Name . '\)' . C_Name . '\)'
-   let C_Dir_RE='\(' . '\(' . C_Name . '\)\?' . '\|' . '\(' . '+' . '\|' . P_Dir_Name . '\)' . C_Name . '\)'
+   let C_RE='\(' . '+\?' . '\(' . P_Name . '\)\?' . '\(' . C_Name . '\)\?' . '\)'
+   let C_Dir_RE='\(' . '+\?' . '\(' . P_Dir_Name . '\)\?' . '\(' . C_Name . '\)\?' . '\)'
 
    let U_Name=':[%a-zA-Z][%a-zA-Z0-9_\.-]*'
    let U_RE='\(' . '\(' . U_Name . '\)\?' . '\|' . '\(' . '-' . '\|' . '-\?' . C_Name . '\)' . U_Name . '\)'

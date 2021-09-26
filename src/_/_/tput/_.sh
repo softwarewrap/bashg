@@ -10,19 +10,22 @@
    local (.)_Var="${1:-(.)_UnassignedVar}"               # The variable to set
    shift
 
-   local (.)_Code
+   local (.)_Code=
 
    if [[ $1 = -- ]]; then
       (.)_Code="$2"
 
-   elif [[ $1 = cols ]]; then
-      (.)_Code="$(tput cols 2>/dev/null)" || true        # The number of columns
-      if [[ -z $(.)_Code || ! $(.)_Code =~ ^[0-9]+$ ]]; then
-         (.)_Code='120'
-      fi
+   else
+      if tput "$@" &>/dev/null; then
+         (.)_Code="$( tput "$@" )"
 
-   elif ! (.)_Code="$( tput "$@" 2>/dev/null )"; then
-      (.)_Code=
+      elif [[ $1 = cols ]]; then
+         if [[ -n $COLUMNS ]]; then
+            (.)_Code="$COLUMNS"
+         else
+            (.)_Code='120'
+         fi
+      fi
    fi
 
    [[ -v $(.)_Var ]] || local -g "$(.)_Var"              # Ensure the variable exists

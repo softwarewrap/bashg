@@ -3,6 +3,8 @@
 - linux-7()
 {
    if ! :test:has_package rsh || ! :test:has_package rsh-server; then
+      :log: --push-section 'Installing' 'rsh' "$FUNCNAME $@"
+
       # rsh must be installed and passwordless access allowed
       # Allow access from any host
       echo "+ +" >/etc/hosts.equiv
@@ -23,6 +25,8 @@
 
       iptables --flush
       iptables-save > /etc/sysconfig/iptables
+
+      :log: --pop
    fi
 }
 

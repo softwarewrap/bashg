@@ -19,53 +19,34 @@ EOF
 
 + ()
 {
-   local (.)_Options
-   (.)_Options=$(getopt -o '' -l 'owner:' -n "${FUNCNAME[0]}" -- "$@") || return
-   eval set -- "$(.)_Options"
+   :sudo || :reenter                                     # This function must run as root
 
-   local (-)_User="$_whoami"                            # Do not assume any owner change
+   local (.)_Src="$1"                                    # The source directory to copy
+   local (.)_Dst="$2"                                    # The destination directory to overlay
+   local (.)_User="$3"                                   # The user to run as
 
-   while true ; do
-      case "$1" in
-      --owner) (-)_User="$2"; shift 2;;
-      --)      shift; break;;
-      *)       break;;
-      esac
-   done
-
-   local -a (-)_CopyOptions=()
-   if [[ $(-)_User != $_whoami && $(-)_User != root ]]; then
-      if ! getent passwd "$(-)_User" &>/dev/null; then
-         :error: 1 "No such user: $(-)_User"
-      fi
-
-      local (.)_Group
-      (.)_Group="$( id -n -g "$(-)_User" )"              # Get the corresponding group
-
-      (-)_CopyOptions+=( --owner="$(-)_User" --group="$(.)_Group" )
-   fi
-
-   local (-)_Src="$1"
-   local (-)_Dst="$2"
-
-   if [[ ! -d $(-)_Src || ! -d $(-)_Dst ]]; then
+   if [[ ! -d $(.)_Src || ! -d $(.)_Dst ]]; then         # Ensure directories exist
       :error: 1 "Both source and destination directories must exist"
       return 1
    fi
 
-   (-):Copy
-}
+   if [[ -z $(.)_User ]]; then                           # If User is not specified, use the owner of the Dst dir
+      (.)_User="$( stat -c '%U' "$(.)_Dst" )"
 
-- Copy()
-{
-   :sudo "$(-)_User" || :reenter                        # This function must run as root
+   elif ! id "$(.)_User" &>/dev/null; then               # The specified user must exist
+      :error: 1 "No such user: $(.)_User"
+      return
+   fi
+
+   local (.)_Group                                       # Get the group corresponding to the user
+   (.)_Group="$( id -n -g "$(.)_User" )"
 
    (
-      cd "$(-)_Src"
-      tar "$(-)_CopyOptions" -cpf - .
+      cd "$(.)_Src"                                      # Create tar with owner/group specified from Src
+      tar --owner="$(.)_User" --group="$(.)_Group" -cpf - .
    ) |
-   (
-      cd "$(-)_Dst"
+   (                                                     # Overlay by extracting the tar onto Dst
+      cd "$(.)_Dst"
       tar -xpf -
    )
 }

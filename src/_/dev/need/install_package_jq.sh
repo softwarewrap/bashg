@@ -18,10 +18,21 @@
 {
    :sudo || :reenter                                     # This function must run as root
 
-   :log: --push 'Installing jq 1.6'
+   local (.)_AvailableVersion
+   (.)_AvailableVersion="$( yum list available jq | grep '^jq' | awk '{print $2}' | sort -V | tail -1 )"
 
-   curl -sfLo /usr/local/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
-   chmod 755 /usr/local/bin/jq
+   if [[ -n $(.)_AvailableVersion ]] && :test:version_compare 1.6-2.el7 -ge 1.6; then
+      :log: --push "Installing jq-$(.)_AvailableVersion"
 
-   :log: --pop
+      yum -y install "jq-$(.)_AvailableVersion"
+
+      :log: --pop
+
+   else
+      rm -f /usr/bin/jq
+      curl -sfLo /usr/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+      chmod 755 /usr/bin/jq
+
+      :log: --pop
+   fi
 }

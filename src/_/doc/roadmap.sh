@@ -1,6 +1,6 @@
 #!/bin/bash
 
-+ examples()
+@ roadmap()
 {
    cat <<'EOF'
 
@@ -26,74 +26,75 @@
 
 1. NAMESPACE PROTECTION
 
-1.1 Function Declarations
+1.1 References
 
-   PACKAGE DECL            @ func() { ... }
-   COMPONENT DECL          + func() { ... }
-   UNIT DECL               - func() { ... }
-
-@ func()
-+ func()
-- func()
-
-1.2 References
+   p: package s: sub-package
+   c: component
+   u: unit
 
    PACKAGE
 
-      \\(@)_Var         \(@)_Var          (@)_Var
-      \\(@:p)_Var       \(@:p)_Var        (@:p)_Var
-      \\(@:.p)_Var      \(@:.p)_Var       (@:.p)_Var
-      \\(@@)_Var        \(@@)_Var         (@@)_Var
+   \\(@)_Var         \(@)_Var          (@)_Var
+   \\(@:.s)_Var      \(@:.s)_Var       (@:.s)_Var
+   \\(@:p)_Var       \(@:p)_Var        (@:p)_Var
+   \\(@@)_Var        \(@@)_Var         (@@)_Var
+   \\(@@:.s)_Var     \(@@:.s)_Var      (@@:.s)_Var
 
-      \\(@):Func        \(@):Func         (@):Func
-      \\(@:p):Func      \(@:p):Func       (@:p):Func
-      \\(@:.p):Func     \(@:.p):Func      (@:.p):Func
-      \\(@@):Func       \(@@):Func        (@@):Func
+   \\(@):Func        \(@):Func         (@):Func
+   \\(@:.s):Func     \(@:.s):Func      (@:.s):Func
+   \\(@:p):Func      \(@:p):Func       (@:p):Func
+   \\(@@):Func       \(@@):Func        (@@):Func
+   \\(@@:.s):Func    \(@@:.s):Func     (@@:.s):Func
 
-      \\(@)/Path        \(@)/Path         (@)/Path
-      \\(@:t/s)/Path    \(@:t/s)/Path     (@:t/s)/Path
-      \\(@:.p)/Path     \(@:.p)/Path      (@:.p)/Path
-      \\(@@)/Path       \(@@)/Path        (@@)/Path
+   \\(@)/Path        \(@)/Path         (@)/Path
+   \\(@:.s)/Path     \(@:.s)/Path      (@:.s)/Path
+   \\(@:p/s)/Path    \(@:p/s)/Path     (@:p/s)/Path
+   \\(@@)/Path       \(@@)/Path        (@@)/Path
+   \\(@@:.s)/Path    \(@@:.s)/Path     (@@:.s)/Path
 
    COMPONENT
 
-      \\(+)_Var         \(+)_Var          (+)_Var
-      \\(+:c)_Var       \(+:c)_Var        (+:c)_Var
-      \\(+:p:c)_Var     \(+:p:c)_Var      (+:p:c)_Var
-      \\(+:.p:c)_Var    \(+:.p:c)_Var     (+:.p:c)_Var
-      \\(++:c)_Var      \(++:c)_Var       (++:c)_Var
+   \\(+)_Var         \(+)_Var          (+)_Var
+   \\(+:c)_Var       \(+:c)_Var        (+:c)_Var
+   \\(+:.s:c)_Var    \(+:.s:c)_Var     (+:.s:c)_Var
+   \\(+:p:c)_Var     \(+:p:c)_Var      (+:p:c)_Var
+   \\(++:c)_Var      \(++:c)_Var       (++:c)_Var
+   \\(++:.s:c)_Var   \(++:.s:c)_Var    (++:.s:c)_Var
 
-      \\(+):Func        \(+):Func         (+):Func
-      \\(+:c):Func      \(+:c):Func       (+:c):Func
-      \\(+:p:c):Func    \(+:p:c):Func     (+:p:c):Func
-      \\(+:.p:c):Func   \(+:.p:c):Func    (+:.p:c):Func
-      \\(++:c):Func     \(++:c):Func      (++:c):Func
+   \\(+):Func        \(+):Func         (+):Func
+   \\(+:c):Func      \(+:c):Func       (+:c):Func
+   \\(+:.s:c):Func   \(+:.s:c):Func    (+:.s:c):Func
+   \\(+:p:c):Func    \(+:p:c):Func     (+:p:c):Func
+   \\(++:c):Func     \(++:c):Func      (++:c):Func
+   \\(++:.s:c):Func  \(++:.s:c):Func   (++:.s:c):Func
 
-      \\(+)/Path        \(+)/Path         (+)/Path
-      \\(+:c)/Path      \(+:c)/Path       (+:c)/Path
-      \\(+:t/s:c)/Path  \(+:t/s:c)/Path   (+:t/s:c)/Path
-      \\(+:.p:c)/Path   \(+:.p:c)/Path    (+:.p:c)/Path
-      \\(++:c)/Path     \(++:c)/Path      (++:c)/Path
+   \\(+)/Path        \(+)/Path         (+)/Path
+   \\(+:c)/Path      \(+:c)/Path       (+:c)/Path
+   \\(+:.s:c)/Path   \(+:.s:c)/Path    (+:.s:c)/Path
+   \\(+:p/s:c)/Path  \(+:p/s:c)/Path   (+:p/s:c)/Path
+   \\(++:c)/Path     \(++:c)/Path      (++:c)/Path
+   \\(++:.s:c)/Path  \(++:.s:c)/Path   (++:.s:c)/Path
 
    UNIT
 
-      \\(-)_Var         \(-)_Var          (-)_Var
-      \\(-:u)_Var       \(-:u)_Var        (-:u)_Var
-      \\(-:c:u)_Var     \(-:c:u)_Var      (-:c:u)_Var
-      \\(--:c:u)_Var    \(--:c:u)_Var     (--:c:u)_Var
+   \\(-)_Var         \(-)_Var          (-)_Var
+   \\(-:u)_Var       \(-:u)_Var        (-:u)_Var
+   \\(-:c:u)_Var     \(-:c:u)_Var      (-:c:u)_Var
+   \\(--:c:u)_Var    \(--:c:u)_Var     (--:c:u)_Var
 
-      \\(-):Func        \(-):Func         (-):Func
-      \\(-:u):Func      \(-:u):Func       (-:u):Func
-      \\(-:c:u):Func    \(-:c:u):Func     (-:c:u):Func
-      \\(--:c:u):Func   \(--:c:u):Func    (--:c:u):Func
+   \\(-):Func        \(-):Func         (-):Func
+   \\(-:u):Func      \(-:u):Func       (-:u):Func
+   \\(-:c:u):Func    \(-:c:u):Func     (-:c:u):Func
+   \\(--:c:u):Func   \(--:c:u):Func    (--:c:u):Func
 
-      \\(-)/Path        \(-)/Path         (-)/Path
-      \\(-:u)/Path      \(-:u)/Path       (-:u)/Path
-      \\(-:c:u)/Path    \(-:c:u)/Path     (-:c:u)/Path
-      \\(--:c:u)/Path   \(--:c:u)/Path    (--:c:u)/Path
+   \\(-)/Path        \(-)/Path         (-)/Path
+   \\(-:u)/Path      \(-:u)/Path       (-:u)/Path
+   \\(-:c:u)/Path    \(-:c:u)/Path     (-:c:u)/Path
+   \\(--:c:u)/Path   \(--:c:u)/Path    (--:c:u)/Path
 
    FUNCTION VARIABLES
-      \\(.)_Var         \(.)_Var          (.)_Var
+
+   \\(.)_Var         \(.)_Var          (.)_Var
 
 1.3 Directory Layout
 
@@ -111,6 +112,16 @@
       <COMPONENT> ::= { component namespace name }
       <UNIT>      ::= { unit namespace name }
       <FILE>      ::= { file name }
+
+1.2 Function Declarations
+
+   PACKAGE DECL            @ func() { ... }
+   COMPONENT DECL          + func() { ... }
+   UNIT DECL               - func() { ... }
+
+@ pfunc() { true; }
++ cfunc() { true; }
+- ufunc() { true; }
 
 ======================================================================================================================
 

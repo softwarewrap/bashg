@@ -246,6 +246,7 @@ EOF
          -o
          -d "/home/${(-)_U[user_name]}"
          -m
+         -p '!!'
          -s /bin/bash
       )
 
@@ -279,6 +280,7 @@ EOF
          -g "${(-)_G[nss_group_id]}"
          -d "/home/${(-)_U[user_name]}"
          -m
+         -p '!!'
          -s /bin/bash
       )
 

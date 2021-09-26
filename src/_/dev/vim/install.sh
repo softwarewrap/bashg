@@ -1,6 +1,6 @@
 #!/bin/bash
 
-+ %HELP()
++ install%HELP()
 {
    local (.)_Synopsis='Install vim and configure accounts'
    (++:help): --set "$(.)_Synopsis" <<'EOF'
@@ -12,7 +12,7 @@ DESCRIPTION:
 EOF
 }
 
-+ ()
++ install()
 {
    :sudo || :reenter                                     # This function must run as root
 
@@ -36,7 +36,7 @@ EOF
       return 0                                           # Not updating and vim directory and executable exists
    fi
 
-   :log: --push 'Adding vim-enhanced'
+   :log: --push-section 'Adding vim-enhanced' "$FUNCNAME $@"
 
    :log: 'Removing any existing vim installation'
    yum -y erase vim-enhanced vim-common vim-filesystem
@@ -110,44 +110,4 @@ EOF
    rm -rf "$(.)_TmpDir"
 
    :log: --pop
-}
-
-+ configure%HELP()
-{
-   local (.)_Synopsis='Configure a home directory with vim configuration files'
-
-   :help: --set "$(.)_Synopsis" --usage '[<home_directory>]' <<EOF
-DESCRIPTION:
-   Add vim configuration files to a home directory
-
-   If the <home_directory> is given, then that directory is configured;
-   otherwise, the current user's home directory is configured.
-EOF
-}
-
-+ configure()
-{
-   :sudo || :reenter                                     # This function must run as root
-
-   (( $# > 0 )) || set -- "$_entry_home"
-
-   local (.)_HomeDir                                     # Install files into user home directories
-
-   for (.)_HomeDir; do                                   # Iterate over a set of home directories
-      :log: "Configuring for vim: $(.)_HomeDir"
-
-      # Create the swap and backup directories
-      mkdir -p "$(.)_HomeDir"/.vim/{swp,save}
-
-      # Remove any existing configuration files
-      rm -f "$(.)_HomeDir"/{.vimrc,.gvimrc}
-
-      # Install the gvimrc file to /etc/skel
-      cp '/etc/skel/.gvimrc' "$(.)_HomeDir/.gvimrc"
-
-      # Link the vimrc file
-      sudo -u "$(stat -c '%U' "$(.)_HomeDir")" bash -c "cd; ln -sf .gvimrc .vimrc"
-
-      chown -R --reference="$(.)_HomeDir" "$(.)_HomeDir"/{.vim,.gvimrc}
-   done
 }
