@@ -265,7 +265,7 @@
       "path": "_/_/highlight/_.sh"
     },
     ":highlight:_:Man": {
-      "hash": "e3ddc246f31a107c420cae65cc2c5da1",
+      "hash": "a632060f963a9d67de5158c0259d96e5",
       "path": "_/_/highlight/_.sh"
     },
     ":json:escape": {
@@ -845,7 +845,7 @@
       "path": "_/doc/comp/unit/demo.sh"
     },
     "_doc:roadmap": {
-      "hash": "1cc991f38435177916cd3c857fcf39ef",
+      "hash": "88ca934bb92a87cdf1e3d5d3af211ba9",
       "path": "_/doc/roadmap.sh"
     }
   }
