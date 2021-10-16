@@ -150,150 +150,62 @@
 
    For example (noting the definitions begin in column 1):
 
-.doc:public_package_func() { true; }^
-.doc:PrivatePackageFunc() { true; }^
+@ public_package_func() { true; }^
+@ PrivatePackageFunc() { true; }^
 
-.doc::public_component_func() { true; }^
-.doc::PrivateComponentFunc() { true; }^
++ public_component_func() { true; }^
++ PrivateComponentFunc() { true; }^
 
-.doc:::PrivateUnitFunc() { true; }^
-
-======================================================================================================================
-
-2. PLUGINS:
-
-   Plugins are idioms that are replaced at compile time to achieve added capabilities
-
-   ({<name> [<args>]})
-   ({<name> [<args>])<input>(})
-
-   The <name> is a function call that can take arguments
-   The empty <name> is the same as 'closure'.
-   The <name> of ':' is the same as 'json'.
-
-2.1 CLOSURE EXAMPLE:
-
-   The closure idiom ({)...(}) is replaced by a function call to a dynamically-generated anonymous function reference
-
-   local c=({)
-   local -i Sum=0 I
-   for (( I=$1; I<$2; I++ )); do
-      Sum=$(( Sum += I ))
-   done
-   + return "$Sum"
-   (})
-
-   $c:call 1 10                                          # Computes the sum from 1..10 = 55
-
-2.2 CLOSURE WITH A DATA CONTEXT:
-
-   ({with <instance> [as <alias>])...(})                 # Allow data access to <instance>
-
-   ({with $JSONInstance as j)                            # Start a context block
-      (!).a.b.c=37                                       # Assign value in current context $JSONInstance
-      (!!j).a.b.c=37                                     # Assign value in context using the alias name
-      (!k).x.y.z=42                                      # Assign value to some non-context instance
-   (})                                                   # End a context block
-
-2.3 JSON EXAMPLE:
-
-   local j=({:) { "a": 1 } (})                           # Create a JSON instance j
-
-   $j:join --string '{"b": 2}'                           # Use the join method on the created-JSON instance
-   $j:dump                                               # Emits: {"a": 1, "b": 2}
+- PrivateUnitFunc() { true; }^
 
 ======================================================================================================================
 
-3. OBJECT ORIENTATION:
+2. BUILTINS:
 
-3.1 CONSTRUCTOR, DESTRUCTOR, AND METHOD DECLARATIONS:
+   Builtins are namespace-unprotected function names that provide special capabilities.
+   Commonly, these builtins consist of non-alphabetic characters that are permissible
+   for use as function names.
 
-   : extends <OtherClass>                                ^<K# Extend this <Class> from <OtherClass>
-   @ <Class>:()                                          ^<K# The constructor is the <class> with a colon suffix
-   {
-      (!).<field>[=<value>]                              ^<K# Define <field> in $_this, with optional <value>
-      :def <Class> <field>                               ^<K# Define <field> a separate class field
-   }
+2.1 INDIRECTION BUILTIN: -
 
-   @ ~<Class>:()                                         # The destructor is the constructor name with a tilde prefix
-   {
-      :delete <field>                                    # Delete <field>
-   }
+   The - builtin, otherwise known as the indirection builtin, is intended to provide
+   an alternate implementation or a wrapper for external commands and functions.
 
-   @ <Class>:<method>()                                  ^<K# A method name follows the class name
-   {
-      + return <instance> <return-status>                ^<K# Return instance for chaining; default: $_this 0
-   }
+   Syntax:
+      - --def <indirect-from> <indirect-to>              # Define <indirect-from> to call <indirect-to>
+      - <options> <indirect-from> [<arguments>]          # Use <indirect-from> to call <indirect-to>
 
-   Instances have a JSON data store associated with them that can directly be accessed thru the instance variable.
-   Instances can also have fields associated with them.
+   For example, the bashc framework provides an indirection builtin definition for 'python' to
+   ensure that some valid python executable can be relied on to be available.
+   Consider the implementation of (++:json):is_valid:
 
-3.2 NEW AND DESTROY INSTANCE:
+      - python -c "import sys,json;json.loads(sys.stdin.read())" &>/dev/null
 
-   :new <Class> <instance-var>                           # :new Array a
-   :destroy <instance>                                   # :destroy $a
+   This idiom can be used to ensure that commands and functions can be relied on to be available
+   with desired semantics and yet be done in a way that requires only minimal syntactic intrusion.
 
-   Example:
-      :new Array _doc_____a                                   # Create the instance _doc_____a
-      :destroy $_doc_____a                                    # Note that an <instance> not an <instance-var> is used
+2.2 INJECTION BUILTIN: =
 
-3.3 SETTERS AND GETTERS:
+   The = builtin, otherwise known as the injection builtin, is intended to provide
+   an implementation of the Hooks and Callbacks design pattern. This design pattern
+   makes it possible to treat functions as templates with specific implementations
+   at designated places within function bodies.
 
-   (!<instance-var>)[<access>]                           # Indirection (!) to instance data store with access
-
-   Setter Examples:
-      :new JSON j                                        # Create a JSON instance
-      (!j)=37                                            # Set unnamed field
-      (!j).a.b.c=37                                      # Set named field .a.b.c
-      (!).x.y.z=42                                       # Set named field .x.y.z from current context
-
-   Getter Examples:
-
-      $(!)                                               # Get unnamed field
-      $(!j).a.b.c                                        # Get named field .a.b.c
-      $(!).x.y.z                                         # Get named field .x.y.z from current context
-
-3.4 CHAINING:
-
-   In a non-method, the :new function creates an instance that can be used for subsequent chaining.
-   In a method, the chaining  instance is $_this, unless the + return method is called.
-   By default a method does the following as the last step:
-
-      + return $_this 0
-
-   The + function is used to invoke a method using the last instance on the execution stack.
-
-   Examples:
-
-      :new JSON j
-      + readfile /path/to/file
-      + dump
-
-======================================================================================================================
-
-4. REDIRECTION:
-
-   Some additional file descriptors are made available symbolically as the following examples show:
-
-   echo 'Hello There!' (>out)                            # Script out
-   echo 'Bad syntax!!' (>err)                            # Script err
-   sed 's|Hi|There!!|' (<in) (>out)                      # Script in and script out
-   echo '{"result":3}' (>data)                           # Script data
-   echo 'Succeeded!!!' (>log)                            # Script log
-
-======================================================================================================================
-
-5. INJECTION:
-
-   Code can be written using the hooks and callbacks design pattern.
+   Syntax:  = <directive> [<arguments>]
 
    = add HookName .doc::List <add-args>                    # Add callbacks to the HookName hook with add-provided args
    = del HookName .doc::List                               # Delete callbacks from the HookName hook
    = run HookName <run-args>                             # Run HookName callbacks with add- and run-provided args
 
-======================================================================================================================
+2.3 CHAINING BUILTIN: +
 
-6. ANNOTATIONS:
+   The + builtin, otherwise known as the chaining builtin, is intended to provide
+   access to instance methods. See section 3 below.
+
+2.4 ANNOTATION BUILTIN: :
+
+   The : builtin, otherwise known as the annotation builtin, is intended to modify
+   code generation and execution behavior.
 
    Annotations are merely functions that are exercised at compile time that operate on code and
    can perform create, replace, update, and delete operations on the code.
@@ -315,5 +227,143 @@
    defined annotation functions.
 
    An annotation without <name> and <args> returns true.
+
+======================================================================================================================
+
+3. OBJECT ORIENTATION:
+
+3.1 CONSTRUCTOR, DESTRUCTOR, AND METHOD DECLARATIONS:
+
+   : extends <OtherClass>                                ^<K# Extend this <Class> from <OtherClass>
+   @ <Class>:()                                          ^<K# The constructor is the <class> with a colon suffix
+   {
+      (!).<field>[=<value>]                              ^<K# Define <field> in $_this, with optional <value>
+      :def <Class> <field>                               ^<K# Define <field> a separate class field
+   }
+
+   @ ~<Class>:()                                         ^<K# The destructor is the constructor name with a tilde prefix
+   {^<K
+      :delete <field>                                    ^<K# Delete <field>
+   }^<K
+
+   @ <Class>:<method>()                                  ^<K# A method name follows the class name
+   {
+      + return <instance> <return-status>                ^<K# Return instance for chaining; default: $_this 0
+   }
+
+   Instances have a JSON data store associated with them that can directly be accessed thru the instance variable.
+   Instances can also have fields associated with them.
+
+3.2 NEW AND DESTROY INSTANCE:
+
+   :new <Class> <instance-var>                           ^<K# :new Array a
+   :destroy <instance>                                   ^<K# :destroy $a
+
+   Example:
+      :new Array _doc_____a                                   ^# Create the instance _doc_____a
+      :destroy $_doc_____a                                    ^# Note that an <instance> not an <instance-var> is used
+
+3.3 SETTERS AND GETTERS:
+
+   (!<instance-var>)[<access>]                           ^<K# Indirection (!) to instance data store with access
+
+   Setter Examples:
+      :new JSON j                                        ^# Create a JSON instance
+      (!j)=37                                            ^# Set unnamed field
+      (!j).a.b.c=37                                      ^# Set named field .a.b.c
+      (!).x.y.z=42                                       ^# Set named field .x.y.z from current context
+
+   Getter Examples:
+      $(!)                                               ^# Get unnamed field
+      $(!j).a.b.c                                        ^# Get named field .a.b.c
+      $(!).x.y.z                                         ^# Get named field .x.y.z from current context
+
+3.4 CHAINING:
+
+   In a non-method, the :new function creates an instance that can be used for subsequent chaining.
+   In a method, the chaining  instance is $_this, unless the + return method is called.
+   By default a method does the following as the last step:
+
+      + return $_this 0
+
+   The + function is used to invoke a method using the last instance on the execution stack.
+
+   Examples:
+
+      :new JSON j
+      + readfile /path/to/file
+      + dump
+
+======================================================================================================================
+
+4. PLUGINS:
+
+   Plugins are idioms that are replaced at compile time to achieve added capabilities.
+
+   Syntax:
+      ({<name> [<args>]})                                ^<K# Plugin without input
+      ({<name> [<args>])<input>(})                       ^<K# Plugin with input between markers
+
+   The <name> is a function alias or an existing function name that is to be called.
+   The <args> are arguments to be passed to that function.
+
+   Notes:
+      The empty <name> is the same as 'closure'.
+      The <name> of ':' is the same as 'json'.
+
+4.1 CLOSURE PLUGIN EXAMPLE:
+
+   The closure idiom ({)...(}) is replaced by a function call to a dynamically-generated function reference:
+
+      local c=({)^
+      local -i Sum=0 I^
+      for (( I=$1; I<$2; I++ )); do^
+         Sum=$(( Sum += I ))^
+      done^
+      + return "$Sum"^
+      (})^
+
+      $c:call 1 10                                       ^# Computes the sum from 1..10 = 55
+
+4.2 WITH PLUGIN EXAMPLE:
+
+   The with plugin
+
+   Syntax:
+      ({with <instance> [as <alias>])...(})              ^<K# Allow data access to <instance>
+
+   Example:
+      ({with $JSONInstance as j)                         ^# Start a context block
+         (!).a.b.c=37                                    ^# Assign value in current context $JSONInstance
+         (!!j).a.b.c=37                                  ^# Assign value in context using the alias name
+         (!k).x.y.z=42                                   ^# Assign value to some non-context instance
+      (})                                                ^# End a context block
+
+4.3 JSON EXAMPLE:
+
+   local j=({:) { "a": 1 } (})                           ^# Create a JSON instance j
+
+   $j:join --string '{"b": 2}'                           ^# Use the join method on the created-JSON instance
+   $j:dump                                               ^# Emits: {"a": 1, "b": 2}
+
+======================================================================================================================
+
+5. REDIRECTION:
+
+   Some additional file descriptors are made available symbolically.
+
+   Syntax:
+      (<in)                                              ^<K# Input redirection; same as <&3
+      (>out)                                             ^<K# Output redirection; same as >&4
+      (>err)                                             ^<K# Error redirection; same as >&5
+      (>data)                                            ^<K# Error redirection; same as >&6
+      (>log)                                             ^<K# Error redirection; same as >&7
+
+   Examples:
+      echo 'Hello There!' (>out)                         ^# Script out
+      echo 'Bad syntax!!' (>err)                         ^# Script err
+      sed 's|Hi|There!!|' (<in) (>out)                   ^# Script in and script out
+      echo '{"result":3}' (>data)                        ^# Script data
+      echo 'Succeeded!!!' (>log)                         ^# Script log
 EOF
 }
