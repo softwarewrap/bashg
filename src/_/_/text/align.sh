@@ -16,5 +16,7 @@
       esac
    done
 
-   LC_ALL=C sed "s~$(.)_Delimiter~\x01~" | column -t -s $'\x01'
+   LC_ALL=C sed -e "s~^[^$(.)_Delimiter]*$~$(.)_Delimiter~" -e "s~$(.)_Delimiter~\x01~" |
+   column -t -s $'\x01' |
+   LC_ALL=C sed 's~\s*$~~'
 }

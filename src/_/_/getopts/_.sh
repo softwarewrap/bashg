@@ -326,7 +326,8 @@ EOF
       (.)_Remaining+=( "${(.)_Args[@]:OPTIND-1}" )
                                                          # Slice the array, adding only the unprocessed args
 
-      eval "declare -g $(.)_SaveVar=$(declare -p (.)_Remaining | LC_ALL=C sed 's|^[^=]*=||')"
+      declare -ga "$(.)_SaveVar"=
+      eval "$(.)_SaveVar"=$(declare -p (.)_Remaining | LC_ALL=C sed -e 's|^[^=]*=||' -e "s|^'||" -e "s|'$||")
                                                          # Write to the save var, being careful of special chars
    fi
 
