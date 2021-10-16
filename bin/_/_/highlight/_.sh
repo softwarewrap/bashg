@@ -2,8 +2,8 @@
 
 :highlight:%HELP()
 {
-   local ___highlight_____HELP___Synopsis='Highlight text according to markup'
-   :help: --set "$___highlight_____HELP___Synopsis" <<EOF
+   local __highlight_____HELP___Synopsis='Highlight text according to markup'
+   :help: --set "$__highlight_____HELP___Synopsis" <<EOF
 OPTIONS:
    -o|--out          ^Send output to the console instead of the log
 
@@ -105,32 +105,32 @@ EOF
 
 :highlight:()
 {
-   local ___highlight________Options
-   ___highlight________Options=$(getopt -o 'o' -l 'out,render:,no-autobold,no-idiom,pager:,quiet,passthru,template:' -n "${FUNCNAME[0]}" -- "$@") || return
-   eval set -- "$___highlight________Options"
+   local __highlight________Options
+   __highlight________Options=$(getopt -o 'o' -l 'out,render:,no-autobold,no-idiom,pager:,quiet,passthru,template:' -n "${FUNCNAME[0]}" -- "$@") || return
+   eval set -- "$__highlight________Options"
 
-   local ___highlight______Render='color'
-   local ___highlight______AutoBold=true
-   local ___highlight______ReplaceIdioms=true
-   local -a ___highlight______MoreCommand=( 'cat' )
+   local __highlight______Render='color'
+   local __highlight______AutoBold=true
+   local __highlight______ReplaceIdioms=true
+   local -a __highlight______MoreCommand=( 'cat' )
 
-   local ___highlight________Quiet=false
-   local ___highlight________Passthru=false
-   local ___highlight________Template=":highlight:_:Man"
-   local ___highlight________Stdout=false
+   local __highlight________Quiet=false
+   local __highlight________Passthru=false
+   local __highlight________Template=":highlight:_:Man"
+   local __highlight________Stdout=false
 
    while true ; do
       case "$1" in
-      -o|--out)      ___highlight________Stdout=true; shift;;
+      -o|--out)      __highlight________Stdout=true; shift;;
 
-      --render)      ___highlight______Render="$2"; shift 2;;
-      --no-autobold) ___highlight______AutoBold=false; shift;;
-      --no-idiom)    ___highlight______ReplaceIdioms=false; shift;;
-      --pager)       ___highlight______MoreCommand=( $2 ); shift 2;;   # Word splitting due to unquoted $2 is intentional
+      --render)      __highlight______Render="$2"; shift 2;;
+      --no-autobold) __highlight______AutoBold=false; shift;;
+      --no-idiom)    __highlight______ReplaceIdioms=false; shift;;
+      --pager)       __highlight______MoreCommand=( $2 ); shift 2;;   # Word splitting due to unquoted $2 is intentional
 
-      --quiet)       ___highlight________Quiet=true; shift;;
-      --passthru)    ___highlight________Passthru=true; shift;;
-      --template)    ___highlight________Template="$2"; shift 2;;
+      --quiet)       __highlight________Quiet=true; shift;;
+      --passthru)    __highlight________Passthru=true; shift;;
+      --template)    __highlight________Template="$2"; shift 2;;
       --)            shift; break;;
       *)             break;;
       esac
@@ -141,31 +141,31 @@ EOF
       exec <<<"$@"
    fi
 
-   if $___highlight________Quiet; then
+   if $__highlight________Quiet; then
       # No output requested
       return 0
    fi
 
-   if $___highlight________Passthru; then
+   if $__highlight________Passthru; then
       # Emit unmodified input and return
       cat
       return
    fi
 
    # If there are no colors available, then render as plain text
-   if ! ${___launcher___Config[HasColor]}; then
-      ___highlight______Render='plain'
+   if ! ${__launcher___Config[HasColor]}; then
+      __highlight______Render='plain'
    fi
 
    # Call the template
-   if :test:has_func "$___highlight________Template"; then
-      if $___highlight________Stdout; then
-         "$___highlight________Template" >&4
+   if :test:has_func "$__highlight________Template"; then
+      if $__highlight________Stdout; then
+         "$__highlight________Template" >&4
       else
-         "$___highlight________Template"
+         "$__highlight________Template"
       fi
    else
-      :highlight: <<<"<R>[highlight]</R> Unrecognized template: <B>$___highlight________Template</B>"
+      :highlight: <<<"<R>[highlight]</R> Unrecognized template: <B>$__highlight________Template</B>"
       return 1
    fi
 }
@@ -198,7 +198,7 @@ EOF
    local _BOLD= _BOLD_OFF= _REVERSE= _REVERSE_OFF= _UNDERLINE= _UNDERLINE_OFF= _RESET=
    local _HRULE='====================================='  # Assume width of 37 for dumb terminals
 
-   if ${___launcher___Config[HasColor]} && tput setaf 1 &>/dev/null; then
+   if ${__launcher___Config[HasColor]} && tput setaf 1 &>/dev/null; then
       # Colors
       :tput:set _RED setaf 1
       :tput:set _RED setaf 1                             # R   Red
@@ -357,7 +357,7 @@ EOF
    )
 
    # Replacement Idioms
-   if $___highlight______ReplaceIdioms; then
+   if $__highlight______ReplaceIdioms; then
       IdiomReplacement+=(
          # Auto-bold options beginning with --
          "s=\\\\--\([a-zA-Z0-9-]*\)=${T}opt\1$T=g"
@@ -427,7 +427,7 @@ EOF
    )
 
    # If the ColorType is bold, then add bold to all color markers
-   if $___highlight______AutoBold; then
+   if $__highlight______AutoBold; then
       ColorFlattening+=(
       # Replace color markers with bold surround
       # {X X} to <b {X X} b>
@@ -457,7 +457,7 @@ EOF
    )
 
    # Add rules for a specific rendering mode
-   case "$___highlight______Render" in
+   case "$__highlight______Render" in
    no-color|plain)
       # Remove Markup
       Rules+=(
@@ -489,7 +489,7 @@ EOF
    expand |
    LC_ALL=C sed "$( printf '%s\n' "${Rules[@]}" )" |
    tr "$N" '\n' |
-   "${___highlight______MoreCommand[@]}"
+   "${__highlight______MoreCommand[@]}"
 }
 
 :highlight:%TEST()

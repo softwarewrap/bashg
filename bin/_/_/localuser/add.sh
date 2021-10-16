@@ -2,10 +2,10 @@
 
 :localuser:add%HELP()
 {
-   local ___localuser__add__addHELP___Synopsis='Add a local password entry'
-   local ___localuser__add__addHELP___Usage=''
+   local __localuser__add__addHELP___Synopsis='Add a local password entry'
+   local __localuser__add__addHELP___Usage=''
 
-   :help: --set "$___localuser__add__addHELP___Synopsis" --usage "<entry>..." <<EOF
+   :help: --set "$__localuser__add__addHELP___Synopsis" --usage "<entry>..." <<EOF
 OPTIONS:
    -f|--file <file>              ^Read one <entry> per line from the specified <file>
    -e|--encrypted                ^Any passwords provided are taken to be already encrypted
@@ -82,46 +82,46 @@ EOF
 {
    :sudo || :reenter                                     # This function must run as root
 
-   local ___localuser__add__add___Options
-   ___localuser__add__add___Options=$(getopt -o 'f:ec:n' -l 'file:,encrypted,crypt-method:,dry-run,show' -n "${FUNCNAME[0]}" -- "$@") || return
-   eval set -- "$___localuser__add__add___Options"
+   local __localuser__add__add___Options
+   __localuser__add__add___Options=$(getopt -o 'f:ec:n' -l 'file:,encrypted,crypt-method:,dry-run,show' -n "${FUNCNAME[0]}" -- "$@") || return
+   eval set -- "$__localuser__add__add___Options"
 
-   local -a ___localuser__add__add___Files=()
-   local ___localuser__add__add___Encrypted=false
-   local ___localuser__add__add___CryptMethod=
-   local ___localuser__add___Perform=true
-   local ___localuser__add___Prefix=
-   local -a ___localuser__add___GroupOptions=()
-   local -a ___localuser__add__add___MatchesArgs=( --user-var ___localuser__add___U --group-var ___localuser__add___G )
+   local -a __localuser__add__add___Files=()
+   local __localuser__add__add___Encrypted=false
+   local __localuser__add__add___CryptMethod=
+   local __localuser__add___Perform=true
+   local __localuser__add___Prefix=
+   local -a __localuser__add___GroupOptions=()
+   local -a __localuser__add__add___MatchesArgs=( --user-var __localuser__add___U --group-var __localuser__add___G )
 
    while true ; do
       case "$1" in
-      -f|--file)           ___localuser__add__add___Files+=( "$2" ); shift 2;;
-      -e|--encrypted)      ___localuser__add__add___Encrypted=true; shift;;
-      -c|--crypt-method)   ___localuser__add__add___CryptMethod="$2"; shift 2;;
-      -n|--dry-run)        ___localuser__add___Perform=false; ___localuser__add___Prefix='NOP: '; ___localuser__add___GroupOptions+=( --dry-run ); shift;;
-      --show)              ___localuser__add__add___MatchesArgs+=( --show ); shift;;
+      -f|--file)           __localuser__add__add___Files+=( "$2" ); shift 2;;
+      -e|--encrypted)      __localuser__add__add___Encrypted=true; shift;;
+      -c|--crypt-method)   __localuser__add__add___CryptMethod="$2"; shift 2;;
+      -n|--dry-run)        __localuser__add___Perform=false; __localuser__add___Prefix='NOP: '; __localuser__add___GroupOptions+=( --dry-run ); shift;;
+      --show)              __localuser__add__add___MatchesArgs+=( --show ); shift;;
       --)                  shift; break;;
       *)                   break;;
       esac
    done
 
-   local -a ___localuser__add__add___Entries=()
+   local -a __localuser__add__add___Entries=()
 
    ###########################################
    # Read <entry> Strings from Input Sources #
    ###########################################
    ### FUNCTION ARGUMENTS
-   for ___localuser__add__add___Entry in "$@"; do
-      ___localuser__add__add___Entries+=( "$___localuser__add__add___Entry" )
+   for __localuser__add__add___Entry in "$@"; do
+      __localuser__add__add___Entries+=( "$__localuser__add__add___Entry" )
    done
 
    ### FILES
-   local ___localuser__add__add___File
-   for ___localuser__add__add___File in "${___localuser__add__add___Files[@]}"; do
-      if [[ -f $___localuser__add__add___File ]]; then
-         readarray -t -O ${#___localuser__add__add___Entries[@]} ___localuser__add__add___Entries < <(
-            sed -r '/^\s*(#.*)?$/d' "$___localuser__add__add___File" |        # Discard any blank lines
+   local __localuser__add__add___File
+   for __localuser__add__add___File in "${__localuser__add__add___Files[@]}"; do
+      if [[ -f $__localuser__add__add___File ]]; then
+         readarray -t -O ${#__localuser__add__add___Entries[@]} __localuser__add__add___Entries < <(
+            sed -r '/^\s*(#.*)?$/d' "$__localuser__add__add___File" |        # Discard any blank lines
             sed '$a\'                                    # Ensure the output ends with a newline
          )
       fi
@@ -129,7 +129,7 @@ EOF
 
    ### STANDARD INPUT
    if :test:has_stdin; then
-      readarray -t -O ${#___localuser__add__add___Entries[@]} ___localuser__add__add___Entries < <(
+      readarray -t -O ${#__localuser__add__add___Entries[@]} __localuser__add__add___Entries < <(
          sed -r '/^\s*(#.*)?$/d' |                       # Discard any blank lines
          sed '$a\'                                       # Ensure the output ends with a newline
       )
@@ -138,11 +138,11 @@ EOF
    #######################
    # Iterate and Process #
    #######################
-   local ___localuser__add__add___Entry
-   for ___localuser__add__add___Entry in "${___localuser__add__add___Entries[@]}"; do
-      ! :localuser:matches "${___localuser__add__add___MatchesArgs[@]}" "$___localuser__add__add___Entry"
+   local __localuser__add__add___Entry
+   for __localuser__add__add___Entry in "${__localuser__add__add___Entries[@]}"; do
+      ! :localuser:matches "${__localuser__add__add___MatchesArgs[@]}" "$__localuser__add__add___Entry"
 
-      [[ ${___localuser__add___U[status]} -ne 2 && ${___localuser__add___G[status]} -ne 2 ]] || continue
+      [[ ${__localuser__add___U[status]} -ne 2 && ${__localuser__add___G[status]} -ne 2 ]] || continue
 
       :localuser:add:Process
    done
@@ -151,24 +151,24 @@ EOF
 :localuser:add:Process()
 {
 
-   if ! $___localuser__add___Perform; then
-      if [[ ! -v ___localuser__add___Header ]]; then
+   if ! $__localuser__add___Perform; then
+      if [[ ! -v __localuser__add___Header ]]; then
          echo 'USERNAME    /USERID   GRPNAME     /GRPID    SUPPGRPS       PASSWORD'
          echo '===================   ===================   ============   ========'
-         local -g ___localuser__add___Header=true
+         local -g __localuser__add___Header=true
       fi
 
-      local -a ___localuser__add__Process___FormatArgs=(
+      local -a __localuser__add__Process___FormatArgs=(
          '%-12s/%-6s   %-12s/%-6s   %-12s   %-s\n'
-         "${___localuser__add___U[user_name]}"
-         "${___localuser__add___U[user_id]}"
-         "${___localuser__add___G[group_name]}"
-         "${___localuser__add___G[group_id]}"
-         "${___localuser__add___U[supplementary_groups]}"
-         "${___localuser__add___U[password]:+set}"
+         "${__localuser__add___U[user_name]}"
+         "${__localuser__add___U[user_id]}"
+         "${__localuser__add___G[group_name]}"
+         "${__localuser__add___G[group_id]}"
+         "${__localuser__add___U[supplementary_groups]}"
+         "${__localuser__add___U[password]:+set}"
       )
 
-      printf "${___localuser__add__Process___FormatArgs[@]}"
+      printf "${__localuser__add__Process___FormatArgs[@]}"
    fi
 
    :localuser:add:ProcessGroupAdd
@@ -179,153 +179,153 @@ EOF
 
 :localuser:add:ProcessGroupAdd()
 {
-   ! ${___localuser__add___G[spec_matches]} || return 0                  # Just return if the group spec matches
+   ! ${__localuser__add___G[spec_matches]} || return 0                  # Just return if the group spec matches
 
    ### UPDATE LOCAL GROUP NAME TO HAVE NEW GID
-   if grep -q "^${___localuser__add___G[group_name]}:" /etc/group; then
-      if [[ -n ${___localuser__add___G[group_name]} && ${___localuser__add___G[group_id]} ]]; then
-         :log: "${___localuser__add___Prefix}Updating group: ${___localuser__add___G[group_name]}, GID: ${___localuser__add___G[nss_group_id]} -> ${___localuser__add___G[group_id]}"
-         $___localuser__add___Perform || return 0                        # If dry run, then do not make changes
+   if grep -q "^${__localuser__add___G[group_name]}:" /etc/group; then
+      if [[ -n ${__localuser__add___G[group_name]} && ${__localuser__add___G[group_id]} ]]; then
+         :log: "${__localuser__add___Prefix}Updating group: ${__localuser__add___G[group_name]}, GID: ${__localuser__add___G[nss_group_id]} -> ${__localuser__add___G[group_id]}"
+         $__localuser__add___Perform || return 0                        # If dry run, then do not make changes
 
-         groupmod -g "${___localuser__add___G[group_id]}" -o "${___localuser__add___G[group_name]}"
+         groupmod -g "${__localuser__add___G[group_id]}" -o "${__localuser__add___G[group_name]}"
       fi
 
    ### EXPLICIT ENTRY TO ADD GROUP LOCALLY
-   elif [[ -n ${___localuser__add___G[group_name]} && ${___localuser__add___G[group_id]} ]]; then
-      :log: "${___localuser__add___Prefix}Adding group: ${___localuser__add___G[group_name]}, GID: ${___localuser__add___G[group_id]}"
-      $___localuser__add___Perform || return 0                           # If dry run, then do not make changes
+   elif [[ -n ${__localuser__add___G[group_name]} && ${__localuser__add___G[group_id]} ]]; then
+      :log: "${__localuser__add___Prefix}Adding group: ${__localuser__add___G[group_name]}, GID: ${__localuser__add___G[group_id]}"
+      $__localuser__add___Perform || return 0                           # If dry run, then do not make changes
 
-      groupadd -g "${___localuser__add___G[group_id]}" -o "${___localuser__add___G[group_name]}"
+      groupadd -g "${__localuser__add___G[group_id]}" -o "${__localuser__add___G[group_name]}"
 
    ### NSS ENTRY TO ADD GROUP LOCALLY
-   elif [[ -n ${___localuser__add___G[group_name]} && ${___localuser__add___G[nss_group_id]} ]]; then
-      :log: "${___localuser__add___Prefix}Adding group: ${___localuser__add___G[group_name]}, GID: ${___localuser__add___G[nss_group_id]}"
-      $___localuser__add___Perform || return 0                           # If dry run, then do not make changes
+   elif [[ -n ${__localuser__add___G[group_name]} && ${__localuser__add___G[nss_group_id]} ]]; then
+      :log: "${__localuser__add___Prefix}Adding group: ${__localuser__add___G[group_name]}, GID: ${__localuser__add___G[nss_group_id]}"
+      $__localuser__add___Perform || return 0                           # If dry run, then do not make changes
 
-      groupadd -g "${___localuser__add___G[group_id]}" -o "${___localuser__add___G[nss_group_name]}"
+      groupadd -g "${__localuser__add___G[group_id]}" -o "${__localuser__add___G[nss_group_name]}"
 
-      ___localuser__add___G[group_id]="${___localuser__add___G[nss_group_id]}"           # Update with new GID
+      __localuser__add___G[group_id]="${__localuser__add___G[nss_group_id]}"           # Update with new GID
 
-   elif [[ -n ${___localuser__add___U[nss_group_id]} ]]; then
-      ___localuser__add___G[group_name]="$( getent group "${___localuser__add___U[nss_group_id]}" | cut -d: -f1 )"
-      ___localuser__add___G[group_id]="${___localuser__add___U[nss_group_id]}"           # Use the NSS GID
+   elif [[ -n ${__localuser__add___U[nss_group_id]} ]]; then
+      __localuser__add___G[group_name]="$( getent group "${__localuser__add___U[nss_group_id]}" | cut -d: -f1 )"
+      __localuser__add___G[group_id]="${__localuser__add___U[nss_group_id]}"           # Use the NSS GID
 
    else
-      :error: 2 "Incomplete specification for user ${___localuser__add___U[user_name]}: Both <group-name> and <group-ID> are required"
+      :error: 2 "Incomplete specification for user ${__localuser__add___U[user_name]}: Both <group-name> and <group-ID> are required"
       return
    fi
 
-   ___localuser__add___G[nss_group_id]="${___localuser__add___G[group_id]}"              # Update with new GID
-   ___localuser__add___G[spec_matches]=true                              # Spec now matches
+   __localuser__add___G[nss_group_id]="${__localuser__add___G[group_id]}"              # Update with new GID
+   __localuser__add___G[spec_matches]=true                              # Spec now matches
 }
 
 :localuser:add:ProcessUserAdd()
 {
-   ! ${___localuser__add___U[spec_matches]} || return 0                  # If the group matches the spec, then just return 0
+   ! ${__localuser__add___U[spec_matches]} || return 0                  # If the group matches the spec, then just return 0
 
    ### UPDATE LOCAL USER NAME TO HAVE NEW UID/GID
-   if grep -q "^${___localuser__add___U[user_name]}:" /etc/passwd; then
-      :log: "${___localuser__add___Prefix}Updated user entry for ${___localuser__add___U[user_name]} to ${___localuser__add___U[user_id]}/${___localuser__add___G[group_id]}"
-      $___localuser__add___Perform || return 0                           # If dry run, then do not make changes
+   if grep -q "^${__localuser__add___U[user_name]}:" /etc/passwd; then
+      :log: "${__localuser__add___Prefix}Updated user entry for ${__localuser__add___U[user_name]} to ${__localuser__add___U[user_id]}/${__localuser__add___G[group_id]}"
+      $__localuser__add___Perform || return 0                           # If dry run, then do not make changes
 
-      usermod -u "${___localuser__add___U[user_id]}" -g "${___localuser__add___G[group_id]}" -o "${___localuser__add___U[user_name]}"
+      usermod -u "${__localuser__add___U[user_id]}" -g "${__localuser__add___G[group_id]}" -o "${__localuser__add___U[user_name]}"
 
-      if [[ -d /home/${___localuser__add___U[user_name]} ]]; then
-         :log: "${___localuser__add___Prefix}Fixing permissions on files under /home/${___localuser__add___U[user_name]}"
-         chown -R "${___localuser__add___U[user_name]}:${___localuser__add___G[group_name]}" "/home/${___localuser__add___U[user_name]}"
+      if [[ -d /home/${__localuser__add___U[user_name]} ]]; then
+         :log: "${__localuser__add___Prefix}Fixing permissions on files under /home/${__localuser__add___U[user_name]}"
+         chown -R "${__localuser__add___U[user_name]}:${__localuser__add___G[group_name]}" "/home/${__localuser__add___U[user_name]}"
       fi
 
    ### EXPLICIT ENTRY TO ADD USER LOCALLY
-   elif [[ -n ${___localuser__add___U[user_id]} && -n ${___localuser__add___G[group_id]} ]]; then
-      :log: "${___localuser__add___Prefix}Adding User: ${___localuser__add___U[user_name]}, UID: ${___localuser__add___U[user_id]}, GID: ${___localuser__add___G[group_id]}"
-      $___localuser__add___Perform || return 0                           # If dry run, then do not make changes
+   elif [[ -n ${__localuser__add___U[user_id]} && -n ${__localuser__add___G[group_id]} ]]; then
+      :log: "${__localuser__add___Prefix}Adding User: ${__localuser__add___U[user_name]}, UID: ${__localuser__add___U[user_id]}, GID: ${__localuser__add___G[group_id]}"
+      $__localuser__add___Perform || return 0                           # If dry run, then do not make changes
 
-      local -a ___localuser__add__ProcessUserAdd___AddOptions=(
-         -u "${___localuser__add___U[user_id]}"
-         -g "${___localuser__add___G[group_id]}"
+      local -a __localuser__add__ProcessUserAdd___AddOptions=(
+         -u "${__localuser__add___U[user_id]}"
+         -g "${__localuser__add___G[group_id]}"
          -o
-         -d "/home/${___localuser__add___U[user_name]}"
+         -d "/home/${__localuser__add___U[user_name]}"
          -m
          -p '!!'
          -s /bin/bash
       )
 
-      useradd "${___localuser__add__ProcessUserAdd___AddOptions[@]}" "${___localuser__add___U[user_name]}"
+      useradd "${__localuser__add__ProcessUserAdd___AddOptions[@]}" "${__localuser__add___U[user_name]}"
 
    ### ADD NSS USER LOCALLY
-   elif [[ -n ${___localuser__add___U[nss_user_id]} && -n ${___localuser__add___U[nss_group_id]} ]]; then
-      :log: "${___localuser__add___Prefix}Adding User from NSS: ${___localuser__add___U[user_name]}, UID: ${___localuser__add___U[nss_user_id]}, GID: ${___localuser__add___G[nss_group_id]}"
-      $___localuser__add___Perform || return 0                           # If dry run, then do not make changes
+   elif [[ -n ${__localuser__add___U[nss_user_id]} && -n ${__localuser__add___U[nss_group_id]} ]]; then
+      :log: "${__localuser__add___Prefix}Adding User from NSS: ${__localuser__add___U[user_name]}, UID: ${__localuser__add___U[nss_user_id]}, GID: ${__localuser__add___G[nss_group_id]}"
+      $__localuser__add___Perform || return 0                           # If dry run, then do not make changes
 
       pwunconv
       :file:ensure_nl_at_end /etc/passwd                 # Ensure the file ends with a newline
-      echo "${___localuser__add___U[user_name]}::${___localuser__add___U[nss_user_id]}:${___localuser__add___U[nss_group_id]}::/home/${___localuser__add___U[user_name]}:/bin/bash" >>/etc/passwd
+      echo "${__localuser__add___U[user_name]}::${__localuser__add___U[nss_user_id]}:${__localuser__add___U[nss_group_id]}::/home/${__localuser__add___U[user_name]}:/bin/bash" >>/etc/passwd
       pwconv                                             # Convert /etc/passwd to /etc/shadow
 
-      if [[ ! -d /home/${___localuser__add___U[user_name]} ]]; then
-         cp -rp /etc/skel "/home/${___localuser__add___U[user_name]}"
+      if [[ ! -d /home/${__localuser__add___U[user_name]} ]]; then
+         cp -rp /etc/skel "/home/${__localuser__add___U[user_name]}"
       fi
-      chown -R "${___localuser__add___U[user_name]}:${___localuser__add___G[group_name]}" "/home/${___localuser__add___U[user_name]}"
+      chown -R "${__localuser__add___U[user_name]}:${__localuser__add___G[group_name]}" "/home/${__localuser__add___U[user_name]}"
 
-      if [[ -z ${___localuser__add___U[password]} ]]; then
-         :log: "Warning: No password has been assigned to user ${___localuser__add___U[user_name]}"
+      if [[ -z ${__localuser__add___U[password]} ]]; then
+         :log: "Warning: No password has been assigned to user ${__localuser__add___U[user_name]}"
       fi
 
    ### ADD NSS GROUP FOR USER WITH NO GROUP SPEC
-   elif [[ -n ${___localuser__add___G[nss_group_id]} ]]; then
-      :log: "${___localuser__add___Prefix}Adding User ${___localuser__add___U[user_name]} with GID from NSS: ${___localuser__add___G[nss_group_id]}"
-      $___localuser__add___Perform || return 0                           # If dry run, then do not make changes
+   elif [[ -n ${__localuser__add___G[nss_group_id]} ]]; then
+      :log: "${__localuser__add___Prefix}Adding User ${__localuser__add___U[user_name]} with GID from NSS: ${__localuser__add___G[nss_group_id]}"
+      $__localuser__add___Perform || return 0                           # If dry run, then do not make changes
 
-      local -a ___localuser__add__ProcessUserAdd___AddOptions=(
-         -g "${___localuser__add___G[nss_group_id]}"
-         -d "/home/${___localuser__add___U[user_name]}"
+      local -a __localuser__add__ProcessUserAdd___AddOptions=(
+         -g "${__localuser__add___G[nss_group_id]}"
+         -d "/home/${__localuser__add___U[user_name]}"
          -m
          -p '!!'
          -s /bin/bash
       )
 
-      useradd "${___localuser__add__ProcessUserAdd___AddOptions[@]}" "${___localuser__add___U[user_name]}"
+      useradd "${__localuser__add__ProcessUserAdd___AddOptions[@]}" "${__localuser__add___U[user_name]}"
 
-      ___localuser__add___U[user_id]="$( grep "^${___localuser__add___U[user_name]}:" /etc/passwd | cut -d: -f3 )"
+      __localuser__add___U[user_id]="$( grep "^${__localuser__add___U[user_name]}:" /etc/passwd | cut -d: -f3 )"
 
-      :log: "Assigned UID: ${___localuser__add___U[user_id]}"
+      :log: "Assigned UID: ${__localuser__add___U[user_id]}"
 
    else
-      $___localuser__add___Perform || return 0                           # If dry run, then do not make changes
+      $__localuser__add___Perform || return 0                           # If dry run, then do not make changes
 
-      :error: 2 "Failed to add user: ${___localuser__add___U[user_name]}"
+      :error: 2 "Failed to add user: ${__localuser__add___U[user_name]}"
       return
    fi
 
    if [[ -f /etc/shadow ]] &&
-      grep -q "${___localuser__add___U[user_name]}" /etc/shadow &&
-      [[ -z $( grep "${___localuser__add___U[user_name]}" /etc/shadow | cut -d: -f2 ) ]]; then
+      grep -q "${__localuser__add___U[user_name]}" /etc/shadow &&
+      [[ -z $( grep "${__localuser__add___U[user_name]}" /etc/shadow | cut -d: -f2 ) ]]; then
 
-      :log: "No password set for ${___localuser__add___U[user_name]}: locking (disabling) the password field"
+      :log: "No password set for ${__localuser__add___U[user_name]}: locking (disabling) the password field"
 
-      usermod -p '!!' "${___localuser__add___U[user_name]}"
+      usermod -p '!!' "${__localuser__add___U[user_name]}"
    fi
 
-   ___localuser__add___U[nss_user_id]="${___localuser__add___U[user_id]}"                # Update with new UID
-   ___localuser__add___U[spec_matches]=true                              # Spec now matches
+   __localuser__add___U[nss_user_id]="${__localuser__add___U[user_id]}"                # Update with new UID
+   __localuser__add___U[spec_matches]=true                              # Spec now matches
 }
 
 :localuser:add:ProcessSupplementaryGroups()
 {
-   [[ -n ${___localuser__add___U[supplementary_groups]} ]] || return 0
+   [[ -n ${__localuser__add___U[supplementary_groups]} ]] || return 0
 
-   :log: "${___localuser__add___Prefix}Check Supplementary Groups: ${___localuser__add___U[supplementary_groups]}"
-   $___localuser__add___Perform || return 0                              # If dry run, then do not make changes
+   :log: "${__localuser__add___Prefix}Check Supplementary Groups: ${__localuser__add___U[supplementary_groups]}"
+   $__localuser__add___Perform || return 0                              # If dry run, then do not make changes
 
-   usermod -a -G "${___localuser__add___U[supplementary_groups]}" "${___localuser__add___U[user_name]}"
+   usermod -a -G "${__localuser__add___U[supplementary_groups]}" "${__localuser__add___U[user_name]}"
 }
 
 :localuser:add:ProcessPassword()
 {
-   [[ -n ${___localuser__add___U[password]} ]] || return 0
+   [[ -n ${__localuser__add___U[password]} ]] || return 0
 
-   :log: "${___localuser__add___Prefix}Update password: ${___localuser__add___U[password]}"
-   $___localuser__add___Perform || return 0                              # If dry run, then do not make changes
+   :log: "${__localuser__add___Prefix}Update password: ${__localuser__add___U[password]}"
+   $__localuser__add___Perform || return 0                              # If dry run, then do not make changes
 
-   chpasswd <<<"${___localuser__add___U[user_name]}:${___localuser__add___U[password]}"
+   chpasswd <<<"${__localuser__add___U[user_name]}:${__localuser__add___U[password]}"
 }

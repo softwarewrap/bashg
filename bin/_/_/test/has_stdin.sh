@@ -2,9 +2,9 @@
 
 :test:has_stdin%HELP()
 {
-   local ___test__has_stdin__has_stdinHELP___Synopsis='Test if stdin is available'
+   local __test__has_stdin__has_stdinHELP___Synopsis='Test if stdin is available'
 
-   :help: --set "$___test__has_stdin__has_stdinHELP___Synopsis" <<EOF
+   :help: --set "$__test__has_stdin__has_stdinHELP___Synopsis" <<EOF
 DESCRIPTION:
    Intended for scripting, this function returns true if stdin is available to read, even if empty.
 

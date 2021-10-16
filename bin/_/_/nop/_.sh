@@ -2,10 +2,10 @@
 
 :nop:%HELP()
 {
-   local ___nop_____HELP___Synopsis='NOP and emit to log'
-   local ___nop_____HELP___Usage=''
+   local __nop_____HELP___Synopsis='NOP and emit to log'
+   local __nop_____HELP___Usage=''
 
-   :help: --set "$___nop_____HELP___Synopsis" --usage '' <<EOF
+   :help: --set "$__nop_____HELP___Synopsis" --usage '' <<EOF
 DESCRIPTION:
    Do nothing but emit a No OP message to the log
 
@@ -20,10 +20,10 @@ EOF
 
 :nop:silent%HELP()
 {
-   local ___nop_____silentHELP___Synopsis='NOP'
-   local ___nop_____silentHELP___Usage=''
+   local __nop_____silentHELP___Synopsis='NOP'
+   local __nop_____silentHELP___Usage=''
 
-   :help: --set "$___nop_____silentHELP___Synopsis" --usage '' <<EOF
+   :help: --set "$__nop_____silentHELP___Synopsis" --usage '' <<EOF
 DESCRIPTION:
    Do nothing at all
 

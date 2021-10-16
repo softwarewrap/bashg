@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_dev:vim:configure%HELP()
+.dev:vim:configure%HELP()
 {
    local _dev__vim__configure__configureHELP___Synopsis='Configure a home directory with vim configuration files'
 
@@ -13,7 +13,7 @@ DESCRIPTION:
 EOF
 }
 
-_dev:vim:configure()
+.dev:vim:configure()
 {
    :sudo || :reenter                                     # This function must run as root
 

@@ -2,10 +2,10 @@
 
 :vi:diff%HELP()
 {
-   local ___vi__diff__diffHELP___Synopsis='Recursively diff two directories and use vi to view differences'
-   local ___vi__diff__diffHELP___Usage='<path1> <path2>'
+   local __vi__diff__diffHELP___Synopsis='Recursively diff two directories and use vi to view differences'
+   local __vi__diff__diffHELP___Usage='<path1> <path2>'
 
-   :help: --set "$___vi__diff__diffHELP___Synopsis" --usage "$___vi__diff__diffHELP___Usage" <<EOF
+   :help: --set "$__vi__diff__diffHELP___Synopsis" --usage "$__vi__diff__diffHELP___Usage" <<EOF
 OPTIONS:
    -i|--include         ^Include files matching the glob pattern <pat> (can be used multiple times)
 
@@ -42,153 +42,153 @@ EOF
 
 :vi:diff()
 {
-   local ___vi__diff__diff___Options
-   ___vi__diff__diff___Options=$(getopt -o '._pi:x:1nls' -l "hidden,underscore,prune,include:,exclude:,exclude-1,no-dirs,list,same" -n "${FUNCNAME[0]}" -- "$@") || return
-   eval set -- "$___vi__diff__diff___Options"
+   local __vi__diff__diff___Options
+   __vi__diff__diff___Options=$(getopt -o '._pi:x:1nls' -l "hidden,underscore,prune,include:,exclude:,exclude-1,no-dirs,list,same" -n "${FUNCNAME[0]}" -- "$@") || return
+   eval set -- "$__vi__diff__diff___Options"
 
-   local ___vi__diff__diff___Exclude1=false
-   local ___vi__diff__diff___CreateDirs=true
-   local ___vi__diff__diff___List=false
-   local ___vi__diff__diff___Same=false
-   local -a ___vi__diff__diff___Include=()
-   local -a ___vi__diff__diff___Exclude=()
+   local __vi__diff__diff___Exclude1=false
+   local __vi__diff__diff___CreateDirs=true
+   local __vi__diff__diff___List=false
+   local __vi__diff__diff___Same=false
+   local -a __vi__diff__diff___Include=()
+   local -a __vi__diff__diff___Exclude=()
 
    while true ; do
       case "$1" in
-      -.|--hidden)      ___vi__diff__diff___Exclude+=( -o -name '\.*' ); shift;;
-      -_|--underscore)  ___vi__diff__diff___Exclude+=( -o -name '_*' ); shift;;
-      -p|--prune)       ___vi__diff__diff___Exclude+=( -o -name '\.*' -o -name '*.idea' -o -name '*.iml' ); shift;;
-      -i|--include)     ___vi__diff__diff___Include+=( -o -name "$2" ); shift 2;;
-      -x|--exclude)     ___vi__diff__diff___Exclude+=( -o -name "$2" ); shift 2;;
-      -1|--exclude-1)   ___vi__diff__diff___Exclude1=true; shift;;
-      -n|--no-dirs)     ___vi__diff__diff___CreateDirs=false; shift;;
-      -l|--list)        ___vi__diff__diff___List=true; shift;;
-      -s|--same)        ___vi__diff__diff___List=true; ___vi__diff__diff___Same=true; shift;;
+      -.|--hidden)      __vi__diff__diff___Exclude+=( -o -name '\.*' ); shift;;
+      -_|--underscore)  __vi__diff__diff___Exclude+=( -o -name '_*' ); shift;;
+      -p|--prune)       __vi__diff__diff___Exclude+=( -o -name '\.*' -o -name '*.idea' -o -name '*.iml' ); shift;;
+      -i|--include)     __vi__diff__diff___Include+=( -o -name "$2" ); shift 2;;
+      -x|--exclude)     __vi__diff__diff___Exclude+=( -o -name "$2" ); shift 2;;
+      -1|--exclude-1)   __vi__diff__diff___Exclude1=true; shift;;
+      -n|--no-dirs)     __vi__diff__diff___CreateDirs=false; shift;;
+      -l|--list)        __vi__diff__diff___List=true; shift;;
+      -s|--same)        __vi__diff__diff___List=true; __vi__diff__diff___Same=true; shift;;
       --)               shift; break;;
       *)                break;;
       esac
    done
 
-   local ___vi__diff__diff___First="$1"
-   local ___vi__diff__diff___Second="$2"
-   local ___vi__diff__diff___Dir1="$(readlink -fm "$1")"
-   local ___vi__diff__diff___Dir2="$(readlink -fm "$2")"
+   local __vi__diff__diff___First="$1"
+   local __vi__diff__diff___Second="$2"
+   local __vi__diff__diff___Dir1="$(readlink -fm "$1")"
+   local __vi__diff__diff___Dir2="$(readlink -fm "$2")"
 
-   if ! [[ -d $___vi__diff__diff___Dir1 && -d $___vi__diff__diff___Dir2 ]]; then
+   if ! [[ -d $__vi__diff__diff___Dir1 && -d $__vi__diff__diff___Dir2 ]]; then
       :highlight: <<<'<R>vi diff: an invalid directory was specified</R>'
       return 1
    fi
 
    # If pruning files and directories, then add arguments for pruning
-   local -a ___vi__diff__diff___Prune=()
-   if (( ${#___vi__diff__diff___Exclude[@]} > 0 )); then
-      ___vi__diff__diff___Prune=( '(' "${___vi__diff__diff___Exclude[@]:1}" ')' -prune -o )
+   local -a __vi__diff__diff___Prune=()
+   if (( ${#__vi__diff__diff___Exclude[@]} > 0 )); then
+      __vi__diff__diff___Prune=( '(' "${__vi__diff__diff___Exclude[@]:1}" ')' -prune -o )
    fi
 
-   if (( ${#___vi__diff__diff___Include[@]} > 0 )); then
-      ___vi__diff__diff___Include=( '(' "${___vi__diff__diff___Include[@]:1}" ')' )
+   if (( ${#__vi__diff__diff___Include[@]} > 0 )); then
+      __vi__diff__diff___Include=( '(' "${__vi__diff__diff___Include[@]:1}" ')' )
    fi
 
    ### GATHER FILE PATHS
    # Path 1 Files
-   local -a ___vi__diff__diff___Path1Files=()
-   if [[ -z $(find "$___vi__diff__diff___Dir1" -maxdepth 0 -type d -empty) ]]; then
+   local -a __vi__diff__diff___Path1Files=()
+   if [[ -z $(find "$__vi__diff__diff___Dir1" -maxdepth 0 -type d -empty) ]]; then
       # Generate the list of files to inspect for Dir1
-      cd "$___vi__diff__diff___Dir1"
-      readarray -t ___vi__diff__diff___Path1Files < <(
-         find * "${___vi__diff__diff___Prune[@]}" -type f "${___vi__diff__diff___Include[@]}" -print |
+      cd "$__vi__diff__diff___Dir1"
+      readarray -t __vi__diff__diff___Path1Files < <(
+         find * "${__vi__diff__diff___Prune[@]}" -type f "${__vi__diff__diff___Include[@]}" -print |
          sed 's|^\./||' |
          LC_ALL=C sort
       )
    fi
 
    # Path 2 Files
-   local -a ___vi__diff__diff___Path2Files=()
-   if [[ -z $(find "$___vi__diff__diff___Dir2" -maxdepth 0 -type d -empty) ]]; then
+   local -a __vi__diff__diff___Path2Files=()
+   if [[ -z $(find "$__vi__diff__diff___Dir2" -maxdepth 0 -type d -empty) ]]; then
       # Generate the list of files to inspect for Dir2
-      cd "$___vi__diff__diff___Dir2"
-      readarray -t ___vi__diff__diff___Path2Files < <(
-         find * "${___vi__diff__diff___Prune[@]}" -type f "${___vi__diff__diff___Include[@]}" -print |
+      cd "$__vi__diff__diff___Dir2"
+      readarray -t __vi__diff__diff___Path2Files < <(
+         find * "${__vi__diff__diff___Prune[@]}" -type f "${__vi__diff__diff___Include[@]}" -print |
          sed 's|^\./||' |
          LC_ALL=C sort
       )
    fi
 
    ### Generate script for each file
-   local -A ___vi__diff__diff___Script
-   local -A ___vi__diff__diff___Found
+   local -A __vi__diff__diff___Script
+   local -A __vi__diff__diff___Found
 
-   cd "$___vi__diff__diff___Dir1"
-   for ___vi__diff__diff___File in "${___vi__diff__diff___Path1Files[@]}"; do
+   cd "$__vi__diff__diff___Dir1"
+   for __vi__diff__diff___File in "${__vi__diff__diff___Path1Files[@]}"; do
       # If the other side has the file
-      if [[ -f $___vi__diff__diff___Dir2/$___vi__diff__diff___File ]]; then
-         ___vi__diff__diff___Found[$___vi__diff__diff___File]='true'
-         if cmp -s "$___vi__diff__diff___File" "$___vi__diff__diff___Dir2/$___vi__diff__diff___File"; then
-            if $___vi__diff__diff___Same; then
-               ___vi__diff__diff___Script[$___vi__diff__diff___File]="echo '$( :highlight: <<<"   <G>$___vi__diff__diff___File</G>" )'"
+      if [[ -f $__vi__diff__diff___Dir2/$__vi__diff__diff___File ]]; then
+         __vi__diff__diff___Found[$__vi__diff__diff___File]='true'
+         if cmp -s "$__vi__diff__diff___File" "$__vi__diff__diff___Dir2/$__vi__diff__diff___File"; then
+            if $__vi__diff__diff___Same; then
+               __vi__diff__diff___Script[$__vi__diff__diff___File]="echo '$( :highlight: <<<"   <G>$__vi__diff__diff___File</G>" )'"
             fi
-         elif $___vi__diff__diff___List; then
-            ___vi__diff__diff___Script[$___vi__diff__diff___File]="echo '$( :highlight: <<<"<b>!=</b> <B>$___vi__diff__diff___File</B>" )'"
+         elif $__vi__diff__diff___List; then
+            __vi__diff__diff___Script[$__vi__diff__diff___File]="echo '$( :highlight: <<<"<b>!=</b> <B>$__vi__diff__diff___File</B>" )'"
          else
-            ___vi__diff__diff___Script[$___vi__diff__diff___File]="vi -d '$___vi__diff__diff___Dir1/$___vi__diff__diff___File' '$___vi__diff__diff___Dir2/$___vi__diff__diff___File'"
+            __vi__diff__diff___Script[$__vi__diff__diff___File]="vi -d '$__vi__diff__diff___Dir1/$__vi__diff__diff___File' '$__vi__diff__diff___Dir2/$__vi__diff__diff___File'"
          fi
 
       # Else this is a one-sided diff
-      elif ! $___vi__diff__diff___Exclude1; then
-         if $___vi__diff__diff___List; then
-            ___vi__diff__diff___Script[$___vi__diff__diff___File]="echo '$( :highlight: <<<"<b><<</b> <R>$___vi__diff__diff___File</R>" )'"
-         elif $___vi__diff__diff___CreateDirs; then
-            ___vi__diff__diff___Script[$___vi__diff__diff___File]="mkdir -p '$___vi__diff__diff___Dir2'; vi -d '$___vi__diff__diff___Dir1/$___vi__diff__diff___File' '$___vi__diff__diff___Dir2/$___vi__diff__diff___File'"
+      elif ! $__vi__diff__diff___Exclude1; then
+         if $__vi__diff__diff___List; then
+            __vi__diff__diff___Script[$__vi__diff__diff___File]="echo '$( :highlight: <<<"<b><<</b> <R>$__vi__diff__diff___File</R>" )'"
+         elif $__vi__diff__diff___CreateDirs; then
+            __vi__diff__diff___Script[$__vi__diff__diff___File]="mkdir -p '$__vi__diff__diff___Dir2'; vi -d '$__vi__diff__diff___Dir1/$__vi__diff__diff___File' '$__vi__diff__diff___Dir2/$__vi__diff__diff___File'"
          else
-            ___vi__diff__diff___Script[$___vi__diff__diff___File]="vi -d '$___vi__diff__diff___Dir1/$___vi__diff__diff___File' '$___vi__diff__diff___Dir2/$___vi__diff__diff___File'"
+            __vi__diff__diff___Script[$__vi__diff__diff___File]="vi -d '$__vi__diff__diff___Dir1/$__vi__diff__diff___File' '$__vi__diff__diff___Dir2/$__vi__diff__diff___File'"
          fi
       fi
    done
 
    # If there are any files under Dir2 that weren't under Dir1, then these are one-sided diffs
-   cd "$___vi__diff__diff___Dir2"
-   for ___vi__diff__diff___File in "${___vi__diff__diff___Path2Files[@]}"; do
-      if [[ ${___vi__diff__diff___Found[$___vi__diff__diff___File]} != true ]] && ! $___vi__diff__diff___Exclude1; then
-         if $___vi__diff__diff___List; then
-            ___vi__diff__diff___Script[$___vi__diff__diff___File]="echo '$( :highlight: <<<"<b>>></b> <R>$___vi__diff__diff___File</R>" )'"
-         elif $___vi__diff__diff___CreateDirs; then
-            ___vi__diff__diff___Script[$___vi__diff__diff___File]="mkdir -p '$___vi__diff__diff___Dir1'; vi -d '$___vi__diff__diff___Dir1/$___vi__diff__diff___File' '$___vi__diff__diff___Dir2/$___vi__diff__diff___File'"
+   cd "$__vi__diff__diff___Dir2"
+   for __vi__diff__diff___File in "${__vi__diff__diff___Path2Files[@]}"; do
+      if [[ ${__vi__diff__diff___Found[$__vi__diff__diff___File]} != true ]] && ! $__vi__diff__diff___Exclude1; then
+         if $__vi__diff__diff___List; then
+            __vi__diff__diff___Script[$__vi__diff__diff___File]="echo '$( :highlight: <<<"<b>>></b> <R>$__vi__diff__diff___File</R>" )'"
+         elif $__vi__diff__diff___CreateDirs; then
+            __vi__diff__diff___Script[$__vi__diff__diff___File]="mkdir -p '$__vi__diff__diff___Dir1'; vi -d '$__vi__diff__diff___Dir1/$__vi__diff__diff___File' '$__vi__diff__diff___Dir2/$__vi__diff__diff___File'"
          else
-            ___vi__diff__diff___Script[$___vi__diff__diff___File]="vi -d '$___vi__diff__diff___Dir1/$___vi__diff__diff___File' '$___vi__diff__diff___Dir2/$___vi__diff__diff___File'"
+            __vi__diff__diff___Script[$__vi__diff__diff___File]="vi -d '$__vi__diff__diff___Dir1/$__vi__diff__diff___File' '$__vi__diff__diff___Dir2/$__vi__diff__diff___File'"
          fi
       fi
    done
 
    # Sort the files for which differences were found so the output is in a predictable order
-   local -a ___vi__diff__diff___Keys
-   readarray -t ___vi__diff__diff___Keys < <(
-      printf '%s\n' "${!___vi__diff__diff___Script[@]}" |
+   local -a __vi__diff__diff___Keys
+   readarray -t __vi__diff__diff___Keys < <(
+      printf '%s\n' "${!__vi__diff__diff___Script[@]}" |
       LC_ALL=C sort |
       sed '/^$/d'
    )
 
    # Create a temp file and make provision that this file is cleaned up, even on a premature exit
    trap :vi:diff:ViDiffCleanup EXIT
-   local ___vi__diff___ScriptFile="$(mktemp)"
+   local __vi__diff___ScriptFile="$(mktemp)"
 
    # Generate the script file
-   local ___vi__diff__diff___Key
-   for ___vi__diff__diff___Key in "${___vi__diff__diff___Keys[@]}"; do
-      printf '%s\n' "${___vi__diff__diff___Script[$___vi__diff__diff___Key]}" >> "$___vi__diff___ScriptFile"
+   local __vi__diff__diff___Key
+   for __vi__diff__diff___Key in "${__vi__diff__diff___Keys[@]}"; do
+      printf '%s\n' "${__vi__diff__diff___Script[$__vi__diff__diff___Key]}" >> "$__vi__diff___ScriptFile"
    done
 
    # Execute the script file: either listing or diffing files
-   bash "$___vi__diff___ScriptFile"
+   bash "$__vi__diff___ScriptFile"
 
    :vi:diff:ViDiffCleanup
 }
 
 :vi:diff:ViDiffCleanup()
 {
-   if [[ -f $___vi__diff___ScriptFile ]]; then
+   if [[ -f $__vi__diff___ScriptFile ]]; then
       cd "$_invocationDir"
-      rm -f "$___vi__diff___ScriptFile"
+      rm -f "$__vi__diff___ScriptFile"
 
-      ___vi__diff___ScriptFile=
+      __vi__diff___ScriptFile=
    fi
 }

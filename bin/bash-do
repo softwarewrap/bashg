@@ -46,17 +46,17 @@
 
    # Get an ordered list of files: all .bash files followed by all .sh files under <project>/<component>
    # All executable code is one directory below the $_bin_dir directory
-   local -a _______LoadReusableCode___BinFiles
-   readarray -t _______LoadReusableCode___BinFiles < <(
+   local -a ______LoadReusableCode___BinFiles
+   readarray -t ______LoadReusableCode___BinFiles < <(
       cd "$_bin_dir"
       find . -mindepth 2 -name '@*' -prune -o -type f -name '*.bash' -print
       find . -mindepth 2 -name '@*' -prune -o -type f -name '*.sh' -print
    )
 
    :tag() { true; }                                      # The :tag function is used only for building: mask it out
-   local _______LoadReusableCode___BinFile                                     # Iterator
-   for _______LoadReusableCode___BinFile in "${_______LoadReusableCode___BinFiles[@]}"; do
-      source "$_bin_dir/$_______LoadReusableCode___BinFile"                    # Source this file
+   local ______LoadReusableCode___BinFile                                     # Iterator
+   for ______LoadReusableCode___BinFile in "${______LoadReusableCode___BinFiles[@]}"; do
+      source "$_bin_dir/$______LoadReusableCode___BinFile"                    # Source this file
    done
 }
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_dev:vim:install%HELP()
+.dev:vim:install%HELP()
 {
    local _dev__vim__install__installHELP___Synopsis='Install vim and configure accounts'
    :help: --set "$_dev__vim__install__installHELP___Synopsis" <<'EOF'
@@ -12,7 +12,7 @@ DESCRIPTION:
 EOF
 }
 
-_dev:vim:install()
+.dev:vim:install()
 {
    :sudo || :reenter                                     # This function must run as root
 
@@ -104,7 +104,7 @@ _dev:vim:install()
    mkdir -p /etc/skel/.vim/{swp,save}                    # Create the empty directories needed by vim
 
    # Configure user files
-   _dev:vim:configure /root "$_entry_home"                    # Configure these home directories
+   .dev:vim:configure /root "$_entry_home"                    # Configure these home directories
 
    cd "$_invocation_dir"
    rm -rf "$_dev__vim__install__install___TmpDir"

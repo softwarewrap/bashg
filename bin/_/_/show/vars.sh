@@ -2,8 +2,8 @@
 
 :show:vars%HELP()
 {
-   local ___show__vars__varsHELP___Synopsis='Show user or special variable names and values'
-   :help: --set "$___show__vars__varsHELP___Synopsis" --usage '[[/[/]]<variable>]...' <<EOF
+   local __show__vars__varsHELP___Synopsis='Show user or special variable names and values'
+   :help: --set "$__show__vars__varsHELP___Synopsis" --usage '[[/[/]]<variable>]...' <<EOF
 DESCRIPTION:
    Show variable information depending on the arguments provided:
 
@@ -26,10 +26,10 @@ EOF
 
 :show:vars()
 {
-   local ___show__vars__vars___Var                                         # Iterator
+   local __show__vars__vars___Var                                         # Iterator
 
    if (( $# == 0 )); then                                # If no variables are explicitly requested
-      local -a ___show__vars__vars___VarList=(                             # ... create a list of special variables to show
+      local -a __show__vars__vars___VarList=(                             # ... create a list of special variables to show
          _program
          __
          _base_dir
@@ -43,26 +43,26 @@ EOF
          _entry_user
       )
 
-      set -- "${___show__vars__vars___VarList[@]}"                         # Set the arg list to the special variables
+      set -- "${__show__vars__vars___VarList[@]}"                         # Set the arg list to the special variables
 
    else
-      local -a ___show__vars__vars___Candidates                            # A candidate list is needed to deal with duplicates
-      readarray -t ___show__vars__vars___Candidates < <(                   # Load candidates
-         for ___show__vars__vars___Var in "$@"; do                         # ... by iterating over each request
-            if [[ $___show__vars__vars___Var = /* ]]; then                 # If the request begins with a /
-               if [[ $___show__vars__vars___Var = //* ]]; then
-                  compgen -A variable | grep -iP "${___show__vars__vars___Var:2}"
+      local -a __show__vars__vars___Candidates                            # A candidate list is needed to deal with duplicates
+      readarray -t __show__vars__vars___Candidates < <(                   # Load candidates
+         for __show__vars__vars___Var in "$@"; do                         # ... by iterating over each request
+            if [[ $__show__vars__vars___Var = /* ]]; then                 # If the request begins with a /
+               if [[ $__show__vars__vars___Var = //* ]]; then
+                  compgen -A variable | grep -iP "${__show__vars__vars___Var:2}"
 
                else
-                  compgen -A variable | grep -P "${___show__vars__vars___Var:1}"
+                  compgen -A variable | grep -P "${__show__vars__vars___Var:1}"
                fi
                                                          # ... then take it to be a regex against all variables
             else
-               echo "$___show__vars__vars___Var"                           # Otherwise, just add the request to the candidate list
+               echo "$__show__vars__vars___Var"                           # Otherwise, just add the request to the candidate list
             fi
          done | LC_ALL=C sort -u                         # Remove any duplicates
       )
-      set -- "${___show__vars__vars___Candidates[@]}"                      # ... and set the arg list to these requests
+      set -- "${__show__vars__vars___Candidates[@]}"                      # ... and set the arg list to these requests
    fi
 
    if (( $# == 0 )); then
@@ -77,12 +77,12 @@ EOF
    echo 'Variable|Value'                                 # Emit a header. The | is used for alignment.
    echo '========|====='
 
-   for ___show__vars__vars___Var in "$@"; do                               # Iterate over each result
-      if [[ -v $___show__vars__vars___Var ]]; then                         # If the variable exists
-         echo "$___show__vars__vars___Var|${!___show__vars__vars___Var}"                     # ... then emit it and the value with the alignment character
+   for __show__vars__vars___Var in "$@"; do                               # Iterate over each result
+      if [[ -v $__show__vars__vars___Var ]]; then                         # If the variable exists
+         echo "$__show__vars__vars___Var|${!__show__vars__vars___Var}"                     # ... then emit it and the value with the alignment character
 
       else
-         echo -e "$___show__vars__vars___Var|___show__vars__vars___Undefined"                # ... otherwise, indicate that this result is undefined
+         echo -e "$__show__vars__vars___Var|__show__vars__vars___Undefined"                # ... otherwise, indicate that this result is undefined
       fi
    done
    } |
@@ -94,7 +94,7 @@ EOF
          1,2s|.*|<G>&</G>|                               # Embolden the header with green
          3,$s|^\([^ ]\+\)\( \+\)\(.*\)|<B>\1</B>\2<b>\3</b>|
                                                          # Variables are blue; Values are bold
-         s|^\([^ ]\+ \+\)<b>___show__vars__vars___Undefined</b>|\1<R>Undefined</R>|
+         s|^\([^ ]\+ \+\)<b>__show__vars__vars___Undefined</b>|\1<R>Undefined</R>|
                                                          # Show Undefined in red
       '
    } |

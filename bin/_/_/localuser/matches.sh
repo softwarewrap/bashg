@@ -2,10 +2,10 @@
 
 :localuser:matches%HELP()
 {
-   local ___localuser__matches__matchesHELP___Synopsis='Test if a user matches a specification'
-   local ___localuser__matches__matchesHELP___Usage='<entry>'
+   local __localuser__matches__matchesHELP___Synopsis='Test if a user matches a specification'
+   local __localuser__matches__matchesHELP___Usage='<entry>'
 
-   :help: --set "$___localuser__matches__matchesHELP___Synopsis" --usage "$___localuser__matches__matchesHELP___Usage" <<EOF
+   :help: --set "$__localuser__matches__matchesHELP___Synopsis" --usage "$__localuser__matches__matchesHELP___Usage" <<EOF
 OPTIONS:
    -s|--show         ^Show the information gathered to stdout
 
@@ -70,35 +70,35 @@ EOF
 
 :localuser:matches()
 {
-   local ___localuser__matches__matches___Options
-   ___localuser__matches__matches___Options=$(getopt -o 'su:g:' -l 'show,user-var:,group-var:' -n "${FUNCNAME[0]}" -- "$@") || return
-   eval set -- "$___localuser__matches__matches___Options"
+   local __localuser__matches__matches___Options
+   __localuser__matches__matches___Options=$(getopt -o 'su:g:' -l 'show,user-var:,group-var:' -n "${FUNCNAME[0]}" -- "$@") || return
+   eval set -- "$__localuser__matches__matches___Options"
 
-   local -a ___localuser__matches__matches___GroupVar=()                              # Options to be used with :localgroup:matches
-   local ___localuser__matches__matches___UserVar=                                    # Optional: Store the associative array in this variable
-   local ___localuser__matches__matches___Show=false                                  # Emit to stdout the associative array
+   local -a __localuser__matches__matches___GroupVar=()                              # Options to be used with :localgroup:matches
+   local __localuser__matches__matches___UserVar=                                    # Optional: Store the associative array in this variable
+   local __localuser__matches__matches___Show=false                                  # Emit to stdout the associative array
 
    while true ; do
       case "$1" in
-      -s|--show)        ___localuser__matches__matches___Show=true; shift;;
+      -s|--show)        __localuser__matches__matches___Show=true; shift;;
 
-      -u|--user-var)    ___localuser__matches__matches___UserVar="$2"; shift 2;;
-      -g|--group-var)   ___localuser__matches__matches___GroupVar+=( --group-var "$2" ); shift 2;;
+      -u|--user-var)    __localuser__matches__matches___UserVar="$2"; shift 2;;
+      -g|--group-var)   __localuser__matches__matches___GroupVar+=( --group-var "$2" ); shift 2;;
       --)               shift; break;;
       *)                break;;
       esac
    done
 
-   local ___localuser__matches__matches___Entry="$1"
+   local __localuser__matches__matches___Entry="$1"
 
    ###########################################################
    # Define Parameters Available After Calling This Function #
    ###########################################################
    ### Ensure these variables are defined with global scope
    # Cannot declare and set global: https://lists.gnu.org/archive/html/bug-bash/2013-09/msg00029.html
-   [[ -v ___localuser___ ]] || local -Ag ___localuser___                       # Ensure the associative array exists
+   [[ -v __localuser___ ]] || local -Ag __localuser___                       # Ensure the associative array exists
 
-   ___localuser___=(                                                # Assign default values
+   __localuser___=(                                                # Assign default values
       [user_name]=
       [user_id]=
       [supplementary_groups]=
@@ -112,121 +112,121 @@ EOF
       [status]=0
    )
 
-   [[ -z $___localuser__matches__matches___UserVar ]] || :array:copy_associative ___localuser___ "$___localuser__matches__matches___UserVar"
+   [[ -z $__localuser__matches__matches___UserVar ]] || :array:copy_associative __localuser___ "$__localuser__matches__matches___UserVar"
 
-   [[ -n $___localuser__matches__matches___Entry ]] || return 0                       # If nothing is presented, just return 0
+   [[ -n $__localuser__matches__matches___Entry ]] || return 0                       # If nothing is presented, just return 0
 
    ### USER NAME AND ID
-   local ___localuser__matches__matches___Remainder=                                  # String left to be parsed
+   local __localuser__matches__matches___Remainder=                                  # String left to be parsed
 
-   if [[ $___localuser__matches__matches___Entry =~ : ]]; then
-      ___localuser__matches__matches___Remainder="${___localuser__matches__matches___Entry#*:}"                    # Save the content after the user information
-      ___localuser__matches__matches___Entry="${___localuser__matches__matches___Entry%%:*}"                       # Save the user information
+   if [[ $__localuser__matches__matches___Entry =~ : ]]; then
+      __localuser__matches__matches___Remainder="${__localuser__matches__matches___Entry#*:}"                    # Save the content after the user information
+      __localuser__matches__matches___Entry="${__localuser__matches__matches___Entry%%:*}"                       # Save the user information
    fi
 
-   if [[ $___localuser__matches__matches___Entry =~ / ]]; then                        # Is it necessary to parse the user information?
-      ___localuser___[user_name]="${___localuser__matches__matches___Entry%%/*}"                 # Yes: Get the <user-name>
-      ___localuser___[user_id]="${___localuser__matches__matches___Entry#*/}"                    # Get the <user-id>
+   if [[ $__localuser__matches__matches___Entry =~ / ]]; then                        # Is it necessary to parse the user information?
+      __localuser___[user_name]="${__localuser__matches__matches___Entry%%/*}"                 # Yes: Get the <user-name>
+      __localuser___[user_id]="${__localuser__matches__matches___Entry#*/}"                    # Get the <user-id>
 
-      if [[ -z ${___localuser___[user_name]} ]]; then
-         ___localuser___[status]='2'                                # Set the return status
+      if [[ -z ${__localuser___[user_name]} ]]; then
+         __localuser___[status]='2'                                # Set the return status
          :error: 2 'Missing user name'                   # The <user-name> must be present
          return
       fi
 
-      if [[ ! ${___localuser___[user_id]} =~ ^[0-9]+$ ]]; then
-         ___localuser___[status]='2'                                # Set the return status
-         :error: 2 "Invalid user ID: ${___localuser___[user_id]}"   # The <user-id> must be a number
+      if [[ ! ${__localuser___[user_id]} =~ ^[0-9]+$ ]]; then
+         __localuser___[status]='2'                                # Set the return status
+         :error: 2 "Invalid user ID: ${__localuser___[user_id]}"   # The <user-id> must be a number
          return
       fi
    else
-      ___localuser___[user_name]="$___localuser__matches__matches___Entry"                       # With no <user-id>, the <user-name> is just the entry
-      ___localuser___[user_id]=                                     # No required <user-id>
+      __localuser___[user_name]="$__localuser__matches__matches___Entry"                       # With no <user-id>, the <user-name> is just the entry
+      __localuser___[user_id]=                                     # No required <user-id>
    fi
 
    ### GROUP NAME AND ID
-   if [[ $___localuser__matches__matches___Remainder =~ : ]]; then
-      ___localuser__matches__matches___Entry="${___localuser__matches__matches___Remainder%%:*}"                   # Save the group information
-      ___localuser__matches__matches___Remainder="${___localuser__matches__matches___Remainder#*:}"                # Save the content after the group information
+   if [[ $__localuser__matches__matches___Remainder =~ : ]]; then
+      __localuser__matches__matches___Entry="${__localuser__matches__matches___Remainder%%:*}"                   # Save the group information
+      __localuser__matches__matches___Remainder="${__localuser__matches__matches___Remainder#*:}"                # Save the content after the group information
    else
-      ___localuser__matches__matches___Entry="$___localuser__matches__matches___Remainder"
-      ___localuser__matches__matches___Remainder=
+      __localuser__matches__matches___Entry="$__localuser__matches__matches___Remainder"
+      __localuser__matches__matches___Remainder=
    fi
 
-   if [[ -n $___localuser__matches__matches___Remainder ]]; then
-      if [[ $___localuser__matches__matches___Remainder =~ : ]]; then
-         ___localuser___[supplementary_groups]="${___localuser__matches__matches___Remainder%%:*}"
-         ___localuser___[password]="${___localuser__matches__matches___Remainder#*:}"
+   if [[ -n $__localuser__matches__matches___Remainder ]]; then
+      if [[ $__localuser__matches__matches___Remainder =~ : ]]; then
+         __localuser___[supplementary_groups]="${__localuser__matches__matches___Remainder%%:*}"
+         __localuser___[password]="${__localuser__matches__matches___Remainder#*:}"
       else
-         ___localuser___[supplementary_groups]="$___localuser__matches__matches___Remainder"
+         __localuser___[supplementary_groups]="$__localuser__matches__matches___Remainder"
       fi
    fi
 
-   ! :localgroup:matches "${___localuser__matches__matches___GroupVar[@]}" "$___localuser__matches__matches___Entry"
+   ! :localgroup:matches "${__localuser__matches__matches___GroupVar[@]}" "$__localuser__matches__matches___Entry"
                                                          # Store group information and ignore return code via !
 
    ### What exists now?
-   ___localuser___[nss_user_id]="$(                                 # Get any existing UID, either from the local /etc/passwd
-      { getent passwd "${___localuser___[user_name]}" || true; } |  # or from the NSS UID. It might not exist.
+   __localuser___[nss_user_id]="$(                                 # Get any existing UID, either from the local /etc/passwd
+      { getent passwd "${__localuser___[user_name]}" || true; } |  # or from the NSS UID. It might not exist.
       cut -d: -f3                                        # This function ensures this variable is set.
    )"
 
-   ___localuser___[nss_group_id]="$(                                # Get any existing GID, either from the local /etc/passwd
-      { getent passwd "${___localuser___[user_name]}" || true; } |  # or from the NSS GID. It might not exist.
+   __localuser___[nss_group_id]="$(                                # Get any existing GID, either from the local /etc/passwd
+      { getent passwd "${__localuser___[user_name]}" || true; } |  # or from the NSS GID. It might not exist.
       cut -d: -f4                                        # This function ensures this variable is set.
    )"
 
    ####################
    # Evaluate Matches #
    ####################
-   ___localuser___[local_name_found]=false                          # Presume not in /etc/passwd
-   ___localuser___[name_found]=false                                # Presume not local and not NSS
-   ___localuser___[matches]=false                                   # Presume no user name and UID (if provided) match
-   ___localuser___[status]=1                                        # Presume no match
+   __localuser___[local_name_found]=false                          # Presume not in /etc/passwd
+   __localuser___[name_found]=false                                # Presume not local and not NSS
+   __localuser___[matches]=false                                   # Presume no user name and UID (if provided) match
+   __localuser___[status]=1                                        # Presume no match
 
    ### Test Local User
-   if grep -q "^${___localuser___[user_name]}:" /etc/passwd; then   # If the entry is not in /etc/passwd, then it doesn't exist
-      ___localuser___[local_name_found]=true                        # A local entry certainly does exist
-      ___localuser___[name_found]=true                              # The user name exists (in this case, locally)
+   if grep -q "^${__localuser___[user_name]}:" /etc/passwd; then   # If the entry is not in /etc/passwd, then it doesn't exist
+      __localuser___[local_name_found]=true                        # A local entry certainly does exist
+      __localuser___[name_found]=true                              # The user name exists (in this case, locally)
 
-      if [[ -n ${___localuser___[user_id]} ]]; then                 # If spec includes UID: that will have to match as well
-         if [[ ${___localuser___[nss_user_id]} -eq ${___localuser___[user_id]} ]]; then
+      if [[ -n ${__localuser___[user_id]} ]]; then                 # If spec includes UID: that will have to match as well
+         if [[ ${__localuser___[nss_user_id]} -eq ${__localuser___[user_id]} ]]; then
                                                          # Check the NSS UID vs. the Spec UID
-            ___localuser___[matches]=true                           # ... they both match
-            ___localuser___[status]="${___localgroup___[status]}"    # Factor in group status
+            __localuser___[matches]=true                           # ... they both match
+            __localuser___[status]="${__localgroup___[status]}"    # Factor in group status
          fi
 
       else
-         ___localuser___[matches]=true                              # Spec includes only user name and that does match
-         ___localuser___[status]="${___localgroup___[status]}"       # Matches: no UID match requirement; factor in group status
+         __localuser___[matches]=true                              # Spec includes only user name and that does match
+         __localuser___[status]="${__localgroup___[status]}"       # Matches: no UID match requirement; factor in group status
       fi
 
-      if [[ ${___localuser___[status]} -eq 0 ]]; then
-         ___localuser___[spec_matches]=true
+      if [[ ${__localuser___[status]} -eq 0 ]]; then
+         __localuser___[spec_matches]=true
       fi
    fi
 
    ### Test NSS User
-   if [[ -n ${___localuser___[nss_user_id]} ]]; then                # If both NSS and local UIDs are defined,
-      ___localuser___[name_found]=true                              # The presence of the NSS UID says the user name exists
+   if [[ -n ${__localuser___[nss_user_id]} ]]; then                # If both NSS and local UIDs are defined,
+      __localuser___[name_found]=true                              # The presence of the NSS UID says the user name exists
 
-      if [[ -n ${___localuser___[user_id]} ]]; then                 # If spec includes UID: that will have to match as well
-         if [[ ${___localuser___[nss_user_id]} -eq ${___localuser___[user_id]} ]]; then
+      if [[ -n ${__localuser___[user_id]} ]]; then                 # If spec includes UID: that will have to match as well
+         if [[ ${__localuser___[nss_user_id]} -eq ${__localuser___[user_id]} ]]; then
                                                          # Check the NSS UID vs. the Spec UID
-            ___localuser___[matches]=true                           # ... they both match (but not local: don't change Status)
+            __localuser___[matches]=true                           # ... they both match (but not local: don't change Status)
          fi
 
       else
-         ___localuser___[matches]=true                              # Spec includes only user name and that does match
+         __localuser___[matches]=true                              # Spec includes only user name and that does match
       fi
    fi
 
-   if $___localuser__matches__matches___Show; then
-      :array:dump_associative ___localuser___ '<h1>User Match Results</h1>'
-      :array:dump_associative ___localgroup___ '<h1>Group Match Results</h1>'
+   if $__localuser__matches__matches___Show; then
+      :array:dump_associative __localuser___ '<h1>User Match Results</h1>'
+      :array:dump_associative __localgroup___ '<h1>Group Match Results</h1>'
    fi
 
-   [[ -z $___localuser__matches__matches___UserVar ]] || :array:copy_associative ___localuser___ "$___localuser__matches__matches___UserVar"
+   [[ -z $__localuser__matches__matches___UserVar ]] || :array:copy_associative __localuser___ "$__localuser__matches__matches___UserVar"
 
-   return ${___localuser___[status]}
+   return ${__localuser___[status]}
 }

@@ -2,10 +2,10 @@
 
 :esc:sed%HELP()
 {
-   local ___esc__sed__sedHELP___Synopsis='Escape string for sed use'
-   local ___esc__sed__sedHELP___Usage='<string>...'
+   local __esc__sed__sedHELP___Synopsis='Escape string for sed use'
+   local __esc__sed__sedHELP___Usage='<string>...'
 
-   :help: --set "$___esc__sed__sedHELP___Synopsis" --usage "$___esc__sed__sedHELP___Usage" <<'EOF'
+   :help: --set "$__esc__sed__sedHELP___Synopsis" --usage "$__esc__sed__sedHELP___Usage" <<'EOF'
 OPTIONS:
    -n|--nl     ^Escape newlines to the two-character sequence \\n
 
@@ -44,14 +44,14 @@ EOF
 
 :esc:sed()
 {
-   local ___esc__sed__sed___Options
-   ___esc__sed__sed___Options=$(getopt -o 'n' -l 'nl' -n "${FUNCNAME[0]}" -- "$@") || return
-   eval set -- "$___esc__sed__sed___Options"
+   local __esc__sed__sed___Options
+   __esc__sed__sed___Options=$(getopt -o 'n' -l 'nl' -n "${FUNCNAME[0]}" -- "$@") || return
+   eval set -- "$__esc__sed__sed___Options"
 
-   local ___esc__sed__sed___EscapeNewlines=false
+   local __esc__sed__sed___EscapeNewlines=false
    while true ; do
       case "$1" in
-      -n|--nl) ___esc__sed__sed___EscapeNewlines=true; shift;;
+      -n|--nl) __esc__sed__sed___EscapeNewlines=true; shift;;
       --)      shift; break;;
       *)       break;;
       esac
@@ -60,7 +60,7 @@ EOF
    awk '{ gsub(/[][^$.*?+\/\\()&]/, "\\\\&"); print }' <<<"$@" |
                                                          # Backslash escape any of the indicated characters
    {
-      if $___esc__sed__sed___EscapeNewlines; then
+      if $__esc__sed__sed___EscapeNewlines; then
          LC_ALL=C sed -- ':a;N;$!ba;s/\n/\\n/g'
       else
          cat

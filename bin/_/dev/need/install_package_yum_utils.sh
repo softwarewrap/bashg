@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_dev:need:install_package_yum_utils:()
+.dev:need:install_package_yum_utils:()
 {
    if ! :test:has_package yum-utils; then
       :log: --push 'Installing yum-utils'

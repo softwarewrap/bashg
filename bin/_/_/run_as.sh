@@ -2,10 +2,10 @@
 
 :run_as%HELP()
 {
-   local _____run_as__run_asHELP___Synopsis='Run command as user'
-   local _____run_as__run_asHELP___Usage='<user> <command> <args>'
+   local ____run_as__run_asHELP___Synopsis='Run command as user'
+   local ____run_as__run_asHELP___Usage='<user> <command> <args>'
 
-   :help: --set "$_____run_as__run_asHELP___Synopsis" --usage "$_____run_as__run_asHELP___Usage" <<EOF
+   :help: --set "$____run_as__run_asHELP___Synopsis" --usage "$____run_as__run_asHELP___Usage" <<EOF
 DESCRIPTION:
    Run a command as a specified user
 

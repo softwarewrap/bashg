@@ -2,24 +2,24 @@
 
 :require:packages()
 {
-   local -i ___require__packages__packages___Return=0
+   local -i __require__packages__packages___Return=0
 
-   local ___require__packages__packages___Installer
-   local ___require__packages__packages___Package
+   local __require__packages__packages___Installer
+   local __require__packages__packages___Package
 
-   for ___require__packages__packages___Package in "$@"; do
-      if ! rpm -q "$___require__packages__packages___Package" &>/dev/null; then
-         ___require__packages__packages___Installer="install_package_$( printf "$___require__packages__packages___Package" | tr -c 'a-zA-Z0-9_' '_' )"
+   for __require__packages__packages___Package in "$@"; do
+      if ! rpm -q "$__require__packages__packages___Package" &>/dev/null; then
+         __require__packages__packages___Installer="install_package_$( printf "$__require__packages__packages___Package" | tr -c 'a-zA-Z0-9_' '_' )"
 
-         if :: --has-func "$___require__packages__packages___Installer"; then
-            :: "$___require__packages__packages___Installer"
+         if :: --has-func "$__require__packages__packages___Installer"; then
+            :: "$__require__packages__packages___Installer"
 
          else
-            :error: 0 "Package not installed: $___require__packages__packages___Package"
-            ___require__packages__packages___Return=1
+            :error: 0 "Package not installed: $__require__packages__packages___Package"
+            __require__packages__packages___Return=1
          fi
       fi
    done
 
-   return $___require__packages__packages___Return
+   return $__require__packages__packages___Return
 }

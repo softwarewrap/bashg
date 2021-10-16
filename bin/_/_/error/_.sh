@@ -2,9 +2,9 @@
 
 :error:%HELP()
 {
-   local ___error_____HELP___Synopsis=''
+   local __error_____HELP___Synopsis=''
 
-   :help: --set "$___error_____HELP___Synopsis" --usage '[<return-status>] [<message>]' <<EOF
+   :help: --set "$__error_____HELP___Synopsis" --usage '[<return-status>] [<message>]' <<EOF
 OPTIONS:
    -s|--stacktrace   ^Include a stack trace in the output
 
@@ -30,24 +30,24 @@ EOF
 
 :error:()
 {
-   local ___error________Options
-   ___error________Options=$(getopt -o 's' -l 'stacktrace' -n "${FUNCNAME[0]}" -- "$@") || return
-   eval set -- "$___error________Options"
+   local __error________Options
+   __error________Options=$(getopt -o 's' -l 'stacktrace' -n "${FUNCNAME[0]}" -- "$@") || return
+   eval set -- "$__error________Options"
 
-   local ___error________ShowStacktrace=false
+   local __error________ShowStacktrace=false
    while true ; do
       case "$1" in
-      -s|--stacktrace)  ___error________ShowStacktrace=true; shift;;
+      -s|--stacktrace)  __error________ShowStacktrace=true; shift;;
       --)               shift; break;;
       *)                break;;
       esac
    done
 
-   local ___error________Type='Error'                                # Used in the message display
+   local __error________Type='Error'                                # Used in the message display
 
    if [[ $1 =~ ^[0-9]+$ && $1 -ge 0 && $1 -le 255 ]]; then
       _return="$1"
-      (( _return != 0 )) || ___error________Type='Warning'
+      (( _return != 0 )) || __error________Type='Warning'
       shift
 
    else
@@ -55,9 +55,9 @@ EOF
    fi
 
    local IFS=
-   :highlight: <<<"<b>[$___error________Type: ${FUNCNAME[1]}]</b> $*"
+   :highlight: <<<"<b>[$__error________Type: ${FUNCNAME[1]}]</b> $*"
                                                          # Emit standardized message
-   if $___error________ShowStacktrace; then
+   if $__error________ShowStacktrace; then
       :error:stacktrace                                     # Dump the calling stack
    fi
 

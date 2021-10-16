@@ -2,8 +2,8 @@
 
 :test:is_pipe%HELP()
 {
-   local ___test__is_pipe__is_pipeHELP___Synopsis='Is true if stdin is coming from a pipe'
-   :help: --set "$___test__is_pipe__is_pipeHELP___Synopsis" --usage '' <<EOF
+   local __test__is_pipe__is_pipeHELP___Synopsis='Is true if stdin is coming from a pipe'
+   :help: --set "$__test__is_pipe__is_pipeHELP___Synopsis" --usage '' <<EOF
 DESCRIPTION:
    Return 0 if stdin is a pipe; return non-zero otherwise.
 
@@ -21,7 +21,7 @@ EOF
 :test:is_pipe()
 {
   # Assume file descriptor 0 if not otherwise specified
-  local ___test__is_pipe__is_pipe___FD="${1:-0}"
+  local __test__is_pipe__is_pipe___FD="${1:-0}"
 
   # /proc/self is the currently-running process
   # /proc/self/fd lists all file descriptors for the currently-running process
@@ -31,5 +31,5 @@ EOF
   # and can be accessed interactively with commands such as read.
 
   # If the canonical name for /proc/self/fd/0 is not a pseudo-tty, return 0
-  ! [[ $(readlink -fm /proc/self/fd/$___test__is_pipe__is_pipe___FD) =~ ^/dev/pts/[0-9] ]]
+  ! [[ $(readlink -fm /proc/self/fd/$__test__is_pipe__is_pipe___FD) =~ ^/dev/pts/[0-9] ]]
 }

@@ -2,9 +2,9 @@
 
 :json:jq%HELP()
 {
-   local ___json__jq__jqHELP___Synopsis='Perform a jq filter with error checking'
+   local __json__jq__jqHELP___Synopsis='Perform a jq filter with error checking'
 
-   :help: --set "$___json__jq__jqHELP___Synopsis" --usage '<variable> <filter> [<file>]' <<EOF
+   :help: --set "$__json__jq__jqHELP___Synopsis" --usage '<variable> <filter> [<file>]' <<EOF
 OPTIONS:
    --null-allowed    ^Save null results as null
    --no-save-empty   ^Do not save empty results
@@ -35,97 +35,97 @@ EOF
 {
    :getopts: begin -l 'null-allowed,no-save-empty' -- "$@"
 
-   local ___json__jq__jq___Option                                      # Iterate over options
-   local ___json__jq__jq___Value                                       # For options that take args, store in this variable
+   local __json__jq__jq___Option                                      # Iterate over options
+   local __json__jq__jq___Value                                       # For options that take args, store in this variable
 
-   local ___json__jq__jq___NullToEmpty=true                            # By default, convert 'null' to ''
-   local ___json__jq__jq___SaveEmpty=true                              # By default, save to variable even if 'null' or ''
+   local __json__jq__jq___NullToEmpty=true                            # By default, convert 'null' to ''
+   local __json__jq__jq___SaveEmpty=true                              # By default, save to variable even if 'null' or ''
 
-   local -a ___json__jq__jq___Args=()
+   local -a __json__jq__jq___Args=()
 
-   while :getopts: next ___json__jq__jq___Option ___json__jq__jq___Value; do
-      case "$___json__jq__jq___Option" in
-      --null-allowed)   ___json__jq__jq___NullToEmpty=false;;          # Save 'null' as 'null' (default: save as '')
-      --no-save-empty)  ___json__jq__jq___SaveEmpty=false;;            # Do not save if result is empty; implies --null-to-empty
+   while :getopts: next __json__jq__jq___Option __json__jq__jq___Value; do
+      case "$__json__jq__jq___Option" in
+      --null-allowed)   __json__jq__jq___NullToEmpty=false;;          # Save 'null' as 'null' (default: save as '')
+      --no-save-empty)  __json__jq__jq___SaveEmpty=false;;            # Do not save if result is empty; implies --null-to-empty
       *)                break;;
       esac
    done
 
-   :getopts: end --save ___json__jq__jq___Args                         # Save unused args
-   set -- "${___json__jq__jq___Args[@]}"
+   :getopts: end --save __json__jq__jq___Args                         # Save unused args
+   set -- "${__json__jq__jq___Args[@]}"
 
-   local ___json__jq__jq___Var="${1:--}"                               # Place the result in this variable
+   local __json__jq__jq___Var="${1:--}"                               # Place the result in this variable
    shift
 
-   if [[ $___json__jq__jq___Var = - ]]; then                           # - indicates: emit to stdout
-      ___json__jq__jq___Var='___json__jq__jq___UnspecifiedVar'                       # Use this as the variable to store the result
-      local "$___json__jq__jq___Var="                                  # and declare and initialize it to the empty string
+   if [[ $__json__jq__jq___Var = - ]]; then                           # - indicates: emit to stdout
+      __json__jq__jq___Var='__json__jq__jq___UnspecifiedVar'                       # Use this as the variable to store the result
+      local "$__json__jq__jq___Var="                                  # and declare and initialize it to the empty string
    fi
 
-   local ___json__jq__jq___Result                                      # The result
-   local -i ___json__jq__jq___Return=0                                 # The return code, assumed to be successful
-   local ___json__jq__jq___ErrorFile                                   # Any error message
+   local __json__jq__jq___Result                                      # The result
+   local -i __json__jq__jq___Return=0                                 # The return code, assumed to be successful
+   local __json__jq__jq___ErrorFile                                   # Any error message
 
-   ___json__jq__jq___ErrorFile="$(mktemp)"
+   __json__jq__jq___ErrorFile="$(mktemp)"
 
-   ___json__jq__jq___Result="$(jq -e "$@" 2>"$___json__jq__jq___ErrorFile")" || ___json__jq__jq___Return=$?
+   __json__jq__jq___Result="$(jq -e "$@" 2>"$__json__jq__jq___ErrorFile")" || __json__jq__jq___Return=$?
                                                          # Get the result and safely get the return code
 
-   if (( $___json__jq__jq___Return == 0 || $___json__jq__jq___Return == 1 )); then   # 0: success, 1: valid value (null or false)
-      if [[ ! -v $___json__jq__jq___Var ]]; then                       # If the variable isn't initialized, then try to declare it
-         local -g "$___json__jq__jq___Var"                             # Yes, declare it
+   if (( $__json__jq__jq___Return == 0 || $__json__jq__jq___Return == 1 )); then   # 0: success, 1: valid value (null or false)
+      if [[ ! -v $__json__jq__jq___Var ]]; then                       # If the variable isn't initialized, then try to declare it
+         local -g "$__json__jq__jq___Var"                             # Yes, declare it
       fi
 
-      if $___json__jq__jq___NullToEmpty && [[ $___json__jq__jq___Result = null ]]; then
-         ___json__jq__jq___Result=                                     # Convert 'null' to '' if requested
+      if $__json__jq__jq___NullToEmpty && [[ $__json__jq__jq___Result = null ]]; then
+         __json__jq__jq___Result=                                     # Convert 'null' to '' if requested
       fi
 
-      if $___json__jq__jq___SaveEmpty || [[ -n $___json__jq__jq___Result ]]; then    # Save if allowing to save empty or if the result is non-empty
-         if [[ $___json__jq__jq___Var = ___json__jq__jq___UnspecifiedVar ]]; then
-            printf '%s' "$___json__jq__jq___Result"                    # Emit the result to stdout
+      if $__json__jq__jq___SaveEmpty || [[ -n $__json__jq__jq___Result ]]; then    # Save if allowing to save empty or if the result is non-empty
+         if [[ $__json__jq__jq___Var = __json__jq__jq___UnspecifiedVar ]]; then
+            printf '%s' "$__json__jq__jq___Result"                    # Emit the result to stdout
          else
-            printf -v "$___json__jq__jq___Var" '%s' "$___json__jq__jq___Result"      # Then save the result in the indicated variable
+            printf -v "$__json__jq__jq___Var" '%s' "$__json__jq__jq___Result"      # Then save the result in the indicated variable
          fi
       fi
 
-      ___json__jq__jq___Return=0                                       # Return success: A return of 1 is actually a valid response
+      __json__jq__jq___Return=0                                       # Return success: A return of 1 is actually a valid response
 
    else
-      :log: "The jq expression failed [$___json__jq__jq___Return]: $*" # Emit jq arguments associated with the failure
+      :log: "The jq expression failed [$__json__jq__jq___Return]: $*" # Emit jq arguments associated with the failure
 
-      if [[ -s $___json__jq__jq___ErrorFile ]]; then
-         cat "$___json__jq__jq___ErrorFile"                            # Emit jq failure message
+      if [[ -s $__json__jq__jq___ErrorFile ]]; then
+         cat "$__json__jq__jq___ErrorFile"                            # Emit jq failure message
       fi
    fi
 
-   return $___json__jq__jq___Return
+   return $__json__jq__jq___Return
 }
 
 :json:jq%TEST()
 {
-   local ___json__jq__jqTEST___Var=
+   local __json__jq__jqTEST___Var=
 
    :highlight: <<<'<h1>Unit Test</h1>\n\nSTDIN:  {"x": 7}\nBEFORE EACH TEST: Var=initial\n'
 
    {
-      ___json__jq__jqTEST___Var='initial'
-      :json:jq ___json__jq__jqTEST___Var .x <<<'{"x": 7}'
-      [[ $___json__jq__jqTEST___Var = '7' ]] && echo -n '<G>PASS</G> ' || echo -n '<R>FAIL</R> '
-      echo ":json:jq Var .x|Expect '7',       got '$___json__jq__jqTEST___Var'"
+      __json__jq__jqTEST___Var='initial'
+      :json:jq __json__jq__jqTEST___Var .x <<<'{"x": 7}'
+      [[ $__json__jq__jqTEST___Var = '7' ]] && echo -n '<G>PASS</G> ' || echo -n '<R>FAIL</R> '
+      echo ":json:jq Var .x|Expect '7',       got '$__json__jq__jqTEST___Var'"
 
-      ___json__jq__jqTEST___Var='initial'
-      :json:jq ___json__jq__jqTEST___Var .abc <<<'{"x": 7}'
-      [[ $___json__jq__jqTEST___Var = '' ]] && echo -n '<G>PASS</G> ' || echo -n '<R>FAIL</R> '
-      echo ":json:jq Var .abc|Expect '',        got: '$___json__jq__jqTEST___Var'"
+      __json__jq__jqTEST___Var='initial'
+      :json:jq __json__jq__jqTEST___Var .abc <<<'{"x": 7}'
+      [[ $__json__jq__jqTEST___Var = '' ]] && echo -n '<G>PASS</G> ' || echo -n '<R>FAIL</R> '
+      echo ":json:jq Var .abc|Expect '',        got: '$__json__jq__jqTEST___Var'"
 
-      ___json__jq__jqTEST___Var='initial'
-      :json:jq --null-allowed ___json__jq__jqTEST___Var .abc <<<'{"x": 7}'
-      [[ $___json__jq__jqTEST___Var = 'null' ]] && echo -n '<G>PASS</G> ' || echo -n '<R>FAIL</R> '
-      echo ":json:jq --null-allowed Var .abc|Expect 'null',    got '$___json__jq__jqTEST___Var'"
+      __json__jq__jqTEST___Var='initial'
+      :json:jq --null-allowed __json__jq__jqTEST___Var .abc <<<'{"x": 7}'
+      [[ $__json__jq__jqTEST___Var = 'null' ]] && echo -n '<G>PASS</G> ' || echo -n '<R>FAIL</R> '
+      echo ":json:jq --null-allowed Var .abc|Expect 'null',    got '$__json__jq__jqTEST___Var'"
 
-      ___json__jq__jqTEST___Var='initial'
-      :json:jq --no-save-empty ___json__jq__jqTEST___Var .abc <<<'{"x": 7}'
-      [[ $___json__jq__jqTEST___Var = 'initial' ]] && echo -n '<G>PASS</G> ' || echo -n '<R>FAIL</R> '
-      echo ":json:jq --no-save-empty Var .abc|Expect 'initial', got '$___json__jq__jqTEST___Var'"
+      __json__jq__jqTEST___Var='initial'
+      :json:jq --no-save-empty __json__jq__jqTEST___Var .abc <<<'{"x": 7}'
+      [[ $__json__jq__jqTEST___Var = 'initial' ]] && echo -n '<G>PASS</G> ' || echo -n '<R>FAIL</R> '
+      echo ":json:jq --no-save-empty Var .abc|Expect 'initial', got '$__json__jq__jqTEST___Var'"
    } | :text:align | :highlight:
 }

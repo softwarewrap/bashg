@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_dev:need:vim:()
+.dev:need:vim:()
 {
    local _dev__need__vim_____Options
    _dev__need__vim_____Options=$(getopt -o '' -l 'force' -n "${FUNCNAME[0]}" -- "$@") || return
@@ -38,6 +38,6 @@ _dev:need:vim:()
    fi
 
    if $_dev__need__vim_____InstallIsRequired; then
-      _dev:vim:install
+      .dev:vim:install
    fi
 }

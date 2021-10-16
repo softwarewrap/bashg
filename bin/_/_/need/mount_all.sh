@@ -6,21 +6,21 @@
 
    :log: --push-section 'Mounting files:' '/etc/fstab' "$FUNCNAME $@"
 
-   local ___need__mount_all_____Before
-   local ___need__mount_all_____After
-   ___need__mount_all_____Before="$(mktemp)"
-   ___need__mount_all_____After="$(mktemp)"
+   local __need__mount_all_____Before
+   local __need__mount_all_____After
+   __need__mount_all_____Before="$(mktemp)"
+   __need__mount_all_____After="$(mktemp)"
 
-   mount 2>/dev/null | sort -f > "$___need__mount_all_____Before"
+   mount 2>/dev/null | sort -f > "$__need__mount_all_____Before"
    mount -a >&/dev/null
-   mount 2>/dev/null | sort -f > "$___need__mount_all_____After"
+   mount 2>/dev/null | sort -f > "$__need__mount_all_____After"
 
-   if ! cmp --silent "$___need__mount_all_____Before" "$___need__mount_all_____After"; then
+   if ! cmp --silent "$__need__mount_all_____Before" "$__need__mount_all_____After"; then
    :log: "Mount differences corrected:"
-      diff "$___need__mount_all_____Before" "$___need__mount_all_____After"
+      diff "$__need__mount_all_____Before" "$__need__mount_all_____After"
    fi
 
-   rm -f "$___need__mount_all_____Before" "$___need__mount_all_____After"
+   rm -f "$__need__mount_all_____Before" "$__need__mount_all_____After"
 
    :log: --pop
 }

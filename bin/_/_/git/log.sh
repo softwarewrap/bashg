@@ -2,10 +2,10 @@
 
 :git:log%HELP()
 {
-   local ___git__log__logHELP___Synopsis='Show a formatted log of git changes'
-   local ___git__log__logHELP___Usage='[OPTIONS] [<range-spec>]'
+   local __git__log__logHELP___Synopsis='Show a formatted log of git changes'
+   local __git__log__logHELP___Usage='[OPTIONS] [<range-spec>]'
 
-   :help: --set "$___git__log__logHELP___Synopsis" --usage "$___git__log__logHELP___Usage" <<EOF
+   :help: --set "$__git__log__logHELP___Synopsis" --usage "$__git__log__logHELP___Usage" <<EOF
 OPTIONS:
    -a|--all          ^Show all commits for the current branch
    -r|--raw          ^Raw mode: do not perform idiom replacements
@@ -67,7 +67,7 @@ EOF
 
 :git:log()
 {
-   local -ag ___git__log__log___GitOptions=(
+   local -ag __git__log__log___GitOptions=(
       --no-pager
       log
       --color
@@ -79,44 +79,44 @@ EOF
       --format='format:%C(bold blue)%h%C(reset) - %C(bold green)%ar (%ad)%C(reset) - %C(bold black)%s%C(reset) - %C(bold magenta)%an%C(reset)%C(bold yellow)%d%C(reset)%n'
    )
 
-   local -g ___git__log__log___Args=()                                  # Store any remaining args in this variable
+   local -g __git__log__log___Args=()                                  # Store any remaining args in this variable
 
    :getopts: begin \
       -o 'aru:' \
       -l 'all,raw,user:' \
       -- "$@"
 
-   local ___git__log__log___Option                                      # Option character or word
-   local ___git__log__log___Value                                       # Value for options that take a value
-   local ___git__log__log___All=false
-   local ___git__log__log___RawMode=false
+   local __git__log__log___Option                                      # Option character or word
+   local __git__log__log___Value                                       # Value for options that take a value
+   local __git__log__log___All=false
+   local __git__log__log___RawMode=false
 
-   while :getopts: next ___git__log__log___Option ___git__log__log___Value; do
-      case "$___git__log__log___Option" in
-      -a|--all)   ___git__log__log___All=true;;
-      -r|--raw)   ___git__log__log___RawMode=true;;
-      -u|--user)  ___git__log__log___GitOptions+=( --author="^$___git__log__log___Value\\s" )
-                  ___git__log__log___RawMode=true;;
+   while :getopts: next __git__log__log___Option __git__log__log___Value; do
+      case "$__git__log__log___Option" in
+      -a|--all)   __git__log__log___All=true;;
+      -r|--raw)   __git__log__log___RawMode=true;;
+      -u|--user)  __git__log__log___GitOptions+=( --author="^$__git__log__log___Value\\s" )
+                  __git__log__log___RawMode=true;;
                                                          # Show commits only for the specified user
       *)          break;;
       esac
    done
 
-   :getopts: end --save ___git__log__log___Args                         # Save unused args
-   set -- "${___git__log__log___Args[@]}"                               # Set positional parameters to unused args
+   :getopts: end --save __git__log__log___Args                         # Save unused args
+   set -- "${__git__log__log___Args[@]}"                               # Set positional parameters to unused args
 
    ### VALIDATION
-   local ___git__log__log___CurrentBranch
-   if ! ___git__log__log___CurrentBranch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"; then
+   local __git__log__log___CurrentBranch
+   if ! __git__log__log___CurrentBranch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"; then
       :error: 1 "Current directory is not in a git project: $PWD"
       return 1
    fi
 
    ### ARGUMENT EVALUATION
-   if $___git__log__log___All; then
-      set -- "$___git__log__log___CurrentBranch"
+   if $__git__log__log___All; then
+      set -- "$__git__log__log___CurrentBranch"
 
-   elif [[ $# -le 1 ]] && ! $___git__log__log___RawMode; then
+   elif [[ $# -le 1 ]] && ! $__git__log__log___RawMode; then
       (( $# > 0 )) || set -- '-1'                        # Default: show most recent commit
       if [[ $1 =~ '..'$ && ! $1 =~ '^..'$ ]]; then
          set -- "${1%..}^..HEAD"                         # Show changes from commit-id to HEAD, inclusive
@@ -129,5 +129,5 @@ EOF
       fi
    fi
 
-   git "${___git__log__log___GitOptions[@]}" "$@"                       # Show the git log
+   git "${__git__log__log___GitOptions[@]}" "$@"                       # Show the git log
 }

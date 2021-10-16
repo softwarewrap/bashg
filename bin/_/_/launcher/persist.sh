@@ -2,10 +2,10 @@
 
 :launcher:persist%HELP()
 {
-   local ___launcher__persist__persistHELP___Synopsis='Persist variables'
-   local ___launcher__persist__persistHELP___Usage='<variable>...'
+   local __launcher__persist__persistHELP___Synopsis='Persist variables'
+   local __launcher__persist__persistHELP___Usage='<variable>...'
 
-   :help: --set "$___launcher__persist__persistHELP___Synopsis" --usage "$___launcher__persist__persistHELP___Usage" <<EOF
+   :help: --set "$__launcher__persist__persistHELP___Synopsis" --usage "$__launcher__persist__persistHELP___Usage" <<EOF
 DESCRIPTION:
    Persist variables so they exist when <B>:sudo [<user>] || :reenter</B> is used.
 
@@ -62,18 +62,18 @@ EOF
 
 :launcher:persist()
 {
-   local ___launcher__persist__persist___Var
-   for ___launcher__persist__persist___Var in "$@"; do
-      eval _entry_vars[$___launcher__persist__persist___Var]=
+   local __launcher__persist__persist___Var
+   for __launcher__persist__persist___Var in "$@"; do
+      eval _entry_vars[$__launcher__persist__persist___Var]=
    done
 }
 
 :launcher:persist%TEST()
 {
-   local -g ___launcher___Var1='Charles'                           # String declaration
-   local -ag ___launcher___Var2=(37 'Wedgewood')                   # Positiional array declaration
+   local -g __launcher___Var1='Charles'                           # String declaration
+   local -ag __launcher___Var2=(37 'Wedgewood')                   # Positiional array declaration
 
-   :launcher:persist ___launcher___Var1 ___launcher___Var2               # Persist variables into/out of :sudo || :reenter
+   :launcher:persist __launcher___Var1 __launcher___Var2               # Persist variables into/out of :sudo || :reenter
 
    :launcher:persist:alter_user_function
 }
@@ -83,6 +83,6 @@ EOF
    :sudo "$@" || :reenter
 
    echo "User: $_whoami"                                 # Expect: User: root
-   echo "Var1: $___launcher___Var1"                                # Expect: Var1: Charles
-   echo "Var2: ${___launcher___Var2[@]}"                           # Expect: Var2: 37 Wedgewood
+   echo "Var1: $__launcher___Var1"                                # Expect: Var1: Charles
+   echo "Var2: ${__launcher___Var2[@]}"                           # Expect: Var2: 37 Wedgewood
 }

@@ -7,10 +7,10 @@
 
 :sudo%HELP()
 {
-   local _____sudo__sudoHELP___Synopsis='Check or elevate permissions'
-   local _____sudo__sudoHELP___Usage='[<user> [<command> [<args>]]]'
+   local ____sudo__sudoHELP___Synopsis='Check or elevate permissions'
+   local ____sudo__sudoHELP___Usage='[<user> [<command> [<args>]]]'
 
-   :help: --set "$_____sudo__sudoHELP___Synopsis" --usage "$_____sudo__sudoHELP___Usage" <<EOF
+   :help: --set "$____sudo__sudoHELP___Synopsis" --usage "$____sudo__sudoHELP___Usage" <<EOF
 DESCRIPTION:
    Check if privilege elevation is required or run a command with privilege elevation
 
@@ -71,7 +71,7 @@ EOF
 
    elif :test:can_sudo; then                             # If sudo access is available
       if :test:has_func "$1"; then
-         ___launcher___Config[reenter]="$1"               # Set the reenter function
+         __launcher___Config[reenter]="$1"               # Set the reenter function
          shift                                           # ... and remove it from the positional array
 
          :reenter                                        # Reenter as _RunAs and call the indicated function w/args

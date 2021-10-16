@@ -2,10 +2,10 @@
 
 :test:version_compare%HELP()
 {
-   local ___test__version_compare__version_compareHELP___Synopsis='Compare two version strings'
-   local ___test__version_compare__version_compareHELP___Usage='<first> <option> <second>'
+   local __test__version_compare__version_compareHELP___Synopsis='Compare two version strings'
+   local __test__version_compare__version_compareHELP___Usage='<first> <option> <second>'
 
-   :help: --set "$___test__version_compare__version_compareHELP___Synopsis" --usage "$___test__version_compare__version_compareHELP___Usage" <<EOF
+   :help: --set "$__test__version_compare__version_compareHELP___Synopsis" --usage "$__test__version_compare__version_compareHELP___Usage" <<EOF
 OPTIONS:
    -l|--lt  ^Is less than
    -e|--eq  ^Is equal to
@@ -39,49 +39,49 @@ EOF
 
 :test:version_compare()
 {
-   local ___test__version_compare__version_compare___Options
-   ___test__version_compare__version_compare___Options=$(getopt -o 'legqt' -l 'lt,le,eq,ge,gt' -n "${FUNCNAME[0]}" -- "$@") || return
-   eval set -- "$___test__version_compare__version_compare___Options"
+   local __test__version_compare__version_compare___Options
+   __test__version_compare__version_compare___Options=$(getopt -o 'legqt' -l 'lt,le,eq,ge,gt' -n "${FUNCNAME[0]}" -- "$@") || return
+   eval set -- "$__test__version_compare__version_compare___Options"
 
-   local ___test__version_compare__version_compare___L=false
-   local ___test__version_compare__version_compare___E=false
-   local ___test__version_compare__version_compare___G=false
+   local __test__version_compare__version_compare___L=false
+   local __test__version_compare__version_compare___E=false
+   local __test__version_compare__version_compare___G=false
 
    while true ; do
       case "$1" in
-      -l)      ___test__version_compare__version_compare___L=true; shift;;
-      -e)      ___test__version_compare__version_compare___E=true; shift;;
-      -g)      ___test__version_compare__version_compare___G=true; shift;;
+      -l)      __test__version_compare__version_compare___L=true; shift;;
+      -e)      __test__version_compare__version_compare___E=true; shift;;
+      -g)      __test__version_compare__version_compare___G=true; shift;;
       -q|-t)   shift;;
 
-      --lt)    ___test__version_compare__version_compare___L=true; shift;;
-      --le)    ___test__version_compare__version_compare___L=true; ___test__version_compare__version_compare___E=true; shift;;
-      --eq)    ___test__version_compare__version_compare___E=true; shift;;
-      --ge)    ___test__version_compare__version_compare___G=true; ___test__version_compare__version_compare___E=true; shift;;
-      --gt)    ___test__version_compare__version_compare___G=true; shift;;
+      --lt)    __test__version_compare__version_compare___L=true; shift;;
+      --le)    __test__version_compare__version_compare___L=true; __test__version_compare__version_compare___E=true; shift;;
+      --eq)    __test__version_compare__version_compare___E=true; shift;;
+      --ge)    __test__version_compare__version_compare___G=true; __test__version_compare__version_compare___E=true; shift;;
+      --gt)    __test__version_compare__version_compare___G=true; shift;;
 
       --)      shift; break;;
       *)       break;;
       esac
    done
 
-   local ___test__version_compare__version_compare___First="$1"
-   local ___test__version_compare__version_compare___Second="$2"
+   local __test__version_compare__version_compare___First="$1"
+   local __test__version_compare__version_compare___Second="$2"
 
-   local -i ___test__version_compare__version_compare___Lower
-   ___test__version_compare__version_compare___Lower="$(
-      echo -e "$___test__version_compare__version_compare___First\n$___test__version_compare__version_compare___Second" | cat -n | sort -V -k 2,3 | head -n1 | awk '{print $1}'
+   local -i __test__version_compare__version_compare___Lower
+   __test__version_compare__version_compare___Lower="$(
+      echo -e "$__test__version_compare__version_compare___First\n$__test__version_compare__version_compare___Second" | cat -n | sort -V -k 2,3 | head -n1 | awk '{print $1}'
    )"
 
-   if $___test__version_compare__version_compare___L && [[ $___test__version_compare__version_compare___Lower -eq 1 && $___test__version_compare__version_compare___First != $___test__version_compare__version_compare___Second ]]; then
+   if $__test__version_compare__version_compare___L && [[ $__test__version_compare__version_compare___Lower -eq 1 && $__test__version_compare__version_compare___First != $__test__version_compare__version_compare___Second ]]; then
       return 0
    fi
 
-   if $___test__version_compare__version_compare___E && [[ $___test__version_compare__version_compare___First = $___test__version_compare__version_compare___Second ]]; then
+   if $__test__version_compare__version_compare___E && [[ $__test__version_compare__version_compare___First = $__test__version_compare__version_compare___Second ]]; then
       return 0
    fi
 
-   if $___test__version_compare__version_compare___G && [[ $___test__version_compare__version_compare___Lower -eq 2 && $___test__version_compare__version_compare___First != $___test__version_compare__version_compare___Second ]]; then
+   if $__test__version_compare__version_compare___G && [[ $__test__version_compare__version_compare___Lower -eq 2 && $__test__version_compare__version_compare___First != $__test__version_compare__version_compare___Second ]]; then
       return 0
    fi
 

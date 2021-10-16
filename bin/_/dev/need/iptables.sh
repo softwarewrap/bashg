@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_dev:need:iptables:linux-7()
+.dev:need:iptables:linux-7()
 {
    if ! :test:has_package iptables-services; then
       :log: --push-section 'Flushing iptables' "$FUNCNAME $@"

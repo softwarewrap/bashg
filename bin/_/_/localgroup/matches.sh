@@ -2,10 +2,10 @@
 
 :localgroup:matches%HELP()
 {
-   local ___localgroup__matches__matchesHELP___Synopsis='Test if a group matches a specification'
-   local ___localgroup__matches__matchesHELP___Usage='<entry>'
+   local __localgroup__matches__matchesHELP___Synopsis='Test if a group matches a specification'
+   local __localgroup__matches__matchesHELP___Usage='<entry>'
 
-   :help: --set "$___localgroup__matches__matchesHELP___Synopsis" --usage "$___localgroup__matches__matchesHELP___Usage" <<EOF
+   :help: --set "$__localgroup__matches__matchesHELP___Synopsis" --usage "$__localgroup__matches__matchesHELP___Usage" <<EOF
 OPTIONS:
    -s|--show         ^Show the information gathered to stdout
 
@@ -66,33 +66,33 @@ EOF
 
 :localgroup:matches()
 {
-   local ___localgroup__matches__matches___Options
-   ___localgroup__matches__matches___Options=$(getopt -o 'sg:' -l 'show,group-var:' -n "${FUNCNAME[0]}" -- "$@") || return
-   eval set -- "$___localgroup__matches__matches___Options"
+   local __localgroup__matches__matches___Options
+   __localgroup__matches__matches___Options=$(getopt -o 'sg:' -l 'show,group-var:' -n "${FUNCNAME[0]}" -- "$@") || return
+   eval set -- "$__localgroup__matches__matches___Options"
 
-   local ___localgroup__matches__matches___GroupVar=                                   # Optional: Store the associative array in this variable
-   local ___localgroup__matches__matches___Show=false                                  # Emit to stdout the associative array
+   local __localgroup__matches__matches___GroupVar=                                   # Optional: Store the associative array in this variable
+   local __localgroup__matches__matches___Show=false                                  # Emit to stdout the associative array
 
    while true ; do
       case "$1" in
-      -s|--show)        ___localgroup__matches__matches___Show=true; shift;;
+      -s|--show)        __localgroup__matches__matches___Show=true; shift;;
 
-      -g|--group-var)   ___localgroup__matches__matches___GroupVar="$2"; shift 2;;
+      -g|--group-var)   __localgroup__matches__matches___GroupVar="$2"; shift 2;;
       --)               shift; break;;
       *)                break;;
       esac
    done
 
-   local ___localgroup__matches__matches___Entry="$1"
+   local __localgroup__matches__matches___Entry="$1"
 
    ###########################################################
    # Define Parameters Available After Calling This Function #
    ###########################################################
    ### Ensure these variables are defined with global scope
    # Cannot declare and set global: https://lists.gnu.org/archive/html/bug-bash/2013-09/msg00029.html
-   [[ -v ___localgroup___ ]] || local -Ag ___localgroup___                       # Ensure the associative array exists
+   [[ -v __localgroup___ ]] || local -Ag __localgroup___                       # Ensure the associative array exists
 
-   ___localgroup___=(                                                # Assign default values
+   __localgroup___=(                                                # Assign default values
       [group_name]=
       [group_id]=
       [nss_group_id]=
@@ -103,79 +103,79 @@ EOF
       [status]=0
    )
 
-   [[ -z $___localgroup__matches__matches___GroupVar ]] || :array:copy_associative ___localgroup___ "$___localgroup__matches__matches___GroupVar"
+   [[ -z $__localgroup__matches__matches___GroupVar ]] || :array:copy_associative __localgroup___ "$__localgroup__matches__matches___GroupVar"
 
-   [[ -n $___localgroup__matches__matches___Entry ]] || return 0                       # If nothing is presented, just return 0
+   [[ -n $__localgroup__matches__matches___Entry ]] || return 0                       # If nothing is presented, just return 0
 
    ### GROUP NAME AND ID
-   if [[ $___localgroup__matches__matches___Entry =~ / ]]; then
-      ___localgroup___[group_name]="${___localgroup__matches__matches___Entry%%/*}"                # <group-name> is extracted from the <entry>
-      ___localgroup___[group_id]="${___localgroup__matches__matches___Entry#*/}"                   # Get the <group-ID>
+   if [[ $__localgroup__matches__matches___Entry =~ / ]]; then
+      __localgroup___[group_name]="${__localgroup__matches__matches___Entry%%/*}"                # <group-name> is extracted from the <entry>
+      __localgroup___[group_id]="${__localgroup__matches__matches___Entry#*/}"                   # Get the <group-ID>
 
-      if [[ ! ${___localgroup___[group_id]} =~ ^[0-9]+$ ]]; then
-         ___localgroup___[status]='2'
-         :error: 2 "Invalid group ID: ${___localgroup___[group_id]}" # The <group-ID> must be a number
+      if [[ ! ${__localgroup___[group_id]} =~ ^[0-9]+$ ]]; then
+         __localgroup___[status]='2'
+         :error: 2 "Invalid group ID: ${__localgroup___[group_id]}" # The <group-ID> must be a number
          return
       fi
    else
-      ___localgroup___[group_name]="$___localgroup__matches__matches___Entry"                      # With no <group-ID>, the <group-name> is just the entry
-      ___localgroup___[group_id]=                                    # No required <group-ID>
+      __localgroup___[group_name]="$__localgroup__matches__matches___Entry"                      # With no <group-ID>, the <group-name> is just the entry
+      __localgroup___[group_id]=                                    # No required <group-ID>
    fi
 
    ### What exists now?
-   ___localgroup___[nss_group_id]="$(                                # Get any existing GID, either from the local /etc/group
-      { getent group "${___localgroup___[group_name]}" || true; } |  # or from the NSS GID. It might not exist.
+   __localgroup___[nss_group_id]="$(                                # Get any existing GID, either from the local /etc/group
+      { getent group "${__localgroup___[group_name]}" || true; } |  # or from the NSS GID. It might not exist.
       cut -d: -f3                                        # This function ensures this variable is set.
    )"
 
    ####################
    # Evaluate Matches #
    ####################
-   ___localgroup___[local_name_found]=false                          # Presume not in /etc/group
-   ___localgroup___[name_found]=false                                # Presume not local and not NSS
-   ___localgroup___[matches]=false                                   # Presume no group name and GID (if provided) match
-   ___localgroup___[status]=1                                        # Presume no match
+   __localgroup___[local_name_found]=false                          # Presume not in /etc/group
+   __localgroup___[name_found]=false                                # Presume not local and not NSS
+   __localgroup___[matches]=false                                   # Presume no group name and GID (if provided) match
+   __localgroup___[status]=1                                        # Presume no match
 
    ### Test Local Group
-   if grep -q "^${___localgroup___[group_name]}:" /etc/group; then   # If the entry is in /etc/group, then a match is possible
-      ___localgroup___[local_name_found]=true                        # A local entry certainly does exist
-      ___localgroup___[name_found]=true                              # The group name exists (in this case, locally)
+   if grep -q "^${__localgroup___[group_name]}:" /etc/group; then   # If the entry is in /etc/group, then a match is possible
+      __localgroup___[local_name_found]=true                        # A local entry certainly does exist
+      __localgroup___[name_found]=true                              # The group name exists (in this case, locally)
 
-      if [[ -n ${___localgroup___[group_id]} ]]; then                # If spec includes GID: that will have to match as well
-         if [[ ${___localgroup___[nss_group_id]} -eq ${___localgroup___[group_id]} ]]; then
+      if [[ -n ${__localgroup___[group_id]} ]]; then                # If spec includes GID: that will have to match as well
+         if [[ ${__localgroup___[nss_group_id]} -eq ${__localgroup___[group_id]} ]]; then
                                                          # Check the NSS GID vs. the Spec GID
-            ___localgroup___[spec_matches]=true                      # The specification matches exactly
-            ___localgroup___[matches]=true                           # ... they both match
-            ___localgroup___[status]=0                               # ... so, we're going to return 0
+            __localgroup___[spec_matches]=true                      # The specification matches exactly
+            __localgroup___[matches]=true                           # ... they both match
+            __localgroup___[status]=0                               # ... so, we're going to return 0
          fi
 
       else
-         ___localgroup___[spec_matches]=true                         # The specification matches exactly
-         ___localgroup___[matches]=true                              # Spec includes only group name and that does match
-         ___localgroup___[status]=0                                  # Matches: no GID match requirement
+         __localgroup___[spec_matches]=true                         # The specification matches exactly
+         __localgroup___[matches]=true                              # Spec includes only group name and that does match
+         __localgroup___[status]=0                                  # Matches: no GID match requirement
       fi
    fi
 
    ### Test NSS Group
-   if [[ -n ${___localgroup___[nss_group_id]} ]]; then               # If both NSS and local GIDs are defined,
-      ___localgroup___[name_found]=true                              # The presence of the NSS GID says the group name exists
+   if [[ -n ${__localgroup___[nss_group_id]} ]]; then               # If both NSS and local GIDs are defined,
+      __localgroup___[name_found]=true                              # The presence of the NSS GID says the group name exists
 
-      if [[ -n ${___localgroup___[group_id]} ]]; then                # If spec includes GID: that will have to match as well
-         if [[ ${___localgroup___[nss_group_id]} -eq ${___localgroup___[group_id]} ]]; then
+      if [[ -n ${__localgroup___[group_id]} ]]; then                # If spec includes GID: that will have to match as well
+         if [[ ${__localgroup___[nss_group_id]} -eq ${__localgroup___[group_id]} ]]; then
                                                          # Check the NSS GID vs. the Spec GID
-            ___localgroup___[matches]=true                           # ... they both match (but not local: don't change Status)
+            __localgroup___[matches]=true                           # ... they both match (but not local: don't change Status)
          fi
 
       else
-         ___localgroup___[matches]=true                              # Spec includes only group name and that does match
+         __localgroup___[matches]=true                              # Spec includes only group name and that does match
       fi
    fi
 
-   if $___localgroup__matches__matches___Show; then
-      :array:dump_associative ___localgroup___ '<h1>Group Match Results</h1>'
+   if $__localgroup__matches__matches___Show; then
+      :array:dump_associative __localgroup___ '<h1>Group Match Results</h1>'
    fi
 
-   [[ -z $___localgroup__matches__matches___GroupVar ]] || :array:copy_associative ___localgroup___ "$___localgroup__matches__matches___GroupVar"
+   [[ -z $__localgroup__matches__matches___GroupVar ]] || :array:copy_associative __localgroup___ "$__localgroup__matches__matches___GroupVar"
 
-   return ${___localgroup___[status]}
+   return ${__localgroup___[status]}
 }

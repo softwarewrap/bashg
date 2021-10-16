@@ -2,9 +2,9 @@
 
 :array:to_set%HELP()
 {
-   local ___array__to_set__to_setHELP___Synopsis='Convert an array to a array set'
+   local __array__to_set__to_setHELP___Synopsis='Convert an array to a array set'
 
-   :help: --set "$___array__to_set__to_setHELP___Synopsis" --usage '<set-variable> <list>...' <<'EOF'
+   :help: --set "$__array__to_set__to_setHELP___Synopsis" --usage '<set-variable> <list>...' <<'EOF'
 OPTIONS:
    -a|--append    ^Append <list> into the <set-variable> [default: overwrite]
 
@@ -40,18 +40,18 @@ EOF
 
 :array:to_set()
 {
-   local ___array__to_set__to_set___SetVar="$1"
+   local __array__to_set__to_set___SetVar="$1"
    shift
 
    :getopts: begin -o 'a' -l 'append' -- "$@"
 
-   local ___array__to_set__to_set___Option                                      # Option letter or word
-   local ___array__to_set__to_set___Value                                       # Value stores a value for options that take a value
-   local ___array__to_set__to_set___Append=false
+   local __array__to_set__to_set___Option                                      # Option letter or word
+   local __array__to_set__to_set___Value                                       # Value stores a value for options that take a value
+   local __array__to_set__to_set___Append=false
 
-   while :getopts: next ___array__to_set__to_set___Option ___array__to_set__to_set___Value; do
-      case "$___array__to_set__to_set___Option" in
-      -a|--append)   ___array__to_set__to_set___Append=true;;
+   while :getopts: next __array__to_set__to_set___Option __array__to_set__to_set___Value; do
+      case "$__array__to_set__to_set___Option" in
+      -a|--append)   __array__to_set__to_set___Append=true;;
 
       *)             break;;
       esac
@@ -63,27 +63,27 @@ EOF
    ######################
    # Perform Validation #
    ######################
-   if [[ -z $___array__to_set__to_set___SetVar || ! $___array__to_set__to_set___SetVar =~ ^[a-zA-Z_][a-zA-Z0-9_]*$ ]]; then
+   if [[ -z $__array__to_set__to_set___SetVar || ! $__array__to_set__to_set___SetVar =~ ^[a-zA-Z_][a-zA-Z0-9_]*$ ]]; then
       :error: "The first argument must be a variable name"
       return 2
    fi
 
-   if [[ ! -v $___array__to_set__to_set___SetVar ]]; then
+   if [[ ! -v $__array__to_set__to_set___SetVar ]]; then
       :error: "The variable name must be initialized prior to calling this function"
       return 3
    fi
 
-   if $___array__to_set__to_set___Append; then
-      local ___array__to_set__to_set___Indirect="$___array__to_set__to_set___SetVar[@]"
-      set -- "${!___array__to_set__to_set___Indirect}" "$@"                     # Append list after existing array values
+   if $__array__to_set__to_set___Append; then
+      local __array__to_set__to_set___Indirect="$__array__to_set__to_set___SetVar[@]"
+      set -- "${!__array__to_set__to_set___Indirect}" "$@"                     # Append list after existing array values
    fi
 
    if (( $# == 0 )); then
-      readarray -t "$___array__to_set__to_set___SetVar" < /dev/null             # If there are no args, set the array to empty
+      readarray -t "$__array__to_set__to_set___SetVar" < /dev/null             # If there are no args, set the array to empty
 
    elif (( $# > 1 )); then                               # If there are multiple args, do the optimization
-      local -a ___array__to_set__to_set___Additions
-      readarray -t ___array__to_set__to_set___Additions < <(
+      local -a __array__to_set__to_set___Additions
+      readarray -t __array__to_set__to_set___Additions < <(
          printf '%s\n' "$@" |                            # Emit the additions one per line
          LC_ALL=C sort -u |                              # Remove duplicates
          awk '{ print length, $0 }' |                    # Add length as field 1
@@ -92,19 +92,19 @@ EOF
          tac                                             # Reverse: longest lines are now first
       )
 
-      local -a ___array__to_set__to_set___Unique=()                             # Start off with an empty array
-      local ___array__to_set__to_set___Addition                                 # Iterator
+      local -a __array__to_set__to_set___Unique=()                             # Start off with an empty array
+      local __array__to_set__to_set___Addition                                 # Iterator
 
-      for ___array__to_set__to_set___Addition in "${___array__to_set__to_set___Additions[@]}"; do
-         if ! :array:has_element ___array__to_set__to_set___Unique "$___array__to_set__to_set___Addition"; then
+      for __array__to_set__to_set___Addition in "${__array__to_set__to_set___Additions[@]}"; do
+         if ! :array:has_element __array__to_set__to_set___Unique "$__array__to_set__to_set___Addition"; then
                                                          # If Addition hasn't been encountered yet,
-            ___array__to_set__to_set___Unique+=( "$___array__to_set__to_set___Addition" )              # ... then add it to the Distinct list
+            __array__to_set__to_set___Unique+=( "$__array__to_set__to_set___Addition" )              # ... then add it to the Distinct list
          fi
       done
 
-      set -- "${___array__to_set__to_set___Unique[@]}"                          # Set the positional args to the optimized list
+      set -- "${__array__to_set__to_set___Unique[@]}"                          # Set the positional args to the optimized list
    fi
 
-   readarray -t "$___array__to_set__to_set___SetVar" < <(printf '%s\n' "$@")
+   readarray -t "$__array__to_set__to_set___SetVar" < <(printf '%s\n' "$@")
                                                          # Write the result back to the passed-in variable
 }

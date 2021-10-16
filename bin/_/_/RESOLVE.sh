@@ -2,7 +2,7 @@
 
 ::%STARTUP-0()
 {
-   local -Ag ____FuncNameMap                             # Define only once: cache for found functions
+   local -Ag ___FuncNameMap                             # Define only once: cache for found functions
 }
 
 ::%HELP()
@@ -122,9 +122,9 @@ EOF
    :getopts: end --save ___Args                         # Save unused args
    set -- "${___Args[@]}"
 
-   if [[ -n ${___launcher___Config[SearchPath]} ]]; then
+   if [[ -n ${__launcher___Config[SearchPath]} ]]; then
       local ___SearchItem
-      for ___SearchItem in ${___launcher___Config[SearchPath]}; do
+      for ___SearchItem in ${__launcher___Config[SearchPath]}; do
                                                          # Word splitting intended: space-separated string is list
          :::AddSearch "$___SearchItem"
       done
@@ -142,10 +142,10 @@ EOF
       local ___Search="$1"                              # Process the next search item
       shift                                              # ... and shift it off of the positional array
 
-      local ________Found="${____FuncNameMap[$___Search]}"  # See if the function name has already been found
+      local _______Found="${___FuncNameMap[$___Search]}"  # See if the function name has already been found
 
-      if [[ -z $________Found ]]; then
-         for ___Prefix in "${________SearchList[@]}"; do
+      if [[ -z $_______Found ]]; then
+         for ___Prefix in "${_______SearchList[@]}"; do
             :::Find -- "$___Prefix$___Search:${_os[distro]}-" "-${_os[arch]}" || break
             :::Find -- "$___Prefix$___Search:${_os[distro]}-" || break
             :::Find --no-version "$___Prefix$___Search:${_os[distro]}" || break
@@ -159,12 +159,12 @@ EOF
             :::Find --no-version "$___Prefix$___Search:" || break
          done
 
-         if [[ -n $________Found ]]; then
-            ____FuncNameMap[$___Search]="$________Found"    # Cache the found function to optimize future searches
+         if [[ -n $_______Found ]]; then
+            ___FuncNameMap[$___Search]="$_______Found"    # Cache the found function to optimize future searches
          fi
       fi
 
-      if $___HasFunc && [[ -n $________Found ]]; then       # If only looking for whether function exists
+      if $___HasFunc && [[ -n $_______Found ]]; then       # If only looking for whether function exists
          return 0                                        # ... then return 0 as a match was found
       fi
 
@@ -173,14 +173,14 @@ EOF
             shift $#                                     # All remaining args would have been passed to the function
          fi
 
-         if [[ -n $________Found ]]; then
-            echo "$________Found"                            # Emit the function name, but only if found
+         if [[ -n $_______Found ]]; then
+            echo "$_______Found"                            # Emit the function name, but only if found
          fi
 
          continue                                        # Take no further action when showing
       fi
 
-      if [[ -z $________Found ]]; then
+      if [[ -z $_______Found ]]; then
          if $___ErrorOnNotFound; then
             :error: --stacktrace 1 "Did not find a match function for the function search: $___Search"
 
@@ -190,58 +190,58 @@ EOF
       fi
 
       if $___EncounteredStopRequest; then
-         "$________Found" "$@"
+         "$_______Found" "$@"
          shift $#
 
       else
-         "$________Found"
+         "$_______Found"
       fi
    done
 }
 
 :::Find()
 {
-   local _____RESOLVE__Find___Options
-   _____RESOLVE__Find___Options=$(getopt -o '' -l 'no-version' -n "${FUNCNAME[0]}" -- "$@") || return
-   eval set -- "$_____RESOLVE__Find___Options"
+   local ____RESOLVE__Find___Options
+   ____RESOLVE__Find___Options=$(getopt -o '' -l 'no-version' -n "${FUNCNAME[0]}" -- "$@") || return
+   eval set -- "$____RESOLVE__Find___Options"
 
-   local _____RESOLVE__Find___Version=true
+   local ____RESOLVE__Find___Version=true
    while true ; do
       case "$1" in
-      --no-version)  _____RESOLVE__Find___Version=false; shift;;
+      --no-version)  ____RESOLVE__Find___Version=false; shift;;
       --)            shift; break;;
       *)             break;;
       esac
    done
 
-   local _____RESOLVE__Find___Prefix="$1"
-   local _____RESOLVE__Find___Suffix="$2"
+   local ____RESOLVE__Find___Prefix="$1"
+   local ____RESOLVE__Find___Suffix="$2"
 
-   if ! $_____RESOLVE__Find___Version && :test:has_func "$_____RESOLVE__Find___Prefix" ]]; then
-      ________Found="$_____RESOLVE__Find___Prefix"
+   if ! $____RESOLVE__Find___Version && :test:has_func "$____RESOLVE__Find___Prefix" ]]; then
+      _______Found="$____RESOLVE__Find___Prefix"
       return 1
    fi
 
-   local -a _____RESOLVE__Find___Candidates
-   readarray -t _____RESOLVE__Find___Candidates < <(
-      compgen -A function "$_____RESOLVE__Find___Prefix" |
-      { grep -Pe "^$_____RESOLVE__Find___Prefix[0-9.]+$_____RESOLVE__Find___Suffix$" || true; } |
-      sed -e "s|^$_____RESOLVE__Find___Prefix||" -e "s|$_____RESOLVE__Find___Suffix$||" |
+   local -a ____RESOLVE__Find___Candidates
+   readarray -t ____RESOLVE__Find___Candidates < <(
+      compgen -A function "$____RESOLVE__Find___Prefix" |
+      { grep -Pe "^$____RESOLVE__Find___Prefix[0-9.]+$____RESOLVE__Find___Suffix$" || true; } |
+      sed -e "s|^$____RESOLVE__Find___Prefix||" -e "s|$____RESOLVE__Find___Suffix$||" |
       sed '/^\s*$/d'
    )
 
-   (( ${#_____RESOLVE__Find___Candidates[@]} > 0 )) || return 0
+   (( ${#____RESOLVE__Find___Candidates[@]} > 0 )) || return 0
 
-   for _____RESOLVE__Find___VersionType in minor-version major-version; do
-      ________Found="$(
+   for ____RESOLVE__Find___VersionType in minor-version major-version; do
+      _______Found="$(
          {
-            printf '%s\n' "${_____RESOLVE__Find___Candidates[@]}"
+            printf '%s\n' "${____RESOLVE__Find___Candidates[@]}"
             echo "${_os[minor-version]} #MAX#"
          } |
          sort -V |
          sed '/#MAX#/,$d' |
          {
-            if [[ $_____RESOLVE__Find___VersionType = major-version ]]; then
+            if [[ $____RESOLVE__Find___VersionType = major-version ]]; then
                sed '/\./d'
             else
                cat
@@ -249,20 +249,20 @@ EOF
          } |
          tail -1
       )"
-      [[ -z $________Found ]] || break
+      [[ -z $_______Found ]] || break
    done
 
-   if [[ -n $________Found ]]; then
-      ________Found="$_____RESOLVE__Find___Prefix$________Found$_____RESOLVE__Find___Suffix"
+   if [[ -n $_______Found ]]; then
+      _______Found="$____RESOLVE__Find___Prefix$_______Found$____RESOLVE__Find___Suffix"
       return 1
    fi
 }
 
 :::AddSearch()
 {
-   local _____RESOLVE__AddSearch___Add="$1"
+   local ____RESOLVE__AddSearch___Add="$1"
 
-   if ! :array:has_element ________SearchList "$_____RESOLVE__AddSearch___Add"; then
-      ________SearchList+=( "$_____RESOLVE__AddSearch___Add" )
+   if ! :array:has_element _______SearchList "$____RESOLVE__AddSearch___Add"; then
+      _______SearchList+=( "$____RESOLVE__AddSearch___Add" )
    fi
 }

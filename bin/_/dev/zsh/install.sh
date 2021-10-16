@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_dev:zsh:install%HELP()
+.dev:zsh:install%HELP()
 {
    local _dev__zsh__install__installHELP___Synopsis='Install zsh and configure accounts'
 
@@ -10,14 +10,14 @@ DESCRIPTION:
 
    This command requires no arguments and performs the following additional command:
 
-      _dev:zsh:configure /root
+      .dev:zsh:configure /root
 
-   If this command is run as user other than root, then the _dev:zsh:configure command
+   If this command is run as user other than root, then the .dev:zsh:configure command
    is run with that user's home directory as well.
 EOF
 }
 
-_dev:zsh:install()
+.dev:zsh:install()
 {
    :sudo || :reenter                                     # This function must run as root
 
@@ -48,7 +48,7 @@ _dev:zsh:install()
       gcc -o "$_dev__zsh__install__install___Executable" "$_dev__zsh__install__install___SourceFile"
    done
 
-   _dev:zsh:configure /root "$_entry_home"                    # Configure these home directories
+   .dev:zsh:configure /root "$_entry_home"                    # Configure these home directories
 
    :log: --pop
 }

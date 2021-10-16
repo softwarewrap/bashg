@@ -2,7 +2,7 @@
 
 :test:has_command%HELP()
 {
-   local ___test__has_command__has_commandHELP___Synopsis='Is true if the provided command(s) exist'
+   local __test__has_command__has_commandHELP___Synopsis='Is true if the provided command(s) exist'
    :help: --usage '<command>...' <<EOF
 DESCRIPTION:
    Return 0 if all commands provided exist; return non-zero otherwise.
@@ -22,10 +22,10 @@ EOF
 
 :test:has_command()
 {
-   local ___test__has_command__has_command___Command
+   local __test__has_command__has_command___Command
 
-   for ___test__has_command__has_command___Command in "$@"; do
-      if ! command -v "$___test__has_command__has_command___Command" &>/dev/null; then
+   for __test__has_command__has_command___Command in "$@"; do
+      if ! command -v "$__test__has_command__has_command___Command" &>/dev/null; then
          return 1
       fi
    done

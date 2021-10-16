@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_dev:need:rsh:linux-7()
+.dev:need:rsh:linux-7()
 {
    if ! :test:has_package rsh || ! :test:has_package rsh-server; then
       :log: --push-section 'Installing' 'rsh' "$FUNCNAME $@"
@@ -30,7 +30,7 @@ _dev:need:rsh:linux-7()
    fi
 }
 
-_dev:need:rsh:linux-6()
+.dev:need:rsh:linux-6()
 {
    if ! :test:has_package rsh || ! :test:has_package rsh-server; then
       # rsh must be installed and passwordless access allowed

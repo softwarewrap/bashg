@@ -6,15 +6,15 @@
 
    (( $# > 0 )) || return
 
-   local ___need__disable_services__linux___Options
-   ___need__disable_services__linux___Options=$(getopt -o '' -l 'suffix:,no-suffix' -n "${FUNCNAME[0]}" -- "$@") || return
-   eval set -- "$___need__disable_services__linux___Options"
+   local __need__disable_services__linux___Options
+   __need__disable_services__linux___Options=$(getopt -o '' -l 'suffix:,no-suffix' -n "${FUNCNAME[0]}" -- "$@") || return
+   eval set -- "$__need__disable_services__linux___Options"
 
-   local ___need__disable_services__linux___Suffix='.service'
+   local __need__disable_services__linux___Suffix='.service'
    while true ; do
       case "$1" in
-      --suffix)      ___need__disable_services__linux___Suffix="$2"; shift 2;;
-      --no-suffix)   ___need__disable_services__linux___Suffix=; shift;;
+      --suffix)      __need__disable_services__linux___Suffix="$2"; shift 2;;
+      --no-suffix)   __need__disable_services__linux___Suffix=; shift;;
       --)            shift; break;;
       *)             break;;
       esac
@@ -22,20 +22,20 @@
 
    :log: --push-section 'Disabling services' "$FUNCNAME $@"
 
-   local ___need__disable_services__linux___Service
-   for ___need__disable_services__linux___Service in "$@"; do
-      ___need__disable_services__linux___Service+="$___need__disable_services__linux___Suffix"                         # Service names end with .service
+   local __need__disable_services__linux___Service
+   for __need__disable_services__linux___Service in "$@"; do
+      __need__disable_services__linux___Service+="$__need__disable_services__linux___Suffix"                         # Service names end with .service
 
-      if [[ $( systemctl list-unit-files "$___need__disable_services__linux___Service" |
-               grep "$___need__disable_services__linux___Service" |
+      if [[ $( systemctl list-unit-files "$__need__disable_services__linux___Service" |
+               grep "$__need__disable_services__linux___Service" |
                awk '{print $2}'
             ) = enabled ]] ; then
 
-         :log: --push "Disabling service: $___need__disable_services__linux___Service"
+         :log: --push "Disabling service: $__need__disable_services__linux___Service"
 
-         systemctl stop "$___need__disable_services__linux___Service"
-         systemctl disable "$___need__disable_services__linux___Service"
-         systemctl mask "$___need__disable_services__linux___Service"
+         systemctl stop "$__need__disable_services__linux___Service"
+         systemctl disable "$__need__disable_services__linux___Service"
+         systemctl mask "$__need__disable_services__linux___Service"
 
          :log: --pop
       fi

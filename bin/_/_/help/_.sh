@@ -2,8 +2,8 @@
 
 :help:%HELP()
 {
-   local ___help_____HELP___Synopsis='Provide help on available functions'
-   :help: --set "$___help_____HELP___Synopsis" --usage '[OPTIONS] [<search>]' <<EOF
+   local __help_____HELP___Synopsis='Provide help on available functions'
+   :help: --set "$__help_____HELP___Synopsis" --usage '[OPTIONS] [<search>]' <<EOF
 OPTIONS:
    -l|--list            ^List functions matching <search> if provided, sorted by directory
    -L|--list-all        ^Shorthand for --list --all
@@ -110,59 +110,59 @@ EOF
 
 :help:()
 {
-   local ___help________Options
-   ___help________Options=$(getopt -o 'lLsa' -l 'list,list-all,short,public,private,both,meta,all,set:,synopsis-var:,synopsis,usage:' -n "${FUNCNAME[0]}" -- "$@") || return
-   eval set -- "$___help________Options"
+   local __help________Options
+   __help________Options=$(getopt -o 'lLsa' -l 'list,list-all,short,public,private,both,meta,all,set:,synopsis-var:,synopsis,usage:' -n "${FUNCNAME[0]}" -- "$@") || return
+   eval set -- "$__help________Options"
 
-   [[ -v ___help______Mode ]] || local -g ___help______Mode='search'          # Ensure the Emit control variable is defined
-   [[ -v ___help______Synopsis ]] || local -g ___help______Synopsis=
-   [[ -v ___help______SynopsisVar ]] || local -g ___help______SynopsisVar=
+   [[ -v __help______Mode ]] || local -g __help______Mode='search'          # Ensure the Emit control variable is defined
+   [[ -v __help______Synopsis ]] || local -g __help______Synopsis=
+   [[ -v __help______SynopsisVar ]] || local -g __help______SynopsisVar=
 
-   local ___help________Usage='[OPTIONS]'
-   local ___help________GenerateList=false
-   local -a ___help________ShowOptions=()
+   local __help________Usage='[OPTIONS]'
+   local __help________GenerateList=false
+   local -a __help________ShowOptions=()
 
    while true ; do
       case "$1" in
       # External Options
-      -l|--list)        ___help________GenerateList=true; shift;;
-      -L|--list-all)    ___help________GenerateList=true; ___help________ShowOptions+=( --all ); shift;;
-      -s|--short)       ___help________ShowOptions+=( --short ); shift;;
+      -l|--list)        __help________GenerateList=true; shift;;
+      -L|--list-all)    __help________GenerateList=true; __help________ShowOptions+=( --all ); shift;;
+      -s|--short)       __help________ShowOptions+=( --short ); shift;;
 
-      --public)         ___help________ShowOptions+=( "$1" ); shift;;
-      --private)        ___help________ShowOptions+=( "$1" ); shift;;
-      --both)           ___help________ShowOptions+=( "$1" ); shift;;
+      --public)         __help________ShowOptions+=( "$1" ); shift;;
+      --private)        __help________ShowOptions+=( "$1" ); shift;;
+      --both)           __help________ShowOptions+=( "$1" ); shift;;
 
-      --meta)           ___help________ShowOptions+=( "$1" ); shift;;
-      -a|--all)         ___help________ShowOptions+=( --all ); shift;;
+      --meta)           __help________ShowOptions+=( "$1" ); shift;;
+      -a|--all)         __help________ShowOptions+=( --all ); shift;;
 
       # Internal Options
-      --set)            ___help______Synopsis="$2"; shift 2;;
-      --synopsis-var)   ___help______SynopsisVar="$2"; shift 2;;
-      --synopsis)       ___help______SynopsisVar='-'; shift;;
-      --usage)          ___help________Usage="$2"; shift 2;;
+      --set)            __help______Synopsis="$2"; shift 2;;
+      --synopsis-var)   __help______SynopsisVar="$2"; shift 2;;
+      --synopsis)       __help______SynopsisVar='-'; shift;;
+      --usage)          __help________Usage="$2"; shift 2;;
       --)               shift; break;;
       *)                break;;
       esac
    done
 
    ### SYNOPSIS HANDLING
-   if [[ $___help______Mode = synopsis ]]; then
-      if [[ -n $___help______SynopsisVar && $___help______SynopsisVar != - ]]; then
-         printf -v "$___help______SynopsisVar" '%s' "$___help______Synopsis"
+   if [[ $__help______Mode = synopsis ]]; then
+      if [[ -n $__help______SynopsisVar && $__help______SynopsisVar != - ]]; then
+         printf -v "$__help______SynopsisVar" '%s' "$__help______Synopsis"
 
-      elif [[ -n $___help______Synopsis ]]; then
-         echo "$___help______Synopsis"
+      elif [[ -n $__help______Synopsis ]]; then
+         echo "$__help______Synopsis"
       fi
 
       return 0
    fi
 
-   if [[ -n $___help______SynopsisVar ]]; then
+   if [[ -n $__help______SynopsisVar ]]; then
       if :test:has_func "$1%HELP"; then
-         ___help______Mode='synopsis'
+         __help______Mode='synopsis'
          "$1%HELP"
-         ___help______Mode='search'
+         __help______Mode='search'
       fi
 
       return 0
@@ -170,56 +170,56 @@ EOF
 
    ### EMIT FUNCTION HELP
    if :test:has_stdin; then                              # Only true if being called from a %HELP function
-      local ___help______Input=                                   # Transfer stdin to this variable
-      ___help______Input="$(cat)"                                 # The raw man page is delivered via stdin
+      local __help______Input=                                   # Transfer stdin to this variable
+      __help______Input="$(cat)"                                 # The raw man page is delivered via stdin
 
       {
-         echo "\nSYNOPSIS: <B>${FUNCNAME[1]%\%HELP}</B> $___help________Usage"
-         [[ -z $___help______Synopsis ]] || echo "   <G>$___help______Synopsis</G>"
-         echo "\n$___help______Input"
+         echo "\nSYNOPSIS: <B>${FUNCNAME[1]%\%HELP}</B> $__help________Usage"
+         [[ -z $__help______Synopsis ]] || echo "   <G>$__help______Synopsis</G>"
+         echo "\n$__help______Input"
       } | :highlight: --pager 'less -R'
 
       return 0
    fi
 
    ### NO REQUEST: PROVIDE GENERAL HELP
-   if (( $# == 0 )) && ! $___help________GenerateList; then
+   if (( $# == 0 )) && ! $__help________GenerateList; then
       :help:%HELP                                          # Call the help function
 
       return 0
    fi
 
    ### SEARCH FOR FUNCTION MATCHES
-   local -a ___help______FunctionMatches=()
-   if :array:has_element -- ___help________ShowOptions '--all' ||
-      :array:has_element -- ___help________ShowOptions '--meta'; then
-      local -a ___help________FindOptions=()
+   local -a __help______FunctionMatches=()
+   if :array:has_element -- __help________ShowOptions '--all' ||
+      :array:has_element -- __help________ShowOptions '--meta'; then
+      local -a __help________FindOptions=()
    else
-      local -a ___help________FindOptions=( --no-meta )
+      local -a __help________FindOptions=( --no-meta )
    fi
 
-   :find:functions --find "${___help________FindOptions[@]}" --var ___help______FunctionMatches "$@"
+   :find:functions --find "${__help________FindOptions[@]}" --var __help______FunctionMatches "$@"
                                                          # Get function matches based on the remaining arguments
-   local -a ___help________PublicMatches
-   readarray -t ___help________PublicMatches < <(                   # Determine if there is only one public match
-      printf '%s\n' "${___help______FunctionMatches[@]}" |
+   local -a __help________PublicMatches
+   readarray -t __help________PublicMatches < <(                   # Determine if there is only one public match
+      printf '%s\n' "${__help______FunctionMatches[@]}" |
       { grep -v '[A-Z]' || true; } |
       sed '/^\s*$/d'
    )
-   if (( ${#___help________PublicMatches[@]} == 1 )) &&             # ... if so, and
-         :test:has_func "$___help________PublicMatches%HELP" &&     # ... if a HELP function for it exists,
-         ! $___help________GenerateList; then                       # ... and a listing is not explicitly requested
+   if (( ${#__help________PublicMatches[@]} == 1 )) &&             # ... if so, and
+         :test:has_func "$__help________PublicMatches%HELP" &&     # ... if a HELP function for it exists,
+         ! $__help________GenerateList; then                       # ... and a listing is not explicitly requested
 
-      "$___help________PublicMatches%HELP"                          # ... then display the found function's help page
+      "$__help________PublicMatches%HELP"                          # ... then display the found function's help page
 
    elif (( $# == 1 )) &&                                 # If only one <search> pattern is requested
-      :array:has_element ___help______FunctionMatches "$1" &&     # and if there is an exact match
+      :array:has_element __help______FunctionMatches "$1" &&     # and if there is an exact match
       :test:has_func "$1%HELP"; then                     # and there is a help function as well
 
       "$1%HELP"                                          # ... then show the help
 
    else
-      ___help________ShowOptions+=( --var ___help______FunctionMatches )
-      :show:functions "${___help________ShowOptions[@]}"
+      __help________ShowOptions+=( --var __help______FunctionMatches )
+      :show:functions "${__help________ShowOptions[@]}"
    fi
 }

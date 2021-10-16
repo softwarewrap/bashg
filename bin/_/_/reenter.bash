@@ -11,7 +11,7 @@
 #     The -g option is not included by declare but will be added
 #     later during reentry options parsing
 
-# ___launcher___Config[bash.set]
+# __launcher___Config[bash.set]
 #     Note that under command substitution the setting for errexit is not preserved
 #     and is unconditionally rendered as set +o errexit.
 #     The conditional code is a workaround to ensure that the setting is preserved
@@ -27,15 +27,15 @@ alias :reenter=$'
 
       local -a _reentry_vars=()
 
-      ___launcher___Config[pwd]="$(pwd)"
+      __launcher___Config[pwd]="$(pwd)"
 
       if [[ $- =~ e ]]; then
-         ___launcher___Config[bash.set]="$( { set +o; echo "set -o errexit"; } | base64 -w0)"
+         __launcher___Config[bash.set]="$( { set +o; echo "set -o errexit"; } | base64 -w0)"
       else
-         ___launcher___Config[bash.set]="$(set +o | base64 -w0)"
+         __launcher___Config[bash.set]="$(set +o | base64 -w0)"
       fi
 
-      ___launcher___Config[bash.shopt]="$(shopt -p | base64 -w0)"
+      __launcher___Config[bash.shopt]="$(shopt -p | base64 -w0)"
 
       _entry_initial=false
 
@@ -50,7 +50,7 @@ alias :reenter=$'
          fi
       done
 
-      sudo -iu "$_RunAs" -- bash "$_program" -u "$_entry_user" "${_reentry_vars[@]}" -- ${___launcher___Config[reenter]:-$FUNCNAME} "$@"
+      sudo -iu "$_RunAs" -- bash "$_program" -u "$_entry_user" "${_reentry_vars[@]}" -- ${__launcher___Config[reenter]:-$FUNCNAME} "$@"
       return
    fi
 }

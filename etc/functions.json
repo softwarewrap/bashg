@@ -1,7 +1,135 @@
 {
   "function": {
+    "-": {
+      "hash": "04df91be61d1a1d34d1b29cb64e86fbf",
+      "path": "_/_/INDIRECT.sh"
+    },
+    ".dev:need:%STARTUP-1": {
+      "hash": "2558f7f2030672243b16bfedb28c94fa",
+      "path": "_/dev/need/_.sh"
+    },
+    ".dev:need:install_package_epel_release:EPELisInstalled": {
+      "hash": "15318920f2efd2963a24ca2dddab822b",
+      "path": "_/dev/need/install_package_epel_release.sh"
+    },
+    ".dev:need:install_package_epel_release:InstallEPEL": {
+      "hash": "b0285799458121290304022a4b8a38d3",
+      "path": "_/dev/need/install_package_epel_release.sh"
+    },
+    ".dev:need:install_package_epel_release:centos-7": {
+      "hash": "8c7dba7897349d9db644fcbad0423456",
+      "path": "_/dev/need/install_package_epel_release.sh"
+    },
+    ".dev:need:install_package_epel_release:centos-8": {
+      "hash": "a1cd857a8698e10fba8293d883539667",
+      "path": "_/dev/need/install_package_epel_release.sh"
+    },
+    ".dev:need:install_package_epel_release:linux-6": {
+      "hash": "3f2be49cba54a2c195fdda2e6061509f",
+      "path": "_/dev/need/install_package_epel_release.sh"
+    },
+    ".dev:need:install_package_epel_release:redhat-7": {
+      "hash": "616e198f8b915bc193f8b73272e8be58",
+      "path": "_/dev/need/install_package_epel_release.sh"
+    },
+    ".dev:need:install_package_epel_release:redhat-8": {
+      "hash": "7840b407b12034710acf935db4652abf",
+      "path": "_/dev/need/install_package_epel_release.sh"
+    },
+    ".dev:need:install_package_git:centos": {
+      "hash": "da2510c5f446f3ddffa0398ff972ff49",
+      "path": "_/dev/need/install_package_git.sh"
+    },
+    ".dev:need:install_package_git:install_git_centos": {
+      "hash": "2b2d656e326254764a488d95e61f04c4",
+      "path": "_/dev/need/install_package_git.sh"
+    },
+    ".dev:need:install_package_git:install_git_redhat": {
+      "hash": "acb61a719250e04789256b3841b77915",
+      "path": "_/dev/need/install_package_git.sh"
+    },
+    ".dev:need:install_package_git:redhat": {
+      "hash": "3f16cd1619555d34db13051cf7628f97",
+      "path": "_/dev/need/install_package_git.sh"
+    },
+    ".dev:need:install_package_jq:": {
+      "hash": "2404f6a5e84ec9c2229bd42e9608cfaa",
+      "path": "_/dev/need/install_package_jq.sh"
+    },
+    ".dev:need:install_package_jq:install_jq": {
+      "hash": "7346bdd45f35f515906aa50c60e9ec5e",
+      "path": "_/dev/need/install_package_jq.sh"
+    },
+    ".dev:need:install_package_yum_utils:": {
+      "hash": "f0b22914a7d5e0a707effc6474b19717",
+      "path": "_/dev/need/install_package_yum_utils.sh"
+    },
+    ".dev:need:iptables:linux-7": {
+      "hash": "6cb2b4389870039982ca0eaa24ae4532",
+      "path": "_/dev/need/iptables.sh"
+    },
+    ".dev:need:os_packages:": {
+      "hash": "415a52259cc1a95e96cfc537a420052b",
+      "path": "_/dev/need/os_packages.sh"
+    },
+    ".dev:need:rsh:linux-6": {
+      "hash": "74469608a801546e91480ad6e22c21f5",
+      "path": "_/dev/need/rsh.sh"
+    },
+    ".dev:need:rsh:linux-7": {
+      "hash": "6c9f7953cb705a88228369a514935c9e",
+      "path": "_/dev/need/rsh.sh"
+    },
+    ".dev:need:vim:": {
+      "hash": "cbb86a41a812bac504f87904913a171d",
+      "path": "_/dev/need/vim.sh"
+    },
+    ".dev:need:zsh:": {
+      "hash": "2f8fa6570e2fc438381e0224f7f65c0b",
+      "path": "_/dev/need/zsh.sh"
+    },
+    ".dev:vim:configure": {
+      "hash": "a403ddbe0c2e6d598b42be7fdd244664",
+      "path": "_/dev/vim/configure.sh"
+    },
+    ".dev:vim:configure%HELP": {
+      "hash": "6adb9692bb3c36d5e215160e983e7260",
+      "path": "_/dev/vim/configure.sh"
+    },
+    ".dev:vim:install": {
+      "hash": "6ec8e32fb3a2d4ba29a481d1cb3001a9",
+      "path": "_/dev/vim/install.sh"
+    },
+    ".dev:vim:install%HELP": {
+      "hash": "357d16ebd926c73f3b8d2e9c353c1609",
+      "path": "_/dev/vim/install.sh"
+    },
+    ".dev:zsh:configure": {
+      "hash": "52009cbedeb02fe59ca5186998ed1791",
+      "path": "_/dev/zsh/configure.sh"
+    },
+    ".dev:zsh:configure%HELP": {
+      "hash": "efc72ba1f2a4a0259c0dfc3b2120ecb4",
+      "path": "_/dev/zsh/configure.sh"
+    },
+    ".dev:zsh:install": {
+      "hash": "6a2e88edd02879e25026691050744ca4",
+      "path": "_/dev/zsh/install.sh"
+    },
+    ".dev:zsh:install%HELP": {
+      "hash": "5f231f185869cace01bdb435cbdf6eea",
+      "path": "_/dev/zsh/install.sh"
+    },
+    ".doc:comp:unit:func": {
+      "hash": "98c17345a7d79343503f8f50c83d0c7a",
+      "path": "_/doc/comp/unit/demo.sh"
+    },
+    ".doc:roadmap": {
+      "hash": "89a9bab500833b7ae89b1e13c44926c8",
+      "path": "_/doc/roadmap.sh"
+    },
     "::": {
-      "hash": "78d0804b5bd814504aa30f994e83cf08",
+      "hash": "85c9fb47cc355e34ccb9d7ee3c3516c2",
       "path": "_/_/RESOLVE.sh"
     },
     "::%HELP": {
@@ -9,15 +137,23 @@
       "path": "_/_/RESOLVE.sh"
     },
     "::%STARTUP-0": {
-      "hash": "a583f91c1314f8e001016acf87e807c1",
+      "hash": "77c3dc0d8257c868a66f3ee6a390d53e",
       "path": "_/_/RESOLVE.sh"
     },
+    ":::%STARTUP-0": {
+      "hash": "07ca856172dcbbce35695e3003e83c5f",
+      "path": "_/_/INDIRECT.sh"
+    },
+    ":::%STARTUP-1": {
+      "hash": "eb16295648c9fb19c5758599971d406c",
+      "path": "_/_/PYTHON.sh"
+    },
     ":::AddSearch": {
-      "hash": "6b96c045711b6641c908fd0186bfc4bc",
+      "hash": "74baaa1ff07147d365cfe41dbd750476",
       "path": "_/_/RESOLVE.sh"
     },
     ":::Find": {
-      "hash": "93b30bed05387e37cad579ecd6edb659",
+      "hash": "c01abba7deaa76d501d3f33d4822f56e",
       "path": "_/_/RESOLVE.sh"
     },
     ":::TestNest1": {
@@ -29,39 +165,39 @@
       "path": "_/_/try.sh"
     },
     ":archive:": {
-      "hash": "f1f7b9934a58bafa79b7695fef00f493",
+      "hash": "19a0b80e8caae161e05fda9f3e59ae78",
       "path": "_/_/archive/_.sh"
     },
     ":archive:%HELP": {
-      "hash": "1cb37b850dd033e6af95e8ff37b31df4",
+      "hash": "e72250b213950a7da9ade2e21c1295b9",
       "path": "_/_/archive/_.sh"
     },
     ":array:copy_associative": {
-      "hash": "6ba83c979f86d3dd5bb50a4b17712928",
+      "hash": "06f5363ae9a48a3563421a6f1713fd6e",
       "path": "_/_/array/copy_associative.sh"
     },
     ":array:copy_associative%TEST": {
-      "hash": "01513da72ed196cd7edae0d2a4909e52",
+      "hash": "d1784c3b6a2291c1568168653dc6a0a4",
       "path": "_/_/array/copy_associative.sh"
     },
     ":array:dump_associative": {
-      "hash": "539ecf9a4ffd4e0554ab7aa3b63ac4d8",
+      "hash": "dc8ada375fedfc6a2a7d49bda715e7a6",
       "path": "_/_/array/dump_associative.sh"
     },
     ":array:dump_associative.Get": {
-      "hash": "acb643e02fa35acf4da1b3fe43e1a7fc",
+      "hash": "ab9099d6c2cb6700f3f0e0bd90ad1744",
       "path": "_/_/array/dump_associative.sh"
     },
     ":array:has_element": {
-      "hash": "c29e66e0ee88f6b328d6d39b764e849b",
+      "hash": "8f364f70aa98cc3295bb2a11191ae33a",
       "path": "_/_/array/has_element.sh"
     },
     ":array:has_element%HELP": {
-      "hash": "f111900d5c77214aad5c9e04a2e7a9ec",
+      "hash": "44786d7daab7e21b0634311840153cdb",
       "path": "_/_/array/has_element.sh"
     },
     ":array:sort": {
-      "hash": "057bba518dc56ad522ad6e0bb095223e",
+      "hash": "f5060182269639444de305226e451394",
       "path": "_/_/array/sort.sh"
     },
     ":array:sort%TEST": {
@@ -69,23 +205,23 @@
       "path": "_/_/array/sort.sh"
     },
     ":array:sort:assert": {
-      "hash": "026f1f915f03c3248f278f0cc4e960e9",
+      "hash": "cfebbde3c8a643c22f1e842be8b78e70",
       "path": "_/_/array/sort.sh"
     },
     ":array:to_set": {
-      "hash": "2ba635d28e4bacb0f2bfec39f91c6fa7",
+      "hash": "27b7adf3c528bc7f4d64ac6ccdea248d",
       "path": "_/_/array/to_set.sh"
     },
     ":array:to_set%HELP": {
-      "hash": "d29909e254bc00f8c85fd6836c4bb22a",
+      "hash": "f344b9ed4f0ec45ad1d78efdf8f190f0",
       "path": "_/_/array/to_set.sh"
     },
     ":comp:unit:func": {
-      "hash": "b3c3ad858f51da07821a60378d5dd75f",
+      "hash": "4236c477a4fb48a0e43c09a3888feac6",
       "path": "_/_/comp/unit/demo.sh"
     },
     ":curl:": {
-      "hash": "3ca5db31d644cbfc78b79ec66184406d",
+      "hash": "29e00e5d5a22cf3c6c75534b55e10a72",
       "path": "_/_/curl/_.sh"
     },
     ":curl:%HELP": {
@@ -93,11 +229,11 @@
       "path": "_/_/curl/_.sh"
     },
     ":curl:auth_tmpl": {
-      "hash": "4c17ba34b91e9b1eef05adada42e69e1",
+      "hash": "2dac980e759654e9a138746a6b44eb2c",
       "path": "_/_/curl/_.sh"
     },
     ":curl:tenant_token_auth_tmpl": {
-      "hash": "75733dadd1e37ada21172449f6a7d047",
+      "hash": "46264b61e1677f5d69fb2570137bdde3",
       "path": "_/_/curl/_.sh"
     },
     ":echo:": {
@@ -105,155 +241,155 @@
       "path": "_/_/echo/_.sh"
     },
     ":error:": {
-      "hash": "43d9cde090c9e2db679d68bc7f0aa016",
+      "hash": "d8a5bcb5b5adfed422f29b638e949051",
       "path": "_/_/error/_.sh"
     },
     ":error:%HELP": {
-      "hash": "76b9751c25370ced6cb8c4329e916724",
+      "hash": "4e246f9883b318c7e5b6a96fa541f509",
       "path": "_/_/error/_.sh"
     },
     ":error:stacktrace": {
-      "hash": "cb18cefa6e167cef0b85f81535aceab8",
+      "hash": "b63885a08e9fd0e39b63a4b382843623",
       "path": "_/_/error/stacktrace.sh"
     },
     ":esc:sed": {
-      "hash": "d85d9857a07c11acb907f5b687a74217",
+      "hash": "01995bab54635fc36ecce2473cf76d07",
       "path": "_/_/esc/sed.sh"
     },
     ":esc:sed%HELP": {
-      "hash": "d9f2d07219673dcb5500dec44b1ad7ad",
+      "hash": "b63addf911a245d41c9d5d9b21410eb1",
       "path": "_/_/esc/sed.sh"
     },
     ":file:distinct_paths": {
-      "hash": "504d024e6c10a272a2f6bacc48d1c491",
+      "hash": "feea65d226da0daa7dd053ae3aa4f15a",
       "path": "_/_/file/distinct_paths.sh"
     },
     ":file:ensure_nl_at_end": {
-      "hash": "d24507cafe53b9aadcf593ed1d63cc55",
+      "hash": "c8924457172d0409e7b8d0b7515fa17d",
       "path": "_/_/file/ensure_nl_at_end.sh"
     },
     ":find:functions": {
-      "hash": "1da1b923446c0f71f60290ca62a14288",
+      "hash": "aab95a0722c9ef39512c67bc72742cf6",
       "path": "_/_/find/functions.sh"
     },
     ":get:os": {
-      "hash": "d4a7352dd91030d411efa36480fc0de7",
+      "hash": "65bab92ecf2e753d9f7226dcac075c9a",
       "path": "_/_/get/os.sh"
     },
     ":get:os%HELP": {
-      "hash": "fc34f78f6518d86069ff120d93261680",
+      "hash": "29ff0eba95c170add4dcc44ec3f47d14",
       "path": "_/_/get/os.sh"
     },
     ":get:os:Linux": {
-      "hash": "d674df03d9e81291558eee66636746cb",
+      "hash": "9fca671ab83b73d1bc3ebe189794bdc0",
       "path": "_/_/get/os.sh"
     },
     ":getopts:": {
-      "hash": "08e7c54297312f135a7c639244b8eb96",
+      "hash": "a5c310dab3b114523defbafe8ce2e4f5",
       "path": "_/_/getopts/_.sh"
     },
     ":getopts:%HELP": {
-      "hash": "6e89c126c627235362dcdc6ddf3d7ee1",
+      "hash": "7845093d2997a727a4b0512e21b3fc21",
       "path": "_/_/getopts/_.sh"
     },
     ":getopts:%TEST": {
-      "hash": "63bfe476f38908f1de06d64830cafb98",
+      "hash": "623a3c0005ac03b738a34f111593f019",
       "path": "_/_/getopts/_.sh"
     },
     ":getopts:Directive_begin": {
-      "hash": "393e96cfe07dbcacfacb78334fc8a5d7",
+      "hash": "0b60ce9795afc5e10e310bb0f0036703",
       "path": "_/_/getopts/_.sh"
     },
     ":getopts:Directive_end": {
-      "hash": "0ca82fc4459271fce34da51e2908d452",
+      "hash": "b7d94a9c33b4bdf09294d489a137e9f9",
       "path": "_/_/getopts/_.sh"
     },
     ":getopts:Directive_next": {
-      "hash": "28899cfc2417460b7d041062cba33621",
+      "hash": "61d039be5358cce9319d80006e348355",
       "path": "_/_/getopts/_.sh"
     },
     ":git:is_local_branch": {
-      "hash": "8f1d2649302208812ba3e3dd8cf7ada4",
+      "hash": "dcb9e0babe1a0c14bf0e87906cb17a31",
       "path": "_/_/git/is_local_branch.sh"
     },
     ":git:is_local_branch%HELP": {
-      "hash": "eddeeb0e8df2fac65da52a2005a494b2",
+      "hash": "4517df172acf15d791f75f42e03fef3f",
       "path": "_/_/git/is_local_branch.sh"
     },
     ":git:is_remote_branch": {
-      "hash": "517821ce91313c0d8a6e8ed8bf2408e7",
+      "hash": "6559e756d6fd8ca0bc0ba51baef545df",
       "path": "_/_/git/is_remote_branch.sh"
     },
     ":git:is_remote_branch%HELP": {
-      "hash": "0b6070ad35fe8d743a34612bb79be1eb",
+      "hash": "6d94bc1f242f278cd4561d07a4aeff53",
       "path": "_/_/git/is_remote_branch.sh"
     },
     ":git:log": {
-      "hash": "69b7565acb1c8d7a2fd189d7c95799b3",
+      "hash": "892a1367757828990403366f2f1e9f6b",
       "path": "_/_/git/log.sh"
     },
     ":git:log%HELP": {
-      "hash": "3023cd37ffe5f22e10c9bd59a7d0c2ac",
+      "hash": "a90b9cdd701d839e26cbba288f47ee78",
       "path": "_/_/git/log.sh"
     },
     ":git:merge": {
-      "hash": "120e1eff83f70b7b9725d8a004f4d682",
+      "hash": "9fde7636e90f551c71db21fd5f1c0d8a",
       "path": "_/_/git/merge.sh"
     },
     ":git:merge%HELP": {
-      "hash": "f5b8999b826d8b7d0a891df072819e45",
+      "hash": "59bae6b057c4962f5587b2a0f92c26db",
       "path": "_/_/git/merge.sh"
     },
     ":git:merge:CheckOrCleanBranch": {
-      "hash": "068faaac5160f9201ce7c151a984e7cf",
+      "hash": "3eee43a3e949bc5c4b44271b451eb3c4",
       "path": "_/_/git/merge.sh"
     },
     ":git:merge:PerformMerge": {
-      "hash": "cbe1a3e78185f505d2a977099c0cbd0e",
+      "hash": "ea94ffa9d02cb3392d77b38ad8f98f6d",
       "path": "_/_/git/merge.sh"
     },
     ":git:merge:ProcessOptionsAndValidate": {
-      "hash": "6dc266523a902ac654ea60cc465afc96",
+      "hash": "6b2eb3b976f23b662d74f84be071e2ff",
       "path": "_/_/git/merge.sh"
     },
     ":git:reset": {
-      "hash": "fd96e72975f742ca8621d291dcba59eb",
+      "hash": "3e18e618fd60f456844b283b66021b49",
       "path": "_/_/git/reset.sh"
     },
     ":git:reset%HELP": {
-      "hash": "be8108e91a342dec93d1e93476d599a7",
+      "hash": "b2bbe62dbcd536dfcd6a451ff6d26cdd",
       "path": "_/_/git/reset.sh"
     },
     ":glob:%STARTUP-1": {
-      "hash": "dc11b66f1367a914dcb0d5f5a2103a9c",
+      "hash": "edc438b4c0db05c38c3b7987de39530e",
       "path": "_/_/glob/_.sh"
     },
     ":glob:clear": {
-      "hash": "0c71c688b4eb5a6a6f9b7f8608454f01",
+      "hash": "8ec416a494f41dabc14b812963af81ba",
       "path": "_/_/glob/_.sh"
     },
     ":glob:reset": {
-      "hash": "e624bed887076ea22a5ab10c663c13ba",
+      "hash": "85d12c31643de8770b96ad0ae826d1c2",
       "path": "_/_/glob/_.sh"
     },
     ":glob:set": {
-      "hash": "852fbfb8eaff37ebbc446dac5128be50",
+      "hash": "098449ee6ce082030d4541f92e9bdcf1",
       "path": "_/_/glob/_.sh"
     },
     ":help:": {
-      "hash": "06d0d416c541fa1287acae138027ef7b",
+      "hash": "6df05c1ee984c4ea368b2c5aeed7de1f",
       "path": "_/_/help/_.sh"
     },
     ":help:%HELP": {
-      "hash": "6e521a36e729a631588d0433c5f70f7b",
+      "hash": "5d928ea39fdb06a6145544b8fe2cc30f",
       "path": "_/_/help/_.sh"
     },
     ":highlight:": {
-      "hash": "a67fbcd12cd18f9a5d117162c4604c3f",
+      "hash": "f7e39d521302f2730d1193355bf55fe1",
       "path": "_/_/highlight/_.sh"
     },
     ":highlight:%HELP": {
-      "hash": "b86bd7e4baf484eea10c12a589d1f37f",
+      "hash": "96df20610408d61f11e081be262be99e",
       "path": "_/_/highlight/_.sh"
     },
     ":highlight:%STARTUP": {
@@ -265,59 +401,59 @@
       "path": "_/_/highlight/_.sh"
     },
     ":highlight:_:Man": {
-      "hash": "a632060f963a9d67de5158c0259d96e5",
+      "hash": "f5413532183c6fcedf4bdd26910fb5dd",
       "path": "_/_/highlight/_.sh"
     },
     ":json:escape": {
-      "hash": "b19ae895be652a1a991bd97f24ec3e3a",
+      "hash": "7fb5c30df2e54f3446f6331a64201e89",
       "path": "_/_/json/escape.sh"
     },
     ":json:is_valid": {
-      "hash": "af619022db82ceaddbaa47321f938aba",
+      "hash": "cb472d61a79ef49fc619913ef2e904ed",
       "path": "_/_/json/is_valid.sh"
     },
     ":json:jq": {
-      "hash": "f2a454b2edb5cd25b77d7c11a5451bb2",
+      "hash": "6fea060c47fe5d9fd4941249e7d12b6e",
       "path": "_/_/json/jq.sh"
     },
     ":json:jq%HELP": {
-      "hash": "297fceb753f07fa1612273ebc1b478b2",
+      "hash": "7a7e3b35814d94766622160526c09d19",
       "path": "_/_/json/jq.sh"
     },
     ":json:jq%TEST": {
-      "hash": "7ff06644b5315115616f89b02c474edd",
+      "hash": "03510ea897d26ea9f0056fbf94cb6dc1",
       "path": "_/_/json/jq.sh"
     },
     ":kv:": {
-      "hash": "1933e81dee8112ef3989b8bfa387cc3f",
+      "hash": "e65230dba15283ac3b9df3a92ba3dd0f",
       "path": "_/_/kv/_.sh"
     },
     ":kv:%HELP": {
-      "hash": "df3b4779b3438baa76746e26a7e07cf9",
+      "hash": "4b8cc287e7d888e2d27bfcc6e21d5579",
       "path": "_/_/kv/_.sh"
     },
     ":kv:%STARTUP": {
-      "hash": "199dd8329a80bc06c2a7a406f6260c1d",
+      "hash": "1a445a926669c8c59b9966bb75cb91f7",
       "path": "_/_/kv/_.sh"
     },
     ":kv:%TEST": {
-      "hash": "49bbde9b9a2e43332e543332ff47f51c",
+      "hash": "493394a8fd331cd18d06d1702ca2c3de",
       "path": "_/_/kv/_.sh"
     },
     ":kv:_:.clear": {
-      "hash": "1e1d08e3b74dc2b55106e8f81d687888",
+      "hash": "41a2ec8e55e52c14870fe90ae678f524",
       "path": "_/_/kv/_.sh"
     },
     ":kv:_:.unset": {
-      "hash": "0b6dca2dea361887945bba03a1535c39",
+      "hash": "e78aecd25ed28748a3d0003530774869",
       "path": "_/_/kv/_.sh"
     },
     ":kv:_:.var": {
-      "hash": "86f850e52751b6e9f5516452301f8572",
+      "hash": "e0c1e4da3f1853f2729071991eb05803",
       "path": "_/_/kv/_.sh"
     },
     ":launcher:": {
-      "hash": "1b4d470f3e3dfcd15a4704daa447c6d9",
+      "hash": "752794276faca0fe0d932ca484370478",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:%STARTUP-0": {
@@ -325,19 +461,19 @@
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:%TEST": {
-      "hash": "6367177b059255777d5345badd50f1e0",
+      "hash": "6051dcd00ac870724ad52a67303b2e18",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:%TEST.dump": {
-      "hash": "9ab6191f55d667cb3aafb850755217a4",
+      "hash": "5a3848e77bfc35271d49e2e9f2d95e27",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:BuildFunctionInfo%DEPRECATED": {
-      "hash": "4c445ecd5282d5be3948c7fcee12dda9",
+      "hash": "ae010762d8058be3ca3f2b36c7821d0a",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:DispatchRequests": {
-      "hash": "b917b5af02f3d0b2fdaf53d7546e8732",
+      "hash": "e20f84e86a9546d34b8b644e66df1bf7",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:DispatchRequests.funcargs": {
@@ -353,15 +489,15 @@
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:PreStartup": {
-      "hash": "5314825bbbd82a711756d215dc2a2c2f",
+      "hash": "bdebe94d306dd6b8b92ce7b8ebbc01ef",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:ProcessOptions": {
-      "hash": "7b9864e487dfde686785a73d846c992c",
+      "hash": "25a89e8795950ccdd435bb0204116312",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:ProcessOptions.declare": {
-      "hash": "87e8dbff157aeb5d41cae13ec2d362ff",
+      "hash": "2fbce9f06c721cfaff956a0d5b3445ca",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:ProcessOptions.entryuser": {
@@ -373,91 +509,91 @@
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:RedirectIO": {
-      "hash": "1efcbe83db8b987ab2c05a32275b4899",
+      "hash": "b341263db6a16a157bae8118a2c3af01",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:Shutdown": {
-      "hash": "89725bd03cfd03aec95cad103a91c06f",
+      "hash": "68a7088f0fba7b0cb680b41aac393e11",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:Startup": {
-      "hash": "7060df854bacaf90db356420e537efd3",
+      "hash": "60509bde17e73cb1aacbd0b49eb3c560",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:persist": {
-      "hash": "15476af9f789b736ee1de7460e3197d9",
+      "hash": "90cbbd892226fddeb09240a26d047c0a",
       "path": "_/_/launcher/persist.sh"
     },
     ":launcher:persist%HELP": {
-      "hash": "a18239ead88dad953af8dd8f4a68aaa6",
+      "hash": "62fbf7c033607e290e4d726503ece620",
       "path": "_/_/launcher/persist.sh"
     },
     ":launcher:persist%TEST": {
-      "hash": "2e1401503181f61fb3da3c094334726a",
+      "hash": "1bdd478744767ae3f745290165ed748a",
       "path": "_/_/launcher/persist.sh"
     },
     ":launcher:persist:alter_user_function": {
-      "hash": "e6f77f52f35bb719786b9570228d34d7",
+      "hash": "11ec4c881fcf0048db7627db4be675db",
       "path": "_/_/launcher/persist.sh"
     },
     ":localgroup:add": {
-      "hash": "f6a5426be4549e70fc34a8cad3165115",
+      "hash": "f5bcb53b96417a1646760a2daf23035b",
       "path": "_/_/localgroup/add.sh"
     },
     ":localgroup:add%HELP": {
-      "hash": "60e88d9035f5ec83772b2b1a6af506af",
+      "hash": "a6face8d50853c728be11526da2320e7",
       "path": "_/_/localgroup/add.sh"
     },
     ":localgroup:matches": {
-      "hash": "b9e8c03dd4694543c7ac771f980dea4c",
+      "hash": "677b2e3f188f44c1552fd29ce6f8dc30",
       "path": "_/_/localgroup/matches.sh"
     },
     ":localgroup:matches%HELP": {
-      "hash": "af354c3f117da75a18fdc373a1e4e170",
+      "hash": "25a320e0777029d6f5c36e18b5a9953e",
       "path": "_/_/localgroup/matches.sh"
     },
     ":localuser:add": {
-      "hash": "dca0c58fd9341bc6e0fdaa2feb74b68a",
+      "hash": "05ddecc795b689f6ac57e3c0f53fa694",
       "path": "_/_/localuser/add.sh"
     },
     ":localuser:add%HELP": {
-      "hash": "8dfb3e60b092d1f8099ad1a0b01505c9",
+      "hash": "8d86d33d5ed67e03af5c632575d70854",
       "path": "_/_/localuser/add.sh"
     },
     ":localuser:add:Process": {
-      "hash": "15dc4d6ccd50294aded7f8b815d9b210",
+      "hash": "b7c1bb9679016124da20898c67eba675",
       "path": "_/_/localuser/add.sh"
     },
     ":localuser:add:ProcessGroupAdd": {
-      "hash": "09e6a95dc446fd245248040c60f78d97",
+      "hash": "3925665c404bc7c609aca520296fdbb7",
       "path": "_/_/localuser/add.sh"
     },
     ":localuser:add:ProcessPassword": {
-      "hash": "2f93d9bfecb3740bbc7b9606a2711f0b",
+      "hash": "9c786fcd57926d8e96eb01f98fe71994",
       "path": "_/_/localuser/add.sh"
     },
     ":localuser:add:ProcessSupplementaryGroups": {
-      "hash": "adb627e505754dad21f31bedce476bf4",
+      "hash": "b180bcff3d3aab29228273ba2c683ab5",
       "path": "_/_/localuser/add.sh"
     },
     ":localuser:add:ProcessUserAdd": {
-      "hash": "35dbdec7a051f443ee28069b41080ccc",
+      "hash": "7e597fa3e25557135a5ad8da9326c7d5",
       "path": "_/_/localuser/add.sh"
     },
     ":localuser:matches": {
-      "hash": "4b8a111240f7c502942cc45b172a6227",
+      "hash": "08397e5cf81cea16911b41f08ab33370",
       "path": "_/_/localuser/matches.sh"
     },
     ":localuser:matches%HELP": {
-      "hash": "adc4574ed8b58efcb8907f04cc7dd3eb",
+      "hash": "6c0b648acac32e87f1a0b56400856380",
       "path": "_/_/localuser/matches.sh"
     },
     ":log:": {
-      "hash": "937f1e6e6936d51d9f8c20dc67d3d3a4",
+      "hash": "a93b5c47c2ae73ffc5607a7b4541c944",
       "path": "_/_/log/_.sh"
     },
     ":log:%STARTUP-1": {
-      "hash": "8ec38661d00ac1e9deb7462592935ac1",
+      "hash": "5579d311b2e5db56361e118800ab12c3",
       "path": "_/_/log/_.sh"
     },
     ":log:%TEST": {
@@ -465,31 +601,31 @@
       "path": "_/_/log/_.sh"
     },
     ":mkdir:": {
-      "hash": "1b707f9e1b5b81644271c9f22484acd8",
+      "hash": "452bb17cf899ce6d6a7704dda024f9c7",
       "path": "_/_/mkdir/_.sh"
     },
     ":need:disable_selinux:": {
-      "hash": "c53cbf314d5cac119064bd2331a66612",
+      "hash": "6178641fe9a67b0172d665119f424210",
       "path": "_/_/need/disable_selinux.sh"
     },
     ":need:disable_services:linux": {
-      "hash": "78a4e97da4d01a7cacab28010914b593",
+      "hash": "71ce33d4fdd6dddf9a3cc989acff0999",
       "path": "_/_/need/disable_services.sh"
     },
     ":need:mount_all:": {
-      "hash": "6bc5e101b35fd478aa477d39a42a7d25",
+      "hash": "053b957ad6e64a65885416edb217f080",
       "path": "_/_/need/mount_all.sh"
     },
     ":need:packages:": {
-      "hash": "bba3afe7143ec6e8fd21404d504072f5",
+      "hash": "aa7646de2ecdf1736d88d56744c26b44",
       "path": "_/_/need/packages.sh"
     },
     ":need:set_timezone:linux-6": {
-      "hash": "7bd1a4cb7073f1bbea0f5a28fd3bc0a6",
+      "hash": "7a63dc8714e9c8b5bc568f92d44c3307",
       "path": "_/_/need/set_timezone.sh"
     },
     ":need:set_timezone:linux-7": {
-      "hash": "f1c289da827d76c35ea258e8430ee799",
+      "hash": "a63b5978795c35f696ea31e5620521fc",
       "path": "_/_/need/set_timezone.sh"
     },
     ":nop:": {
@@ -497,7 +633,7 @@
       "path": "_/_/nop/_.sh"
     },
     ":nop:%HELP": {
-      "hash": "c375b65246835b05c72f067629105cd3",
+      "hash": "464186642d3645f20c715267be64bb50",
       "path": "_/_/nop/_.sh"
     },
     ":nop:silent": {
@@ -505,19 +641,19 @@
       "path": "_/_/nop/_.sh"
     },
     ":nop:silent%HELP": {
-      "hash": "223228b8c3b279b281f9589024e53bcb",
+      "hash": "6c163f7eaf914f2f2ab132c21b1c2952",
       "path": "_/_/nop/_.sh"
     },
     ":overlay:": {
-      "hash": "0e9c3fc92ce208f7c387478694292372",
+      "hash": "58bf58323910d4532b6bc1d7fabe52e1",
       "path": "_/_/overlay/_.sh"
     },
     ":overlay:%HELP": {
-      "hash": "cccebb88614c9d9bad2232f55c98a8f2",
+      "hash": "14b60411c20718b869b82bd794d01c29",
       "path": "_/_/overlay/_.sh"
     },
     ":require:packages": {
-      "hash": "76040b3242321f0cf4e4e1ea0d55706e",
+      "hash": "306324203e259e927adb614930efc964",
       "path": "_/_/require/packages.sh"
     },
     ":return": {
@@ -525,79 +661,79 @@
       "path": "_/_/return.sh"
     },
     ":return:": {
-      "hash": "65f044e761ab71a9133adaecfa629c3a",
+      "hash": "40fa773adacc0d015ecf57848ff61ce8",
       "path": "_/_/return/_.sh"
     },
     ":return:%HELP": {
-      "hash": "081bf6e6e524fcbc75f087f917eb7cca",
+      "hash": "1d3c1c1bf57ef7ead9c7c19c400946dc",
       "path": "_/_/return/_.sh"
     },
     ":run_as": {
-      "hash": "f48b640896ab4bfef08d0613da9657a1",
+      "hash": "2cf0a7af78f82030cb8d3f09b0ee7d16",
       "path": "_/_/run_as.sh"
     },
     ":run_as%HELP": {
-      "hash": "f4d66c402531ffe42e1f530175026da5",
+      "hash": "d1a16b06ac2a3969e0dc8796352e5687",
       "path": "_/_/run_as.sh"
     },
     ":sed:escape": {
-      "hash": "523599e47e890cad396a06c80d59df1a",
+      "hash": "dfca628c136cef63a65b365501ffc585",
       "path": "_/_/sed/escape.sh"
     },
     ":set:%STARTUP-1": {
-      "hash": "c30d82428df56f084f4ffe5657b5ac7d",
+      "hash": "8fdcfb984ccfbc23aad7bd159f9fef83",
       "path": "_/_/set/_.sh"
     },
     ":set:restore": {
-      "hash": "b8cb94475507c583175dc8cb8c538407",
+      "hash": "bc0ad31db189004075ef9ad614a5d54e",
       "path": "_/_/set/_.sh"
     },
     ":set:save": {
-      "hash": "1451caaeba9b1eb2d32f98b4c8472aac",
+      "hash": "e06a01661ac8715d71bff33ebc07d164",
       "path": "_/_/set/_.sh"
     },
     ":shopt:%STARTUP-1": {
-      "hash": "91bb6faffdd75c4e73e48059d3ebde31",
+      "hash": "ec656a307294f5ed4048593c473d07f8",
       "path": "_/_/shopt/_.sh"
     },
     ":shopt:restore": {
-      "hash": "f68c3057b3803d87a4fca182ea0e9ec3",
+      "hash": "31aefbca1a9a16a83b099beb8a5f0e29",
       "path": "_/_/shopt/_.sh"
     },
     ":shopt:save": {
-      "hash": "341555490eaaa36a032be0ed1ffb38dc",
+      "hash": "8235759eb0f932dd17f968bcdfd8bd7c",
       "path": "_/_/shopt/_.sh"
     },
     ":show:functions": {
-      "hash": "62706779e1d256ab76cf30130b0f4e4d",
+      "hash": "4f8745f552f30652644b856feb6ec442",
       "path": "_/_/show/functions.sh"
     },
     ":show:vars": {
-      "hash": "7f93f44180b0103b828de2f08be54acb",
+      "hash": "d60caef49a35af9d569c3f4b391db687",
       "path": "_/_/show/vars.sh"
     },
     ":show:vars%HELP": {
-      "hash": "9ebfa27a228309595a3626bbf734ab13",
+      "hash": "a7a331bed8855ff467c6c0dba662150d",
       "path": "_/_/show/vars.sh"
     },
     ":ssh:config": {
-      "hash": "6f0e69338b39712d65e972a71758626c",
+      "hash": "4d3651570f49244ce58b932528bbeb5e",
       "path": "_/_/ssh/config.sh"
     },
     ":ssh:config%HELP": {
-      "hash": "28351b2f304309f31e91eb390c0f5036",
+      "hash": "b254376b62c5a582ba304c9b72807d26",
       "path": "_/_/ssh/config.sh"
     },
     ":string:to_array": {
-      "hash": "b1ad257534401838c198bc92a87cb904",
+      "hash": "3e771699dfee4157981d1a255c46f054",
       "path": "_/_/string/to_array.sh"
     },
     ":sudo": {
-      "hash": "cc41b260b9ba41b9c43cbfa323307f4f",
+      "hash": "c145bbab5dfb6a16451b88c9c0e23910",
       "path": "_/_/sudo.sh"
     },
     ":sudo%HELP": {
-      "hash": "442358d376bf5fdbe2c2c49825daa944",
+      "hash": "6264da9edce2fc45fe7cf8fe666a9dec",
       "path": "_/_/sudo.sh"
     },
     ":sudo%STARTUP-0": {
@@ -605,7 +741,7 @@
       "path": "_/_/sudo.sh"
     },
     ":test:assert": {
-      "hash": "6cff8548862a7d113c8209c8e504263f",
+      "hash": "05e41f9fed96f1674747f14c237fdf81",
       "path": "_/_/test/assert.sh"
     },
     ":test:can_sudo": {
@@ -613,19 +749,19 @@
       "path": "_/_/test/can_sudo.sh"
     },
     ":test:has_command": {
-      "hash": "3cf893479a536a9a90258b7b337ceaa6",
+      "hash": "b3a8b9d9d203c8d1b7ff34049fc03be0",
       "path": "_/_/test/has_command.sh"
     },
     ":test:has_command%HELP": {
-      "hash": "263c2f74d281b031038d03f5fba607a1",
+      "hash": "18053395722fd78e1636f920c11cd6f1",
       "path": "_/_/test/has_command.sh"
     },
     ":test:has_func": {
-      "hash": "4d7748c132cfff9b9cdfa965f3a93764",
+      "hash": "e3ba422400b7a45c3c433e139b0417d8",
       "path": "_/_/test/has_func.sh"
     },
     ":test:has_package": {
-      "hash": "64bad9e05b62d40c65d991592e3ef5af",
+      "hash": "a3bfafe9c0225ceca8fc54709d0d5389",
       "path": "_/_/test/has_package.sh"
     },
     ":test:has_stdin": {
@@ -633,39 +769,39 @@
       "path": "_/_/test/has_stdin.sh"
     },
     ":test:has_stdin%HELP": {
-      "hash": "b693263809cc959f35031261bc9b886c",
+      "hash": "f8adf35e7158c0d48015851b416796ce",
       "path": "_/_/test/has_stdin.sh"
     },
     ":test:has_user": {
-      "hash": "8554251df924fd3f23e6b705ea6485db",
+      "hash": "ba9db8720589777dfecc798013f539de",
       "path": "_/_/test/has_user.sh"
     },
     ":test:has_user%HELP": {
-      "hash": "19d99734905abcd08ad16fb08003be50",
+      "hash": "cf5914c2e57eb0acf95ff3e7974d5dba",
       "path": "_/_/test/has_user.sh"
     },
     ":test:is_pipe": {
-      "hash": "5024476bd96f187ed36a0fa558ce63fb",
+      "hash": "4613567864b2d32b38ff714177447802",
       "path": "_/_/test/is_pipe.sh"
     },
     ":test:is_pipe%HELP": {
-      "hash": "92dac2bb194bcc039f955b148284c7db",
+      "hash": "1cfdada6c40c55073798ae11794a6649",
       "path": "_/_/test/is_pipe.sh"
     },
     ":test:is_set": {
-      "hash": "ebd33d278877501a2c6bb553413884b9",
+      "hash": "724cd32e67f0ecdaa0e202443e250878",
       "path": "_/_/test/is_set.sh"
     },
     ":test:is_set%HELP": {
-      "hash": "dcb935260d02ef6c9b27c142a968b26c",
+      "hash": "be9c8e25ccc22d1e6c7365ccd158fef8",
       "path": "_/_/test/is_set.sh"
     },
     ":test:is_set%TEST": {
-      "hash": "a83452c964bc173ef37b4b4cc543506e",
+      "hash": "e55136b21629588593a8e16b06f625f0",
       "path": "_/_/test/is_set.sh"
     },
     ":test:is_set:Finalize": {
-      "hash": "bf90e7c1e74591006800ee2cc9d6b7e1",
+      "hash": "9844d4f6740cf024c344f55f6f75c7cb",
       "path": "_/_/test/is_set.sh"
     },
     ":test:return_code%TEST": {
@@ -673,19 +809,19 @@
       "path": "_/_/test/return_code.sh"
     },
     ":test:version_compare": {
-      "hash": "c64aa6a2098e24ae413d13df12e3a13b",
+      "hash": "f1e750ac6899fa6cf37943ac26a72723",
       "path": "_/_/test/version_compare.sh"
     },
     ":test:version_compare%HELP": {
-      "hash": "15f00cc1eab5516a85356f6aa16fac62",
+      "hash": "da8202b862058225c27cada84352a26d",
       "path": "_/_/test/version_compare.sh"
     },
     ":text:align": {
-      "hash": "f526e8c2c465acfa538477c603f3b6c3",
+      "hash": "9c39475d046f2505961639c29438ac82",
       "path": "_/_/text/align.sh"
     },
     ":tput:set": {
-      "hash": "86169f1a5927fdd69b0a0c02f49468a2",
+      "hash": "3b25d66b0322cf49183a401517e75769",
       "path": "_/_/tput/_.sh"
     },
     ":try%STARTUP-0": {
@@ -705,148 +841,24 @@
       "path": "_/_/try.sh"
     },
     ":var:unsetro": {
-      "hash": "a04080e74132bee01b3925603b9fd2cd",
+      "hash": "0ad5fb6bc05e4e63c7b0b8c2549dbc54",
       "path": "_/_/var/unsetro.sh"
     },
     ":vi:diff": {
-      "hash": "0a02e37fde1a785957348360fe28724a",
+      "hash": "da51487faf5eabad59065ce8d6f4c0f2",
       "path": "_/_/vi/diff.sh"
     },
     ":vi:diff%HELP": {
-      "hash": "2721a9d9186837639427b1f9dc80e535",
+      "hash": "b9f6a52a59438647c14f39a0ef8928bf",
       "path": "_/_/vi/diff.sh"
     },
     ":vi:diff:ViDiffCleanup": {
-      "hash": "cc9bb4aef125b242332b3f1bc0458949",
+      "hash": "a1a2320b563b5130692f434e7f2b36dd",
       "path": "_/_/vi/diff.sh"
     },
     ":yum:is_installed": {
-      "hash": "855a0583ec0f978a941972213d2b9984",
+      "hash": "fd8ab88e05344436f578515dc11e89f8",
       "path": "_/_/yum/is_installed.sh"
-    },
-    "_dev:need:%STARTUP-1": {
-      "hash": "a30954ad4c6367bf39f2522b5a9f61db",
-      "path": "_/dev/need/_.sh"
-    },
-    "_dev:need:install_package_epel_release:EPELisInstalled": {
-      "hash": "15318920f2efd2963a24ca2dddab822b",
-      "path": "_/dev/need/install_package_epel_release.sh"
-    },
-    "_dev:need:install_package_epel_release:InstallEPEL": {
-      "hash": "a56ff8a0d9078c2663abb5c8bec2ea54",
-      "path": "_/dev/need/install_package_epel_release.sh"
-    },
-    "_dev:need:install_package_epel_release:centos-7": {
-      "hash": "74dc1c1e813b7ead94794f4a873fb181",
-      "path": "_/dev/need/install_package_epel_release.sh"
-    },
-    "_dev:need:install_package_epel_release:centos-8": {
-      "hash": "be9772314edc93a0f2f4839e52902d90",
-      "path": "_/dev/need/install_package_epel_release.sh"
-    },
-    "_dev:need:install_package_epel_release:linux-6": {
-      "hash": "b4b2b72f385bc67f53a75b8e9240d01f",
-      "path": "_/dev/need/install_package_epel_release.sh"
-    },
-    "_dev:need:install_package_epel_release:redhat-7": {
-      "hash": "ed4c6dad5cff5640294ef0f788587de8",
-      "path": "_/dev/need/install_package_epel_release.sh"
-    },
-    "_dev:need:install_package_epel_release:redhat-8": {
-      "hash": "10f0f31a9d600f9dbca787bcb25e6d9d",
-      "path": "_/dev/need/install_package_epel_release.sh"
-    },
-    "_dev:need:install_package_git:centos": {
-      "hash": "4acb449c6da686465c67c04c046f10b0",
-      "path": "_/dev/need/install_package_git.sh"
-    },
-    "_dev:need:install_package_git:install_git_centos": {
-      "hash": "829edc0a9a1d64912add65f619be5ccc",
-      "path": "_/dev/need/install_package_git.sh"
-    },
-    "_dev:need:install_package_git:install_git_redhat": {
-      "hash": "90399497f1331b8abd2db213f6ccab4f",
-      "path": "_/dev/need/install_package_git.sh"
-    },
-    "_dev:need:install_package_git:redhat": {
-      "hash": "6e34d776b52ffbd5c6a7e6699b3eccab",
-      "path": "_/dev/need/install_package_git.sh"
-    },
-    "_dev:need:install_package_jq:": {
-      "hash": "4ad4447d8af9464ef492905ec3510841",
-      "path": "_/dev/need/install_package_jq.sh"
-    },
-    "_dev:need:install_package_jq:install_jq": {
-      "hash": "481bd44933818917b301ef3c3bfa2882",
-      "path": "_/dev/need/install_package_jq.sh"
-    },
-    "_dev:need:install_package_yum_utils:": {
-      "hash": "f0b22914a7d5e0a707effc6474b19717",
-      "path": "_/dev/need/install_package_yum_utils.sh"
-    },
-    "_dev:need:iptables:linux-7": {
-      "hash": "6cb2b4389870039982ca0eaa24ae4532",
-      "path": "_/dev/need/iptables.sh"
-    },
-    "_dev:need:os_packages:": {
-      "hash": "b0f0245fb0a98749cadfa5a73586f148",
-      "path": "_/dev/need/os_packages.sh"
-    },
-    "_dev:need:rsh:linux-6": {
-      "hash": "74469608a801546e91480ad6e22c21f5",
-      "path": "_/dev/need/rsh.sh"
-    },
-    "_dev:need:rsh:linux-7": {
-      "hash": "6c9f7953cb705a88228369a514935c9e",
-      "path": "_/dev/need/rsh.sh"
-    },
-    "_dev:need:vim:": {
-      "hash": "a4ec691a7ed472beb6474102ae00964c",
-      "path": "_/dev/need/vim.sh"
-    },
-    "_dev:need:zsh:": {
-      "hash": "c505ec28d4917b665ec43d2414693fbf",
-      "path": "_/dev/need/zsh.sh"
-    },
-    "_dev:vim:configure": {
-      "hash": "ac4dc1393637c522b0ac4e880c0f1c70",
-      "path": "_/dev/vim/configure.sh"
-    },
-    "_dev:vim:configure%HELP": {
-      "hash": "6adb9692bb3c36d5e215160e983e7260",
-      "path": "_/dev/vim/configure.sh"
-    },
-    "_dev:vim:install": {
-      "hash": "94b3080d6eb1542ee482711ff9a8a920",
-      "path": "_/dev/vim/install.sh"
-    },
-    "_dev:vim:install%HELP": {
-      "hash": "357d16ebd926c73f3b8d2e9c353c1609",
-      "path": "_/dev/vim/install.sh"
-    },
-    "_dev:zsh:configure": {
-      "hash": "7449bcb7d76623a53e6872c374d8661f",
-      "path": "_/dev/zsh/configure.sh"
-    },
-    "_dev:zsh:configure%HELP": {
-      "hash": "efc72ba1f2a4a0259c0dfc3b2120ecb4",
-      "path": "_/dev/zsh/configure.sh"
-    },
-    "_dev:zsh:install": {
-      "hash": "cbbddb45e71ddeb6ef82001ae0ce28f8",
-      "path": "_/dev/zsh/install.sh"
-    },
-    "_dev:zsh:install%HELP": {
-      "hash": "23aec93f3bb7541e30c5fac55b6e62b5",
-      "path": "_/dev/zsh/install.sh"
-    },
-    "_doc:comp:unit:func": {
-      "hash": "dd57cb9a12c161b0bc62fdc98e8929f3",
-      "path": "_/doc/comp/unit/demo.sh"
-    },
-    "_doc:roadmap": {
-      "hash": "88ca934bb92a87cdf1e3d5d3af211ba9",
-      "path": "_/doc/roadmap.sh"
     }
   }
 }

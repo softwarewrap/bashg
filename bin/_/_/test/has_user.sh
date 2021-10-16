@@ -2,10 +2,10 @@
 
 :test:has_user%HELP()
 {
-   local ___test__has_user__has_userHELP___Synopsis='Check if a user exists'
-   local ___test__has_user__has_userHELP___Usage='<user>'
+   local __test__has_user__has_userHELP___Synopsis='Check if a user exists'
+   local __test__has_user__has_userHELP___Usage='<user>'
 
-   :help: --set "$___test__has_user__has_userHELP___Synopsis" --usage "$___test__has_user__has_userHELP___Usage" <<EOF
+   :help: --set "$__test__has_user__has_userHELP___Synopsis" --usage "$__test__has_user__has_userHELP___Usage" <<EOF
 DESCRIPTION:
    Test to see if a user exists
 
@@ -22,9 +22,9 @@ EOF
 
 :test:has_user()
 {
-   local ___test__has_user__has_user___User="$1"
+   local __test__has_user__has_user___User="$1"
 
-   if [[ -n $___test__has_user__has_user___User ]]; then
+   if [[ -n $__test__has_user__has_user___User ]]; then
       id &>/dev/null
 
    else

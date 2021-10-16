@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_dev:need:zsh:()
+.dev:need:zsh:()
 {
    local _dev__need__zsh_____Options
    _dev__need__zsh_____Options=$(getopt -o '' -l 'force' -n "${FUNCNAME[0]}" -- "$@") || return
@@ -38,6 +38,6 @@ _dev:need:zsh:()
    fi
 
    if $_dev__need__zsh_____InstallIsRequired; then
-      _dev:zsh:install
+      .dev:zsh:install
    fi
 }

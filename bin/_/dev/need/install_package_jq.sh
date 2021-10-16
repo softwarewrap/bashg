@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_dev:need:install_package_jq:()
+.dev:need:install_package_jq:()
 {
    if :test:has_command jq; then
       local _dev__need__install_package_jq_____Version
@@ -11,10 +11,10 @@ _dev:need:install_package_jq:()
       fi
    fi
 
-   _dev:need:install_package_jq:install_jq                                        # Install jq if not installed or if version < 1.6
+   .dev:need:install_package_jq:install_jq                                        # Install jq if not installed or if version < 1.6
 }
 
-_dev:need:install_package_jq:install_jq()
+.dev:need:install_package_jq:install_jq()
 {
    :sudo || :reenter                                     # This function must run as root
 

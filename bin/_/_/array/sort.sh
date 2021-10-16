@@ -2,45 +2,45 @@
 
 :array:sort()
 {
-   local ___array__sort__sort___Options
-   ___array__sort__sort___Options=$(getopt -o 'v:u' -l 'var:,unique,locale:' -n "${FUNCNAME[0]}" -- "$@") || return
-   eval set -- "$___array__sort__sort___Options"
+   local __array__sort__sort___Options
+   __array__sort__sort___Options=$(getopt -o 'v:u' -l 'var:,unique,locale:' -n "${FUNCNAME[0]}" -- "$@") || return
+   eval set -- "$__array__sort__sort___Options"
 
-   local ___array__sort__sort___Locale='C'
-   local ___array__sort__sort___Var='___array__sort__sort___UnspecifiedVar'
-   local -a ___array__sort__sort___SortOptions=()
+   local __array__sort__sort___Locale='C'
+   local __array__sort__sort___Var='__array__sort__sort___UnspecifiedVar'
+   local -a __array__sort__sort___SortOptions=()
 
    while true ; do
       case "$1" in
-      -v|--var)      ___array__sort__sort___Var="$2"; shift 2;;
-      -u|--unique)   ___array__sort__sort___SortOptions+=( -u ); shift 2;;
+      -v|--var)      __array__sort__sort___Var="$2"; shift 2;;
+      -u|--unique)   __array__sort__sort___SortOptions+=( -u ); shift 2;;
 
-      --locale)      ___array__sort__sort___Locale="$2"; shift 2;;
+      --locale)      __array__sort__sort___Locale="$2"; shift 2;;
       --)            shift; break;;
       *)             break;;
       esac
    done
 
-   if [[ -z $___array__sort__sort___Var ]]; then                            # The Var is a required option
+   if [[ -z $__array__sort__sort___Var ]]; then                            # The Var is a required option
       :error: 1 'No variable name was specified'
       return 1
    fi
 
-   local ___array__sort__sort___Indirect="$___array__sort__sort___Var[@]"                      # Build an indirect reference to the Var array
-   local -a ___array__sort__sort___Copy=( "${!___array__sort__sort___Indirect}" )
+   local __array__sort__sort___Indirect="$__array__sort__sort___Var[@]"                      # Build an indirect reference to the Var array
+   local -a __array__sort__sort___Copy=( "${!__array__sort__sort___Indirect}" )
 
-   (( ${#___array__sort__sort___Copy[@]} > 1 )) || return 0                 # Sort not need if the array has 0 elements or 1 element
+   (( ${#__array__sort__sort___Copy[@]} > 1 )) || return 0                 # Sort not need if the array has 0 elements or 1 element
                                                          # Copy the Var array
 
-   local -a ___array__sort__sort___Esc                                      # Escape array elements: handle multi-line elements
-   ___array__sort__sort___Esc=( $(
-      printf '%q\n' "${___array__sort__sort___Copy[@]}" |                   # %q for quoting allows for the safe use of eval
-      LC_ALL="$___array__sort__sort___Locale" sort "${___array__sort__sort___SortOptions[@]}"
+   local -a __array__sort__sort___Esc                                      # Escape array elements: handle multi-line elements
+   __array__sort__sort___Esc=( $(
+      printf '%q\n' "${__array__sort__sort___Copy[@]}" |                   # %q for quoting allows for the safe use of eval
+      LC_ALL="$__array__sort__sort___Locale" sort "${__array__sort__sort___SortOptions[@]}"
                                                          # Sort according to locale with possible other options
       )
    )
 
-   eval "$___array__sort__sort___Var"=\( "${___array__sort__sort___Esc[@]}" \)
+   eval "$__array__sort__sort___Var"=\( "${__array__sort__sort___Esc[@]}" \)
                                                          # Write to the caller's variable the unescaped array
 }
 
@@ -105,15 +105,15 @@
 
 :array:sort:assert()
 {
-   local ___array__sort__assert___Test="$1"                                   # A test that can be eval'd
-   local ___array__sort__assert___Status=0                                    # The return status of the test, presumed to be a success
+   local __array__sort__assert___Test="$1"                                   # A test that can be eval'd
+   local __array__sort__assert___Status=0                                    # The return status of the test, presumed to be a success
 
-   eval "$___array__sort__assert___Test" >/dev/null 2>&1 || ___array__sort__assert___Status=$?
+   eval "$__array__sort__assert___Test" >/dev/null 2>&1 || __array__sort__assert___Status=$?
                                                          # Run the assertion and if an error, update the Status
-   if (( $___array__sort__assert___Status == 0 )); then
-      :highlight: <<<"<G>PASS:</G> <b>$___array__sort__assert___Test</b>"
+   if (( $__array__sort__assert___Status == 0 )); then
+      :highlight: <<<"<G>PASS:</G> <b>$__array__sort__assert___Test</b>"
 
    else
-      :highlight: <<<"<R>FAIL:</R> <b>$___array__sort__assert___Test</b>"
+      :highlight: <<<"<R>FAIL:</R> <b>$__array__sort__assert___Test</b>"
    fi
 }

@@ -2,73 +2,73 @@
 
 :log:%STARTUP-1()
 {
-   local -gi ___log___Level=0                                 # Default: Log level is 0 (entry level)
-   local -ga ___log___Message=()                              # Default: Start with no log message stack
+   local -gi __log___Level=0                                 # Default: Log level is 0 (entry level)
+   local -ga __log___Message=()                              # Default: Start with no log message stack
 }
 
 :log:()
 {
-   local ___log________Push=false                                  # Default: not increasing the stack level
-   local ___log________Pop=false                                   # Default: not decreasing the stack level
-   local ___log________Prefix=                                     # Default: no prefix to log message
+   local __log________Push=false                                  # Default: not increasing the stack level
+   local __log________Pop=false                                   # Default: not decreasing the stack level
+   local __log________Prefix=                                     # Default: no prefix to log message
 
    local IFS=' '                                         # Positional args: separate with spaces
 
    if [[ $1 = --push-section ]]; then
-      ___log________Push=true
+      __log________Push=true
       shift
 
-      ___log___Message[$___log___Level]="$(printf '%0.s=' {1..40}) ${1^^} ${*:2}"
+      __log___Message[$__log___Level]="$(printf '%0.s=' {1..40}) ${1^^} ${*:2}"
                                                          # Make --push-section messages standout: = line + ALL CAPS
 
-      ___log________Prefix='{ '                                    # Use { prefix when pushing the log level
+      __log________Prefix='{ '                                    # Use { prefix when pushing the log level
 
    elif [[ $1 = --push ]]; then
-      ___log________Push=true
+      __log________Push=true
       shift
 
-      ___log___Message[$___log___Level]="$*"                       # Set the log message on push
+      __log___Message[$__log___Level]="$*"                       # Set the log message on push
 
-      ___log________Prefix='{ '                                    # Use { prefix when pushing the log level
+      __log________Prefix='{ '                                    # Use { prefix when pushing the log level
 
    elif [[ $1 = --pop ]]; then                           # Do not set the log message on pop
-      ___log________Pop=true
+      __log________Pop=true
       shift
 
-      ___log________Prefix='} '                                    # Use END: prefix when popping the log level
+      __log________Prefix='} '                                    # Use END: prefix when popping the log level
 
    else
-      ___log___Message[$___log___Level]="$*"                       # Set the log message when neither push nor pop are used
+      __log___Message[$__log___Level]="$*"                       # Set the log message when neither push nor pop are used
    fi
 
-   if $___log________Pop && (( ___log___Level > 0 )); then              # Do any log level decreases before outputting message
+   if $__log________Pop && (( __log___Level > 0 )); then              # Do any log level decreases before outputting message
       if (( $# > 0 )); then
          :log: "$@"
       fi
 
-      ___log___Level="$(( ___log___Level-1 ))"
+      __log___Level="$(( __log___Level-1 ))"
    fi
 
-   local ___log________Date
-   ___log________Date="$(date +%Y-%m-%d.%H%M%S)"
+   local __log________Date
+   __log________Date="$(date +%Y-%m-%d.%H%M%S)"
 
-   if $___log________Push; then
+   if $__log________Push; then
       echo                                               # Make push/pop messages standout with blank line
    fi
 
-   if (( ___log___Level > 0 )); then
-      echo -e "[$___log________Date] $(printf '#%0.s' $( seq -s ' ' 1 $___log___Level ) ) $___log________Prefix${___log___Message[$___log___Level]}"
+   if (( __log___Level > 0 )); then
+      echo -e "[$__log________Date] $(printf '#%0.s' $( seq -s ' ' 1 $__log___Level ) ) $__log________Prefix${__log___Message[$__log___Level]}"
                                                          # Add indent
    else
-      echo -e "[$___log________Date] $___log________Prefix${___log___Message[$___log___Level]}"
+      echo -e "[$__log________Date] $__log________Prefix${__log___Message[$__log___Level]}"
    fi
 
-   if $___log________Pop; then
+   if $__log________Pop; then
       echo                                               # Make push/pop messages standout with blank line
    fi
 
-   if $___log________Push; then                                    # Do any log level increases after outputting message
-      ___log___Level="$(( ___log___Level+1 ))"
+   if $__log________Push; then                                    # Do any log level increases after outputting message
+      __log___Level="$(( __log___Level+1 ))"
    fi
 }
 

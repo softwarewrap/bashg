@@ -578,17 +578,38 @@ EOF
          _FunctionToHash[$_Function]="$_Hash"            # Add the function to hash path mapping
 
          if [[ -n ${_HashToFunction[$_Hash]} ]]; then
-            if $_Warn; then
-               echo "Warning: Identical function implementations for: $_Function"
-               echo "   $_ShFile"
-               echo "   ${_FunctionToFile[${_HashToFunction[$_Hash]}]}"
-            fi
+            _HashToFunction[$_Hash]+=" $_ShFile|$_Function"       # Add the reverse mapping of hash to identical function
 
          else
-            _HashToFunction[$_Hash]="$_Function"         # Store the reverse mapping of hash to function
+            _HashToFunction[$_Hash]="$_ShFile|$_Function"         # Store the reverse mapping of hash to function
          fi
       done
    done
+
+   local -i DuplicateFunctionCount=
+   local -i TotalDuplicates=
+   local -i Duplicates=
+   local DuplicateMarkers
+
+   {
+      for _Hash in "${!_HashToFunction[@]}"; do
+         if [[ ${_HashToFunction[$_Hash]} =~ ' ' ]]; then
+            DuplicateMarkers="${_HashToFunction[$_Hash]//[^ ]}"
+            Duplicates="${#DuplicateMarkers}"
+            DuplicateFunctionCount=$(( DuplicateFunctionCount + 1 ))
+            TotalDuplicates=$(( TotalDuplicates + Duplicates + 1 ))
+
+            echo "#$DuplicateFunctionCount IDENTICAL:"
+            tr ' ' '\n' <<<"${_HashToFunction[$_Hash]}" | sed 's|^|    |'
+            echo
+         fi
+      done
+
+      if (( DuplicateFunctionCount > 0 )); then
+         echo "Duplicate Function Count:|$DuplicateFunctionCount"
+         echo "Total Duplicates:|$TotalDuplicates"
+      fi
+   } | LC_ALL=C sed -e "s~^[^|]*$~&|~" -e "s~|~\x01~" | column -t -s $'\x01' | LC_ALL=C sed 's~\s*$~~'
 
    rm -f "$_ErrorOutput"                                 # Clean up
 
@@ -902,7 +923,7 @@ EOF
    ############################################
 
    # Set the defaults for an entrypoint file
-   local Package=_
+   local Package=.
    local PackageDir=
    local Remainder=
 
@@ -913,11 +934,15 @@ EOF
       Remainder="${DstFile#$Package/}"
    fi
 
+   # At this point, $Package is a 2-level directory: <package>/<sub-package>
+
    local Component=                                      # The component is the optional 2nd level directory
    local Unit=                                           # The Unit is the optional 3rd level directory
    local Script=                                         # The Script consists of unit directories and the filename
 
    :StringToNamespace Package                            # Ensure string conforms to namespace conventions
+
+   # At this point, $Package is a dot-separated name <package>[.<sub-package>]
 
    if [[ $Remainder =~ / ]]; then                        # Check if a component directory is present
       Component="${Remainder%%/*}"                       # The component name is the directory name
@@ -940,30 +965,21 @@ EOF
    #########################
    # Perform Substitutions #
    #########################
-   local PVar='_'                                        # The variable prefix is a single underscore
-   local PFunc=                                          # There is no function prefix
-   local PTLDVar='_'
-   local PTLDFunc=
-   local PTLDDir=
+   if [[ $Package = '.' ]]; then                         # For common package variables and functions:
+      local PVar=                                        # No prefix for system variables
+      local PTLDVar=
+      local PFunc=                                       # No prefix for system functions
+      local PTLDDir=_                                    # The system TLD is _
 
-   if [[ $Package != _ ]]; then                          # For common package variables and functions:
+   else
+      local PVar
       PVar="$( echo -n "$Package" | tr -c 'a-zA-Z0-9' _ )"
-                                                         # The variable prefix is the package name
-      PFunc="$Package"                                   # The function prefix is the package name
-
-      if [[ ${DstFile%%/*} =~ '.' ]]; then
-         local PTLD="${DstFile%%/*}"
-         :StringToNamespace PTLD
-
-         PTLDVar="$( echo -n "$PTLD" | tr -c 'a-zA-Z0-9' _ )"     # The variable prefix is the package name
-         PTLDFunc="$PTLD"                                # The function prefix is the package name
-         PTLDDir="$PTLD"
-
-      else
-         PTLDVar="$PVar"
-         PTLDFunc="$PFunc"
-         PTLDDir="${PFunc#_}"
-      fi
+                                                         # The prefix for non-system variables has var syntax
+      local PTLDVar
+      PTLDVar="$( echo -n "${DstFile%%/*}" | tr -c 'a-zA-Z0-9' _  | sed 's|^_$||' )"
+                                                         # The prefix for the top-level package
+      local PFunc="$Package"                             # The prefix for non-system functions is the package name
+      local PTLDDir="${DstFile%%/*}"                     # The TLD is the top directory from $DstFile
    fi
 
    local CVar
@@ -1008,27 +1024,30 @@ EOF
       s,^@\s\+,$PFunc:,                                                 # @ func          Package declaration of func
 
       ### VARIABLES
-      s,\(^\|[^\]\)(@)_,\1${PVar}___,g                                  # (@)_var         Current package var
-      s,\(^\|[^\]\)(@:\.\([^/)]\+\))_,\1\x01${PTLDVar}_\2\x02___,g      # (@:.p)_var      Package TLD.p var
-      s,\(^\|[^\]\)(@:\([^/)]\+\))_,\1\x01\2\x02___,g                   # (@:p)_var       Package p var
-      s,\(^\|[^\]\)(@@)_,\1___,g                                        # (@@)_var        Common package var
+      s,\(^\|[^\]\)(@)_,\1${PVar}___,g                                   # (@)_var        Current package var
+      s,\(^\|[^\]\)(@:\.\([^/)]\+\))_,\1\x01${PTLDVar}_\2\x02___,g       # (@:.s)_var     Package TLD.s var
+      s,\(^\|[^\]\)(@:\([^/)]\+\))_,\1\x01\2\x02___,g                    # (@:p)_var      Package p var
+      s,\(^\|[^\]\)(@@)_,\1___,g                                         # (@@)_var       Common package var
+      s,\(^\|[^\]\)(@@:\.\([^/)]\+\))_,\1_\2___,g                        # (@@:.s)_var    Package TLD.s var
 
       ### FUNCTIONS
       s,\(^\|[^\]\)(@):,\1$PFunc:,g                                     # (@):func        Current package func
-      s,\(^\|[^\]\)(@:\(\.[^/)]\+\)):,\1\x03$PTLDFunc\2\x04:,g          # (@:.p):func     Package TLD.p func
+      s,\(^\|[^\]\)(@:\(\.[^/)]\+\)):,\1\x03$PFunc\2\x04:,g             # (@:.s):func     Package TLD.s func
       s,\(^\|[^\]\)(@:\([^/)]\+\)):,\1\x03\2\x04:,g                     # (@:p):func      Package p func
       s,\(^\|[^\]\)(@@):,\1:,g                                          # (@@):func       Common package func
+      s,\(^\|[^\]\)(@@:\(\.[^/)]\+\)):,\1\2:,g                          # (@@:.s):func    Package TLD.s func
 
       ### PATHS
       s,\(^\|[^\]\)(@)/,\1\"\$_lib_dir/$PackageDir\"/,g                 # (@)/            Current path
-      s,\(^\|[^\]\)(@:\.\([^/)]\+\))/,\1\"\$_lib_dir\"/$PTLDDir/\2/,g   # (@:.p)/         Package TLD.p path
-      s,\(^\|[^\]\)(@:\([^/)]\+/[^/)]\+\))/,\1\"\$_lib_dir\"/\2/,g      # (@:t/s)/        Package p path
-      s,\(^\|[^\]\)(@@)/,\1\"\$_lib_dir\"/_/_/,g                        # (@@)/           Common path
+      s,\(^\|[^\]\)(@:\.\([^/)]\+\))/,\1\"\$_lib_dir/$PTLDDir/\2\"/,g   # (@:.s)/         Package TLD.s path
+      s,\(^\|[^\]\)(@:\([^/)]\+/[^/)]\+\))/,\1\"\$_lib_dir/\2\"/,g      # (@:t/s)/        Package p path
+      s,\(^\|[^\]\)(@@)/,\1\"\$_lib_dir/_/_\"/,g                        # (@@)/           Common path
+      s,\(^\|[^\]\)(@@:\.\([^/)]\+\))/,\1\"\$_lib_dir/_/\2\"/,g         # (@@:.s)/        Package TLD.s path
 
       ### Escaped idioms
       s,^\\\\\(@\s\+\),\1,
       s,\\\\(@),(@),g                                                   # Escape package var and func
-      s,\\\\(@:\([^)]*\)),(@:\1),g                                      # Escape named Package p var, func, and path
+      s,\\\\(\(@@\?\):\([^)]*\)),(\1:\2),g                              # Escape named Package p var, func, and path
       s,\\\\(@@),(@@),g                                                 # Escape common package var and func
       s,\\\\(@/),(@/),g                                                 # Escape package path
       s,\\\\(@@/),(@@/),g                                               # Escape common path
@@ -1042,25 +1061,29 @@ EOF
       s,\(^\|[^\]\)(+)_,\1${PVar}${CVar}___,g                           # (+)_var         Current component var
       s,\(^\|[^\]\)(+:\([^/:)]\+\))_,\1${PVar}__\2___,g                 # (+:c)_var       Current component c var
       s,\(^\|[^\]\)(+:\.\([^/:)]\+\):\([^/:)]\+\))_,\1\x01${PTLDVar}_\2\x02__\3___,g
-                                                                        # (+:.p:c)_var    Package TLD.p component c var
+                                                                        # (+:.s:c)_var    Package TLD.s component c var
       s,\(^\|[^\]\)(+:\([^/:)]\+\):\([^/:)]\+\))_,\1\x01\2\x02__\3___,g # (+:p:c)_var     Package p component c var
-      s,\(^\|[^\]\)(++:\([^/)]\+\))_,\1___\2___,g                       # (++:c)_var      Common component c var
+      s,\(^\|[^\]\)(++:\.\([^:)]\+\):\([^)]\+\))_,\1_\2__\3___,g        # (++:.s:c)_var   Common TLD.s component c var
+      s,\(^\|[^\]\)(++:\([^/)]\+\))_,\1__\2___,g                        # (++:c)_var      Common component c var
 
       ### FUNCTIONS
       s,\(^\|[^\]\)(+):,\1$PFunc$CFunc:,g                               # (+):func        Current component func
       s,\(^\|[^\]\)(+:\([^/:)]\+\)):,\1$PFunc:\2:,g                     # (+:c):func      Current component c func
-      s,\(^\|[^\]\)(+:\(\.[^/:)]\+\):\([^/:)]\+\)):,\1\x03$PTLDFunc\2\x04:\3:,g
-                                                                        # (+:.p:c):func   Package TLD.p component c func
+      s,\(^\|[^\]\)(+:\(\.[^/:)]\+\):\([^/:)]\+\)):,\1\x03$PFunc\2\x04:\3:,g
+                                                                        # (+:.s:c):func   Package TLD.s component c func
       s,\(^\|[^\]\)(+:\([^/:)]\+\):\([^/:)]\+\)):,\1\x03\2\x04:\3:,g    # (+:p:c):func    Package p component c func
+      s,\(^\|[^\]\)(++:\(\.[^:)]\+\):\([^/:)]\+\)):,\1\2:\3:,g          # (++:.s:c):func  Common TLD.s component c func
       s,\(^\|[^\]\)(++:\([^/)]\+\)):,\1:\2:,g                           # (++:c):func     Common component c func
 
       ### PATHS
       s,\(^\|[^\]\)(+)/,\1\"\$_lib_dir/$PackageDir/$Component\"/,g      # (+)/            Current current component path
       s,\(^\|[^\]\)(+:\([^/:)]\+\))/,\1\"\$_lib_dir/$PackageDir/\2\"/,g # (+:c)/          Current component c path
       s,\(^\|[^\]\)(+:\.\([^/:)]\+\):\([^/:)]\+\))/,\1\"\$_lib_dir/$PTLDDir/\2/\3\"/,g
-                                                                        # (+:.p:c)/       Package TLD.p component c path
+                                                                        # (+:.s:c)/       Package TLD.s component c path
       s,\(^\|[^\]\)(+:\([^/:)]\+/[^/:)]\+\):\([^/:)]\+\))/,\1\"\$_lib_dir/\2/\3\"/,g
                                                                         # (+:t/s:c)/      Package p component c path
+      s,\(^\|[^\]\)(++:\.\([^:)]\+\):\([^)]\+\))/,\1\"\$_lib_dir/_/\2/\3\"/,g
+                                                                        # (++:.s:c)/       Package TLD.s component c path
       s,\(^\|[^\]\)(++:\([^/)]\+\))/,\1\"\$_lib_dir/_/_/\2\"/,g         # (++:c)/         Common component c path
 
       ### Escaped idioms
@@ -1080,7 +1103,7 @@ EOF
       s,\(^\|[^\]\)(-:\([^:)]\+\))_,\1${PVar}${CVar}__\2___,g           # (-:u)_var       Current univ u var
       s,\(^\|[^\]\)(-:\([^/:)]\+\):\([^/:)]\+\))_,\1${PVar}__\2__\3___,g
                                                                         # (-:c:u)_var     Current component c, component v var
-      s,\(^\|[^\]\)(--:\([^/:)]\+\):\([^/:)]\+\))_,\1___\2__\3___,g     # (--:c:u)_var    Common component c, univ u var
+      s,\(^\|[^\]\)(--:\([^/:)]\+\):\([^/:)]\+\))_,\1__\2__\3___,g      # (--:c:u)_var    Common component c, univ u var
 
       ### FUNCTIONS
       s,\(^\|[^\]\)(-):,\1$PFunc$CFunc$UFunc:,g                         # (-):func        Current unit func
@@ -1122,6 +1145,12 @@ EOF
 
    cat > "$_BinDir/$DstFile"
 
+   local DstFileAsString
+   DstFileAsString="$(cat "$_BinDir/$DstFile")"
+   if [[ -z $DstFileAsString ]]; then
+      rm -f "$_BinDir/$DstFile"
+   fi
+
    if [[ ! $DstFile =~ / ]]; then                        # Only entrypoints should be executable
       chmod a+x "$_BinDir/$DstFile"                      # If the $DstFile is in bin, make it executable
    fi
@@ -1134,20 +1163,24 @@ EOF
 
    printf -v "$_Var" '%s' "$(                            # Write back to the indicated variable
       if [[ $_Value =~ / ]]; then                        # Converting <package-tld>/<package-subdomain>?
-         if [[ ${_Value%%/*} = _ ]]; then
-            if [[ ${_Value#*/} = _ ]]; then
-               echo _
+         ### Package
+         if [[ ${_Value%%/*} = _ ]]; then                # Is it a system package (_/*)?
+            if [[ ${_Value#*/} = _ ]]; then              # Does it have a sub-package?
+               echo '.'                                  # No, use _ as the package name
             else
-               echo "_${_Value#*/}"
+               echo ".${_Value#*/}"                      # Yes, use _<sub-package> as the package name
             fi
-         else
-            if [[ ${Value#*/} = _ ]]; then
-               echo "${_Value%%/*}"
+
+         else                                            # It is NOT a system package
+            if [[ ${_Value#*/} = _ ]]; then              # Does it have a sub-package?
+               echo "${_Value%%/*}"                      # No
             else
                echo "${_Value%%/*}.${_Value#*/}"
             fi
          fi
+
       else
+         ### Component, Unit, Script
          echo -n "$_Value" | tr -cd '[:alnum:]._-'       # Delete characters other than [a-zA-Z0-9._-]
       fi
    )"

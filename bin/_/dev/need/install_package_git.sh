@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_dev:need:install_package_git:centos()
+.dev:need:install_package_git:centos()
 {
    local _dev__need__install_package_git__centos___NeedToInstallGit=false
 
@@ -15,11 +15,11 @@ _dev:need:install_package_git:centos()
    fi
 
    if $_dev__need__install_package_git__centos___NeedToInstallGit; then
-      _dev:need:install_package_git:install_git_centos
+      .dev:need:install_package_git:install_git_centos
    fi
 }
 
-_dev:need:install_package_git:redhat()
+.dev:need:install_package_git:redhat()
 {
    if [[ ! ":$PATH:" =~ ':/opt/rh/rh-git227/root/usr/bin:' && -f /etc/profile.d/scl.sh ]]; then
       source /etc/profile.d/scl.sh                       # Reload to update PATH and other environment variables
@@ -38,7 +38,7 @@ _dev:need:install_package_git:redhat()
    fi
 
    if $_dev__need__install_package_git__redhat___NeedToInstallGit; then
-      _dev:need:install_package_git:install_git_redhat
+      .dev:need:install_package_git:install_git_redhat
    fi
 
    if [[ ! ":$PATH:" =~ ':/opt/rh/rh-git227/root/usr/bin:' ]]; then
@@ -46,7 +46,7 @@ _dev:need:install_package_git:redhat()
    fi
 }
 
-_dev:need:install_package_git:install_git_centos()
+.dev:need:install_package_git:install_git_centos()
 {
    :sudo || :reenter                                     # This function must run as root
 
@@ -58,7 +58,7 @@ _dev:need:install_package_git:install_git_centos()
    :log: --pop
 }
 
-_dev:need:install_package_git:install_git_redhat()
+.dev:need:install_package_git:install_git_redhat()
 {
    :sudo || :reenter                                     # This function must run as root
 

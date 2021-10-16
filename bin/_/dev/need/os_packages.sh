@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_dev:need:os_packages:()
+.dev:need:os_packages:()
 {
    :sudo || :reenter                                     # This function must run as root
 

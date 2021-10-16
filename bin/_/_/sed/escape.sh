@@ -4,14 +4,14 @@
 # the string as a regex, this function can used to preprocess.
 :sed:escape()
 {
-   local ___sed__escape__escape___Options
-   ___sed__escape__escape___Options=$(getopt -o 'n' -l 'newlines' -n "${FUNCNAME[0]}" -- "$@") || return
-   eval set -- "$___sed__escape__escape___Options"
+   local __sed__escape__escape___Options
+   __sed__escape__escape___Options=$(getopt -o 'n' -l 'newlines' -n "${FUNCNAME[0]}" -- "$@") || return
+   eval set -- "$__sed__escape__escape___Options"
 
-   local ___sed__escape__escape___EscapeNewlines=false
+   local __sed__escape__escape___EscapeNewlines=false
    while true ; do
       case "$1" in
-      -n|--newlines)    ___sed__escape__escape___EscapeNewlines=true; shift;;
+      -n|--newlines)    __sed__escape__escape___EscapeNewlines=true; shift;;
       --)               shift; break;;
       *)                break;;
       esac
@@ -25,7 +25,7 @@
       fi
    } |
    {
-      if $___sed__escape__escape___EscapeNewlines; then
+      if $__sed__escape__escape___EscapeNewlines; then
          LC_ALL=C sed -- ':a;N;$!ba;s/\n/\\n/g'
       else
          cat

@@ -2,23 +2,23 @@
 
 :test:assert()
 {
-   local ___test__assert__assert___Test="$1"                                   # A test that can be eval'd
-   local ___test__assert__assert___Emit="${2:-$1}"
-   local ___test__assert__assert___Status=0                                    # The return status of the test, presumed to be a success
+   local __test__assert__assert___Test="$1"                                   # A test that can be eval'd
+   local __test__assert__assert___Emit="${2:-$1}"
+   local __test__assert__assert___Status=0                                    # The return status of the test, presumed to be a success
 
-   eval "$___test__assert__assert___Test" &>/dev/null || ___test__assert__assert___Status=$?
+   eval "$__test__assert__assert___Test" &>/dev/null || __test__assert__assert___Status=$?
                                                          # Run the assertion and if an error, update the Status
 
-   if (( $___test__assert__assert___Status == 0 )); then
-      :highlight: <<<"<G>PASS:</G> <b>$___test__assert__assert___Emit</b>"
+   if (( $__test__assert__assert___Status == 0 )); then
+      :highlight: <<<"<G>PASS:</G> <b>$__test__assert__assert___Emit</b>"
 
    else
-      :highlight: <<<"<R>FAIL:</R> <b>$___test__assert__assert___Emit</b>"     # Emit the failure message
+      :highlight: <<<"<R>FAIL:</R> <b>$__test__assert__assert___Emit</b>"     # Emit the failure message
 
       {                                                  # Show how the test failed
          BASH_XTRACEFD=1                                 # For set -x, set output to stdout
          set -x
-         eval "$___test__assert__assert___Test"                                # eval the test again, this time emitting output (set -x)
+         eval "$__test__assert__assert___Test"                                # eval the test again, this time emitting output (set -x)
          set +x
          BASH_XTRACEFD=                                  # No longer redirect set -x output to stdout (now stderr)
       } |

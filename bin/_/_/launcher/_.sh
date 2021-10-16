@@ -21,12 +21,12 @@
    #######################################
    # Load Function-Specific Declarations #
    #######################################
-   :launcher:_:Startup "${___launcher______Args[@]}"                          # Setup redirection; Run STARTUP functions
+   :launcher:_:Startup "${__launcher______Args[@]}"                          # Setup redirection; Run STARTUP functions
 
    #################################################
    # Execute Functions based on Command-Line Input #
    #################################################
-   :launcher:_:DispatchRequests "${___launcher______Args[@]}"                 # Process the request
+   :launcher:_:DispatchRequests "${__launcher______Args[@]}"                 # Process the request
 
    ###############################
    # Perform an Orderly Shutdown #
@@ -38,7 +38,7 @@
 {
    :get:os --var _os                                     # Get an associative array providing os (distro) information
 
-   local -Ag ___launcher___Config                                  # Launcher configuration parameters
+   local -Ag __launcher___Config                                  # Launcher configuration parameters
 
    ### DEFAULT REENTRY AND DISPATCH DEFINITIONS
    local -g _entry_user="$(id -un "$UID")"               # The user corresponding to the current UID
@@ -59,8 +59,8 @@
    fi
 
    ### PERSIST THESE VARIABLES FOR USE BY :reenter
-   local -a ___launcher_____PreStartup___PersistVars=(
-      ___launcher___Config
+   local -a __launcher_____PreStartup___PersistVars=(
+      __launcher___Config
       _whoami
       _entry_user
       _entry_group
@@ -72,9 +72,9 @@
    local -Ag _entry_vars                                 # Keys are variables to be declared after :reenter
                                                          # Associative allows for unset _entry_vars[some_var]
                                                          # The value is unused at the present, but may be used later
-   local ___launcher_____PreStartup___PersistVar
-   for ___launcher_____PreStartup___PersistVar in "${___launcher_____PreStartup___PersistVars[@]}"; do
-      eval _entry_vars[$___launcher_____PreStartup___PersistVar]=                 # Index is a variable to use on :reenter
+   local __launcher_____PreStartup___PersistVar
+   for __launcher_____PreStartup___PersistVar in "${__launcher_____PreStartup___PersistVars[@]}"; do
+      eval _entry_vars[$__launcher_____PreStartup___PersistVar]=                 # Index is a variable to use on :reenter
    done
 
    ### ENVIRONMENT VARIABLES
@@ -83,11 +83,11 @@
 
 :launcher:_:ProcessOptions()
 {
-   local -g ___launcher______Edit=false                               # Interpret the function as a request to edit it
-   local -g ___launcher______EditBin=false                            # Interpret the function as a request to edit it
-   local -g ___launcher______Help=false                               # Interpret the function as a request for help on it
+   local -g __launcher______Edit=false                               # Interpret the function as a request to edit it
+   local -g __launcher______EditBin=false                            # Interpret the function as a request to edit it
+   local -g __launcher______Help=false                               # Interpret the function as a request for help on it
 
-   local -ga ___launcher______Args=()                                 # Store any remaining args in this variable
+   local -ga __launcher______Args=()                                 # Store any remaining args in this variable
 
    _env_var="$( sed -e 's|.*|\U&|;s|[^A-Z0-9_]|_|g' <<<"$__" )_OPTIONS"
                                                          # Options Env Var is uppercase: <EXE>_OPTIONS
@@ -97,58 +97,58 @@
       -l 'declare:,edit,edit-bin,help,log:,entryuser:,trace,no-color,stdout,mask-errors' \
       -- $( envsubst <<<"\$$_env_var" ) "$@"
 
-   local ___launcher_____ProcessOptions___Option                                      # Option letter or word
-   local ___launcher_____ProcessOptions___Value                                       # Value stores a value for options that take a value
+   local __launcher_____ProcessOptions___Option                                      # Option letter or word
+   local __launcher_____ProcessOptions___Value                                       # Value stores a value for options that take a value
 
-   while :getopts: next ___launcher_____ProcessOptions___Option ___launcher_____ProcessOptions___Value; do
-      case "$___launcher_____ProcessOptions___Option" in
-      -=|--declare)     :launcher:_:ProcessOptions.declare "$___launcher_____ProcessOptions___Value";;
-      -e|--edit)        ___launcher______Edit=true;;
-      -E|--edit-bin)    ___launcher______Edit=true; ___launcher______EditBin=true;;
-      -h|--help)        ___launcher______Help=true;;
-      -u|--entryuser)   :launcher:_:ProcessOptions.entryuser "$___launcher_____ProcessOptions___Value";;
+   while :getopts: next __launcher_____ProcessOptions___Option __launcher_____ProcessOptions___Value; do
+      case "$__launcher_____ProcessOptions___Option" in
+      -=|--declare)     :launcher:_:ProcessOptions.declare "$__launcher_____ProcessOptions___Value";;
+      -e|--edit)        __launcher______Edit=true;;
+      -E|--edit-bin)    __launcher______Edit=true; __launcher______EditBin=true;;
+      -h|--help)        __launcher______Help=true;;
+      -u|--entryuser)   :launcher:_:ProcessOptions.entryuser "$__launcher_____ProcessOptions___Value";;
       -x|--trace)       :launcher:_:ProcessOptions.trace;;
 
-      --log)            ___launcher___Config[Log]="$(readlink -fm "$___launcher_____ProcessOptions___Value")";;
-      --no-color)       ___launcher___Config[HasColor]=false;;
-      --stdout)         ___launcher___Config[DupLogToStdout]=true;;
-      --mask-errors)    ___launcher___Config[MaskErrors]=true;;    # Ignore errors as they happen
+      --log)            __launcher___Config[Log]="$(readlink -fm "$__launcher_____ProcessOptions___Value")";;
+      --no-color)       __launcher___Config[HasColor]=false;;
+      --stdout)         __launcher___Config[DupLogToStdout]=true;;
+      --mask-errors)    __launcher___Config[MaskErrors]=true;;    # Ignore errors as they happen
 
       *)          break;;
       esac
    done
 
-   :getopts: end --save ___launcher______Args                         # Save unused args
+   :getopts: end --save __launcher______Args                         # Save unused args
 
-   if [[ -d ${___launcher___Config[pwd]} && -x ${___launcher___Config[pwd]} ]]; then
-      cd "${___launcher___Config[pwd]}"
+   if [[ -d ${__launcher___Config[pwd]} && -x ${__launcher___Config[pwd]} ]]; then
+      cd "${__launcher___Config[pwd]}"
    fi
-   if [[ -n ${___launcher___Config[bash.set]} ]]; then
-      eval "$( base64 -d <<<"${___launcher___Config[bash.set]}" )"
+   if [[ -n ${__launcher___Config[bash.set]} ]]; then
+      eval "$( base64 -d <<<"${__launcher___Config[bash.set]}" )"
    fi
-   if [[ -n ${___launcher___Config[bash.shopt]} ]]; then
-      eval "$( base64 -d <<<"${___launcher___Config[bash.shopt]}" )"
+   if [[ -n ${__launcher___Config[bash.shopt]} ]]; then
+      eval "$( base64 -d <<<"${__launcher___Config[bash.shopt]}" )"
    fi
 }
 
 :launcher:_:ProcessOptions.declare()
 {
-   local ___launcher_____ProcessOptions___Value="$1"
-   local ___launcher_____ProcessOptions___Options=( -g )                              # Always use the global namespace
+   local __launcher_____ProcessOptions___Value="$1"
+   local __launcher_____ProcessOptions___Options=( -g )                              # Always use the global namespace
 
    # See reenter.bash for how options are structured
 
-   if [[ $___launcher_____ProcessOptions___Value =~ ^[a-zA-Z]+: ]]; then
-      ___launcher_____ProcessOptions___Options+=( "-${___launcher_____ProcessOptions___Value%%:*}" )               # Get the options prefix and form it into an option string
+   if [[ $__launcher_____ProcessOptions___Value =~ ^[a-zA-Z]+: ]]; then
+      __launcher_____ProcessOptions___Options+=( "-${__launcher_____ProcessOptions___Value%%:*}" )               # Get the options prefix and form it into an option string
    fi
 
-   ___launcher_____ProcessOptions___Value="${___launcher_____ProcessOptions___Value#*:}"                           # Remove the options prefix
+   __launcher_____ProcessOptions___Value="${__launcher_____ProcessOptions___Value#*:}"                           # Remove the options prefix
 
-   if [[ $___launcher_____ProcessOptions___Options =~ r ]]; then                      # Readonly parameters cannot be re-declared
+   if [[ $__launcher_____ProcessOptions___Options =~ r ]]; then                      # Readonly parameters cannot be re-declared
       :var:unsetro "${Value%%=*}"                        # Attempt to unset the read-only variable
    fi
 
-   eval local "${___launcher_____ProcessOptions___Options[@]}" "$___launcher_____ProcessOptions___Value"           # Declare the variable to state before :reenter
+   eval local "${__launcher_____ProcessOptions___Options[@]}" "$__launcher_____ProcessOptions___Value"           # Declare the variable to state before :reenter
 }
 
 :launcher:_:ProcessOptions.entryuser()
@@ -167,26 +167,26 @@
 
 :launcher:_:Startup()
 {
-   local -a ___launcher_____Startup___StartupFunctions
+   local -a __launcher_____Startup___StartupFunctions
 
-   :find:functions --meta STARTUP --var ___launcher_____Startup___StartupFunctions
+   :find:functions --meta STARTUP --var __launcher_____Startup___StartupFunctions
                                                          # Get ordered list of startup functions
-   local ___launcher_____Startup___StartupFunction
-   for ___launcher_____Startup___StartupFunction in "${___launcher_____Startup___StartupFunctions[@]}"; do
-      "$___launcher_____Startup___StartupFunction" "$@"
+   local __launcher_____Startup___StartupFunction
+   for __launcher_____Startup___StartupFunction in "${__launcher_____Startup___StartupFunctions[@]}"; do
+      "$__launcher_____Startup___StartupFunction" "$@"
    done
 
    # If not specified, set these configuration defaults
-   local -A ___launcher_____Startup___ConfigDefaults=(
+   local -A __launcher_____Startup___ConfigDefaults=(
       [HasColor]=true                                    # Color output is available
       [DupLogToStdout]=false                             # Send stdout/stderr to both the log file and stdout
       [Log]=                                             # Do not write to a log file (non-empty is the log file path)
    )
 
-   local ___launcher_____Startup___ConfigDefault
-   for ___launcher_____Startup___ConfigDefault in "${!___launcher_____Startup___ConfigDefaults[@]}"; do
-      if [[ -z ${___launcher___Config[$___launcher_____Startup___ConfigDefault]} ]]; then
-         ___launcher___Config[$___launcher_____Startup___ConfigDefault]="${___launcher_____Startup___ConfigDefaults[___launcher_____Startup___ConfigDefault]}"
+   local __launcher_____Startup___ConfigDefault
+   for __launcher_____Startup___ConfigDefault in "${!__launcher_____Startup___ConfigDefaults[@]}"; do
+      if [[ -z ${__launcher___Config[$__launcher_____Startup___ConfigDefault]} ]]; then
+         __launcher___Config[$__launcher_____Startup___ConfigDefault]="${__launcher_____Startup___ConfigDefaults[__launcher_____Startup___ConfigDefault]}"
       fi
    done
 
@@ -224,21 +224,21 @@
    ################################
    # Perform Logging Redirections #
    ################################
-   if [[ -n ${___launcher___Config[Log]} ]]; then                  # Writing to a log file has been requested
-      if [[ ! -f ${___launcher___Config[Log]} ]]; then
-         local ___launcher_____RedirectIO___LogDir="$(dirname "${___launcher___Config[Log]}")"
+   if [[ -n ${__launcher___Config[Log]} ]]; then                  # Writing to a log file has been requested
+      if [[ ! -f ${__launcher___Config[Log]} ]]; then
+         local __launcher_____RedirectIO___LogDir="$(dirname "${__launcher___Config[Log]}")"
       fi
 
-      if [[ -w ${___launcher___Config[Log]} || ( ! -f ${___launcher___Config[Log]} && -w $(dirname "${___launcher___Config[Log]}") ) ]]; then
+      if [[ -w ${__launcher___Config[Log]} || ( ! -f ${__launcher___Config[Log]} && -w $(dirname "${__launcher___Config[Log]}") ) ]]; then
                                                          # Is the log file writable?
-         if [[ ${___launcher___Config[DupLogToStdout]} = true ]]; then
+         if [[ ${__launcher___Config[DupLogToStdout]} = true ]]; then
                                                          # Yes. Now, should the output also go to stdout?
-            exec > >( stdbuf -i0 -o0 -e0 tee -a -i >( sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" >>"${___launcher___Config[Log]}" ) ) 2>&1
+            exec > >( stdbuf -i0 -o0 -e0 tee -a -i >( sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" >>"${__launcher___Config[Log]}" ) ) 2>&1
                                                          # Unbuffered tee to stdout/file; Remove color characters from log file
 
 
          else
-            exec > >( stdbuf -i0 -o0 -e0 sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" >>"${___launcher___Config[Log]}" ) 2>&1
+            exec > >( stdbuf -i0 -o0 -e0 sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" >>"${__launcher___Config[Log]}" ) 2>&1
                                                          # Now the revised stdout and stderr will go only to the log file
                                                          # Remove color characters from log file
          fi
@@ -248,7 +248,7 @@
                                                          # Ensure stdout and stderr go to both stdout and the log file
 
       else
-         :error: "Could not open log file for writing: ${___launcher___Config[Log]}"
+         :error: "Could not open log file for writing: ${__launcher___Config[Log]}"
       fi                                                 # The log file was not writable
    fi
 }
@@ -258,7 +258,7 @@
    local -g _functions_json
    :json:jq _functions_json '.function' "$_etc_dir/functions.json"
 
-   if $___launcher______Help || [[ $1 =~ ^/ ]]; then
+   if $__launcher______Help || [[ $1 =~ ^/ ]]; then
       :help: "$@"
 
    elif (( $# == 0 )); then
@@ -266,18 +266,18 @@
       return 0
 
    elif :test:has_func "$1"; then
-      if $___launcher______Edit; then
-         local ___launcher_____DispatchRequests___FunctionPath
-         :json:jq ___launcher_____DispatchRequests___FunctionPath -r ".\"$1\".path" <<<"$_functions_json"
-         if $___launcher______EditBin; then
-            vi "$(readlink -f "$_bin_dir/$___launcher_____DispatchRequests___FunctionPath")"
+      if $__launcher______Edit; then
+         local __launcher_____DispatchRequests___FunctionPath
+         :json:jq __launcher_____DispatchRequests___FunctionPath -r ".\"$1\".path" <<<"$_functions_json"
+         if $__launcher______EditBin; then
+            vi "$(readlink -f "$_bin_dir/$__launcher_____DispatchRequests___FunctionPath")"
          else
-            vi "$(readlink -f "$_lib_dir/$___launcher_____DispatchRequests___FunctionPath")"
+            vi "$(readlink -f "$_lib_dir/$__launcher_____DispatchRequests___FunctionPath")"
          fi
 
       else
 
-         if [[ ${___launcher___Config[MaskErrors]} = true ]]; then # Should errors be ignored?
+         if [[ ${__launcher___Config[MaskErrors]} = true ]]; then # Should errors be ignored?
             set +o errexit                               # Yes, ignore errexit
             set +o pipefail                              # Yes, ignore pipefail
          fi
@@ -321,12 +321,12 @@
 
 :launcher:_:Shutdown()
 {
-   local -a ___launcher_____Shutdown___ShutdownFunctions
-   :find:functions --meta SHUTDOWN --var ___launcher_____Shutdown___ShutdownFunctions
+   local -a __launcher_____Shutdown___ShutdownFunctions
+   :find:functions --meta SHUTDOWN --var __launcher_____Shutdown___ShutdownFunctions
 
-   local ___launcher_____Shutdown___ShutdownFunction
-   for ___launcher_____Shutdown___ShutdownFunction in "${___launcher_____Shutdown___ShutdownFunctions[@]}"; do
-      "$___launcher_____Shutdown___ShutdownFunction"
+   local __launcher_____Shutdown___ShutdownFunction
+   for __launcher_____Shutdown___ShutdownFunction in "${__launcher_____Shutdown___ShutdownFunctions[@]}"; do
+      "$__launcher_____Shutdown___ShutdownFunction"
    done
 
    exec 3<&-                                             # Close duplicate of stdin or user-provided input file
@@ -340,7 +340,7 @@
    # When using tee with multiple file descriptors, output synchronization problems may occur.
    # Running a trivial command in a subshell is a workaround to force correct synchronization so
    # that problems such as the prompt not showing up are avoided.
-   if [[ -n ${___launcher___Config[Log]} && ${___launcher___Config[DupLogToStdout]} = true ]]; then
+   if [[ -n ${__launcher___Config[Log]} && ${__launcher___Config[DupLogToStdout]} = true ]]; then
                                                          # The condition in which tee is used with multiple FDs
       $(true)
    fi
@@ -355,12 +355,12 @@
 
    local -Ag _function_to_path
    local -Ag _path_to_functions
-   local ___launcher_____BuildFunctionInfoDEPRECATED___function
-   local ___launcher_____BuildFunctionInfoDEPRECATED___Path
-   for ___launcher_____BuildFunctionInfoDEPRECATED___Function in "${_functions[@]}"; do
-      :json:jq ___launcher_____BuildFunctionInfoDEPRECATED___Path -r ".\"$___launcher_____BuildFunctionInfoDEPRECATED___Function\".path" <<<"$_functions_json"
-      _function_to_path[$___launcher_____BuildFunctionInfoDEPRECATED___Function]="$___launcher_____BuildFunctionInfoDEPRECATED___Path"
-      _path_to_functions[$___launcher_____BuildFunctionInfoDEPRECATED___Path]+="${_path_to_functions[$___launcher_____BuildFunctionInfoDEPRECATED___Path]:+ }$___launcher_____BuildFunctionInfoDEPRECATED___Function"
+   local __launcher_____BuildFunctionInfoDEPRECATED___function
+   local __launcher_____BuildFunctionInfoDEPRECATED___Path
+   for __launcher_____BuildFunctionInfoDEPRECATED___Function in "${_functions[@]}"; do
+      :json:jq __launcher_____BuildFunctionInfoDEPRECATED___Path -r ".\"$__launcher_____BuildFunctionInfoDEPRECATED___Function\".path" <<<"$_functions_json"
+      _function_to_path[$__launcher_____BuildFunctionInfoDEPRECATED___Function]="$__launcher_____BuildFunctionInfoDEPRECATED___Path"
+      _path_to_functions[$__launcher_____BuildFunctionInfoDEPRECATED___Path]+="${_path_to_functions[$__launcher_____BuildFunctionInfoDEPRECATED___Path]:+ }$__launcher_____BuildFunctionInfoDEPRECATED___Function"
    done
 }
 
@@ -376,11 +376,11 @@
 
 :launcher:_:%TEST.dump()
 {
-   local ___launcher_____TEST___Message="$1"
+   local __launcher_____TEST___Message="$1"
 
    echo
    printf '%0.s=' {1..40}
-   echo " $___launcher_____TEST___Message"
+   echo " $__launcher_____TEST___Message"
    echo
 
    echo "Whoami:   $(whoami)"

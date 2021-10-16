@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_dev:zsh:configure%HELP()
+.dev:zsh:configure%HELP()
 {
    local _dev__zsh__configure__configureHELP___Synopsis='Configure a home directory with zsh configuration files'
 
@@ -13,7 +13,7 @@ DESCRIPTION:
 EOF
 }
 
-_dev:zsh:configure()
+.dev:zsh:configure()
 {
    :sudo || :reenter                                     # This function must run as root
 
