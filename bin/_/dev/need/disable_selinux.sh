@@ -1,6 +1,6 @@
 #!/bin/bash
 
-:need:disable_selinux:()
+.dev:need:disable_selinux:()
 {
    :sudo || :reenter                                     # This function must run as root
 

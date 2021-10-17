@@ -1,6 +1,6 @@
 #!/bin/bash
 
-:need:set_timezone:linux-6()
+.dev:need:set_timezone:linux-6()
 {
    :sudo || :reenter                                     # This function must run as root
 
@@ -10,7 +10,7 @@
    ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
 }
 
-:need:set_timezone:linux-7()
+.dev:need:set_timezone:linux-7()
 {
    :sudo || :reenter                                     # This function must run as root
 

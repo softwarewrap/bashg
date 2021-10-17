@@ -4,9 +4,25 @@
       "hash": "04df91be61d1a1d34d1b29cb64e86fbf",
       "path": "_/_/INDIRECT.sh"
     },
+    ".dev:env:setup": {
+      "hash": "82c9503553a36f00ade9b170c7e7287d",
+      "path": "_/dev/env/setup.sh"
+    },
     ".dev:need:%STARTUP-1": {
       "hash": "2558f7f2030672243b16bfedb28c94fa",
       "path": "_/dev/need/_.sh"
+    },
+    ".dev:need:clean_yum:": {
+      "hash": "0ace58df38f77f786cabc86b9dfb9288",
+      "path": "_/dev/need/clean_yum.sh"
+    },
+    ".dev:need:disable_selinux:": {
+      "hash": "6178641fe9a67b0172d665119f424210",
+      "path": "_/dev/need/disable_selinux.sh"
+    },
+    ".dev:need:disable_services:linux": {
+      "hash": "3d2083d22354269e8d7047a79bf70871",
+      "path": "_/dev/need/disable_services.sh"
     },
     ".dev:need:install_package_epel_release:EPELisInstalled": {
       "hash": "15318920f2efd2963a24ca2dddab822b",
@@ -68,6 +84,10 @@
       "hash": "6cb2b4389870039982ca0eaa24ae4532",
       "path": "_/dev/need/iptables.sh"
     },
+    ".dev:need:mount_all:": {
+      "hash": "4d98bbd8ed405d27ca0168e20c0695e8",
+      "path": "_/dev/need/mount_all.sh"
+    },
     ".dev:need:os_packages:": {
       "hash": "415a52259cc1a95e96cfc537a420052b",
       "path": "_/dev/need/os_packages.sh"
@@ -80,9 +100,33 @@
       "hash": "6c9f7953cb705a88228369a514935c9e",
       "path": "_/dev/need/rsh.sh"
     },
+    ".dev:need:set_timezone:linux-6": {
+      "hash": "7a63dc8714e9c8b5bc568f92d44c3307",
+      "path": "_/dev/need/set_timezone.sh"
+    },
+    ".dev:need:set_timezone:linux-7": {
+      "hash": "a63b5978795c35f696ea31e5620521fc",
+      "path": "_/dev/need/set_timezone.sh"
+    },
+    ".dev:need:sudoers:": {
+      "hash": "89bfe62d17ee4fe71428b86d4e1ed408",
+      "path": "_/dev/need/sudoers.sh"
+    },
+    ".dev:need:tune_limits:": {
+      "hash": "a74d287712d677a11cca827ce3170acc",
+      "path": "_/dev/need/tune_limits.sh"
+    },
+    ".dev:need:tune_sysctl:": {
+      "hash": "73a03d66b4cbf7b9cf6abe75d893e419",
+      "path": "_/dev/need/tune_sysctl.sh"
+    },
     ".dev:need:vim:": {
       "hash": "cbb86a41a812bac504f87904913a171d",
       "path": "_/dev/need/vim.sh"
+    },
+    ".dev:need:xvfb:linux-7": {
+      "hash": "2334cc8a14e68baa8856fd37e3d3a87b",
+      "path": "_/dev/need/xvfb.sh"
     },
     ".dev:need:zsh:": {
       "hash": "2f8fa6570e2fc438381e0224f7f65c0b",
@@ -604,29 +648,9 @@
       "hash": "452bb17cf899ce6d6a7704dda024f9c7",
       "path": "_/_/mkdir/_.sh"
     },
-    ":need:disable_selinux:": {
-      "hash": "6178641fe9a67b0172d665119f424210",
-      "path": "_/_/need/disable_selinux.sh"
-    },
-    ":need:disable_services:linux": {
-      "hash": "71ce33d4fdd6dddf9a3cc989acff0999",
-      "path": "_/_/need/disable_services.sh"
-    },
-    ":need:mount_all:": {
-      "hash": "053b957ad6e64a65885416edb217f080",
-      "path": "_/_/need/mount_all.sh"
-    },
     ":need:packages:": {
       "hash": "aa7646de2ecdf1736d88d56744c26b44",
       "path": "_/_/need/packages.sh"
-    },
-    ":need:set_timezone:linux-6": {
-      "hash": "7a63dc8714e9c8b5bc568f92d44c3307",
-      "path": "_/_/need/set_timezone.sh"
-    },
-    ":need:set_timezone:linux-7": {
-      "hash": "a63b5978795c35f696ea31e5620521fc",
-      "path": "_/_/need/set_timezone.sh"
     },
     ":nop:": {
       "hash": "736216a638b0d0da9c2becc148190b84",
