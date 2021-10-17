@@ -89,7 +89,7 @@
       "path": "_/dev/need/mount_all.sh"
     },
     ".dev:need:os_packages:": {
-      "hash": "415a52259cc1a95e96cfc537a420052b",
+      "hash": "efb78d79cd0bdf332e6d0d48db93b88f",
       "path": "_/dev/need/os_packages.sh"
     },
     ".dev:need:rsh:linux-6": {
