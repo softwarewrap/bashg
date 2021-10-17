@@ -757,7 +757,7 @@
       "path": "_/_/test/has_command.sh"
     },
     ":test:has_func": {
-      "hash": "e3ba422400b7a45c3c433e139b0417d8",
+      "hash": "5904b5a90eb24eee42bee2c2ef597773",
       "path": "_/_/test/has_func.sh"
     },
     ":test:has_package": {
