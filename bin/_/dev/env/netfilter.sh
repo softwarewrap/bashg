@@ -275,13 +275,13 @@ EOF
 
    local _dev__env__netfilter__Stop___Type
    for _dev__env__netfilter__Stop___Type in mangle nat raw; do
-      iptables -t "$_dev__env__netfilter__Stop___Type" -X
-      iptables -t "$_dev__env__netfilter__Stop___Type" -F
+      iptables -t "$_dev__env__netfilter__Stop___Type" -X || true
+      iptables -t "$_dev__env__netfilter__Stop___Type" -F || true
    done
 
-   iptables -Z
-   iptables -X LOG_DROP 2>/dev/null
-   iptables -X PORTSCAN 2>/dev/null
+   iptables -Z || true
+   iptables -X LOG_DROP 2>/dev/null || true
+   iptables -X PORTSCAN 2>/dev/null || true
 
    :log: 'Rules cleared'
 }

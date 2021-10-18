@@ -275,13 +275,13 @@ EOF
 
    local (.)_Type
    for (.)_Type in mangle nat raw; do
-      iptables -t "$(.)_Type" -X
-      iptables -t "$(.)_Type" -F
+      iptables -t "$(.)_Type" -X || true
+      iptables -t "$(.)_Type" -F || true
    done
 
-   iptables -Z
-   iptables -X LOG_DROP 2>/dev/null
-   iptables -X PORTSCAN 2>/dev/null
+   iptables -Z || true
+   iptables -X LOG_DROP 2>/dev/null || true
+   iptables -X PORTSCAN 2>/dev/null || true
 
    :log: 'Rules cleared'
 }
