@@ -1,0 +1,6 @@
+#######
+# NTP #
+#######
+-A INPUT -p udp -m udp --sport 123 -j ACCEPT
+
+-A OUTPUT -p udp -m udp --dport 123 -j ACCEPT

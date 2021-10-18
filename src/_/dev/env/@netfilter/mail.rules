@@ -1,0 +1,6 @@
+########
+# MAIL #
+########
+-A INPUT -p tcp -m multiport --ports 25,110,143,465,587,993,995 -j ACCEPT
+
+-A OUTPUT -p tcp -m multiport --ports 25,110,143,465,587,993,995,10024 -j ACCEPT
