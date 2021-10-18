@@ -15,6 +15,8 @@
    :: xvfb                                               # Install virtual framebuffer for X11
    :: mount_all                                          # Ensure that all defined mounts are mounted
    :: os_packages                                        # Install extra OS packages
+   :: disable_user_list                                  # Disable login page listing user names
+   :: install_fonts                                      # Install fonts (e.g., for use by vnc)
 
    :: -- disable_services libvirtd                       # Disable after other installations
 
@@ -23,4 +25,6 @@
 
    :: vim                                                # Install/update vim
    (++:.dev:vim):configure /install                      # Configure install user for vim
+
+   (++:.dev:env):netfilter -u                            # Configure iptables rules
 }

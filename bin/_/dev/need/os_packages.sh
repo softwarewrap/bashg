@@ -17,28 +17,37 @@
       esac
    done
 
-   if $_dev__need__os_packages_____Force || ! :yum:is_installed --environment 'Server with GUI'; then
-      :log: --push-section 'Installing Server with GUI and supporting packages' "$FUNCNAME $@"
-
-      local -a _dev__need__os_packages_____Items=(                               # For @^ and @ shorthand, see yum -v grouplist and man 8 yum
-         '@^graphical-server-environment'                # Server with GUI;                  @^ = environment group
-         '@development'                                  # Development Tools;                @ =  group
-         '@graphical-admin-tools'                        # Graphical Administration Tools;   @ =  group
-         expect                                          # Automate interactive applications
-         gnome-shell-extension-dash-to-dock              # GNOME dashboard shell extension
-         mlocate                                         # Provides: locate
-         postgresql                                      # PostgreSQL DB
-         pv                                              # Pipe Viewer for monitoring progress
-         unzip                                           # Archive extraction
-         xorg-x11-apps                                   # A collection of common X Window System applications
-         xrdp                                            # X Remote Desktop, works with Windows Remote Desktop
-      )
-
-      yum -y install "${_dev__need__os_packages_____Items[@]}"                   # Install items specified above
-
-      systemctl set-default graphical.target
-      systemctl start graphical.target
-
-      :log: --pop
+   if ! $_dev__need__os_packages_____Force && :yum:is_installed --environment 'Server with GUI'; then
+      return 0                                           # No need to take any action
    fi
+
+   :log: --push-section 'Installing Server with GUI and supporting packages' "$FUNCNAME $@"
+
+   local -a _dev__need__os_packages_____Items=(                                  # For @^ and @ shorthand, see yum -v grouplist and man 8 yum
+      '@^graphical-server-environment'                   # Server with GUI;                  @^ = environment group
+      '@development'                                     # Development Tools;                @ =  group
+      '@graphical-admin-tools'                           # Graphical Administration Tools;   @ =  group
+      expect                                             # Automate interactive applications
+      gnome-shell-extension-dash-to-dock                 # GNOME dashboard shell extension
+      mlocate                                            # Provides: locate
+      postgresql                                         # PostgreSQL DB
+      pv                                                 # Pipe Viewer for monitoring progress
+      unzip                                              # Archive extraction
+      xorg-x11-apps                                      # A collection of common X Window System applications
+      xrdp                                               # X Remote Desktop, works with Windows Remote Desktop
+   )
+
+   yum -y install "${_dev__need__os_packages_____Items[@]}"                      # Install items specified above
+
+   #############################################################################################
+   # Bug fix: gnome-terminal as root won't work                                                #
+   # Fixes throw: Error constructing proxy for org.gnome.Terminal:/org/gnome/Terminal/Factory0 #
+   # See: https://wiki.gnome.org/Apps/Terminal/FAQ#Exit_status_8                               #
+   #############################################################################################
+   localectl set-locale LANG=en_US.UTF-8
+
+   systemctl set-default graphical.target
+   systemctl start graphical.target
+
+   :log: --pop
 }

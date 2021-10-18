@@ -1,0 +1,12 @@
+#######
+# FTP #
+#######
+-A INPUT -p tcp -m tcp --dport 20 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -p tcp -m tcp --sport 20 -m state --state ESTABLISHED -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 21 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -p tcp -m tcp --sport 21 -m state --state ESTABLISHED -j ACCEPT
+
+-A OUTPUT -p tcp -m tcp --dport 20 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp --sport 20 -m state --state ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp --dport 21 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp --sport 21 -m state --state ESTABLISHED -j ACCEPT

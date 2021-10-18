@@ -1,0 +1,8 @@
+#######
+# GIT #
+#######
+-A INPUT -p tcp -m tcp --dport 9418 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -p tcp -m tcp --sport 9418 -m state --state ESTABLISHED -j ACCEPT
+
+-A OUTPUT -p tcp -m tcp --dport 9418 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp --sport 9418 -m state --state ESTABLISHED -j ACCEPT

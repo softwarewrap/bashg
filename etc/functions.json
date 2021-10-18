@@ -4,8 +4,32 @@
       "hash": "04df91be61d1a1d34d1b29cb64e86fbf",
       "path": "_/_/INDIRECT.sh"
     },
+    ".dev:env:netfilter": {
+      "hash": "d482b49273ef58dcd92c02718776b5f0",
+      "path": "_/dev/env/netfilter.sh"
+    },
+    ".dev:env:netfilter:GetZoneData": {
+      "hash": "33195eaf9f64c3091087221f94289015",
+      "path": "_/dev/env/netfilter.sh"
+    },
+    ".dev:env:netfilter:Start": {
+      "hash": "0f1f2cdde80f699fd7f8fe0c7d3f53c9",
+      "path": "_/dev/env/netfilter.sh"
+    },
+    ".dev:env:netfilter:Stop": {
+      "hash": "172824bc586ca067dc9aaed6a0223f48",
+      "path": "_/dev/env/netfilter.sh"
+    },
+    ".dev:env:netfilter:UpdateRules": {
+      "hash": "c3d8891ea848741c1e8cf37700ebf0dc",
+      "path": "_/dev/env/netfilter.sh"
+    },
+    ".dev:env:netfilter:UpdateTrust": {
+      "hash": "39c08e3486702a88e35492e2f96a501f",
+      "path": "_/dev/env/netfilter.sh"
+    },
     ".dev:env:setup": {
-      "hash": "82c9503553a36f00ade9b170c7e7287d",
+      "hash": "c5184d74fb8ef8e88a9cc2961829d74c",
       "path": "_/dev/env/setup.sh"
     },
     ".dev:need:%STARTUP-1": {
@@ -23,6 +47,14 @@
     ".dev:need:disable_services:linux": {
       "hash": "3d2083d22354269e8d7047a79bf70871",
       "path": "_/dev/need/disable_services.sh"
+    },
+    ".dev:need:disable_user_list:": {
+      "hash": "ef3efebfc8de9086fd11d46136f8e12c",
+      "path": "_/dev/need/disable_user_list.sh"
+    },
+    ".dev:need:install_fonts:": {
+      "hash": "ec88c1b992e341ac8ec74746cfb87429",
+      "path": "_/dev/need/install_fonts.sh"
     },
     ".dev:need:install_package_epel_release:EPELisInstalled": {
       "hash": "15318920f2efd2963a24ca2dddab822b",
@@ -89,7 +121,7 @@
       "path": "_/dev/need/mount_all.sh"
     },
     ".dev:need:os_packages:": {
-      "hash": "efb78d79cd0bdf332e6d0d48db93b88f",
+      "hash": "9cd8718fed353c76c9d3d59c081da523",
       "path": "_/dev/need/os_packages.sh"
     },
     ".dev:need:rsh:linux-6": {
