@@ -10,10 +10,7 @@
       systemctl start iptables
 
       iptables --flush
-
-      systemctl stop iptables
       iptables-save > /etc/sysconfig/iptables
-      systemctl mask iptables
 
       :log: --pop
    fi

@@ -245,7 +245,9 @@
       return
    fi
 
-   ipset destroy denylist 2>/dev/null                    # Start with a clean deny list
+   ipset flush denylist
+   systemctl restart iptables
+   ipset destroy denylist || true
 
    {
       cat <<EOF
@@ -256,14 +258,16 @@ EOF
 
    ipset restore -exist < untrusted.ipset
 
-   iptables < rules.conf
+   iptables-restore < rules.conf
 
    :log: "Total CIDR ranges denied: $(ipset list denylist | wc -l)"
 }
 
 .dev:env:netfilter:Stop()
 {
-   ipset destroy denylist 2>/dev/null
+   ipset flush denylist
+   systemctl restart iptables
+   ipset destroy denylist || true
 
    iptables -P INPUT ACCEPT
    iptables -P FORWARD ACCEPT
