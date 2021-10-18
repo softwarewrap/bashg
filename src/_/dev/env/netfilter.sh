@@ -245,9 +245,9 @@
       return
    fi
 
-   ipset flush denylist
+   ipset flush denylist 2>/dev/null || true
    systemctl restart iptables
-   ipset destroy denylist || true
+   ipset destroy denylist 2>/dev/null || true
 
    {
       cat <<EOF
@@ -265,9 +265,9 @@ EOF
 
 - Stop()
 {
-   ipset flush denylist
+   ipset flush denylist 2>/dev/null || true
    systemctl restart iptables
-   ipset destroy denylist || true
+   ipset destroy denylist 2>/dev/null || true
 
    iptables -P INPUT ACCEPT
    iptables -P FORWARD ACCEPT
@@ -282,4 +282,6 @@ EOF
    iptables -Z
    iptables -X LOG_DROP 2>/dev/null
    iptables -X PORTSCAN 2>/dev/null
+
+   :log: 'Rules cleared'
 }
