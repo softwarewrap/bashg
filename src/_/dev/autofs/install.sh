@@ -27,5 +27,18 @@ EOF
       chmod 755 /etc/auto.misc
    fi
 
+   # Ensure nfs is running
+   local (.)_State
+   (.)_State="$( systemctl is-enabled nfs )"
+   if [[ $(.)_State = masked ]]; then
+      systemctl unmask nfs
+   fi
+   if [[ $(.)_State = disabled ]]; then
+      systemctl enable nfs
+   fi
+   if ! systemctl is-active nfs --quiet; then
+      systemctl start nfs
+   fi
+
    :log: 'Done.'
 }

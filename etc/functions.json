@@ -9,7 +9,7 @@
       "path": "_/dev/autofs/enable.sh"
     },
     ".dev:autofs:install": {
-      "hash": "c0fe0521252a2d70d7e39bcd991d1f8e",
+      "hash": "33b0de700479d58131e1f6db7f1df267",
       "path": "_/dev/autofs/install.sh"
     },
     ".dev:autofs:restart": {

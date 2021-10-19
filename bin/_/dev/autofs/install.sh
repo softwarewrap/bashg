@@ -27,5 +27,18 @@ EOF
       chmod 755 /etc/auto.misc
    fi
 
+   # Ensure nfs is running
+   local _dev__autofs__install__install___State
+   _dev__autofs__install__install___State="$( systemctl is-enabled nfs )"
+   if [[ $_dev__autofs__install__install___State = masked ]]; then
+      systemctl unmask nfs
+   fi
+   if [[ $_dev__autofs__install__install___State = disabled ]]; then
+      systemctl enable nfs
+   fi
+   if ! systemctl is-active nfs --quiet; then
+      systemctl start nfs
+   fi
+
    :log: 'Done.'
 }
