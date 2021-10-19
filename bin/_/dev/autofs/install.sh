@@ -28,17 +28,20 @@ EOF
    fi
 
    # Ensure nfs is running
-   local _dev__autofs__install__install___State
-   _dev__autofs__install__install___State="$( systemctl is-enabled nfs )"
-   if [[ $_dev__autofs__install__install___State = masked ]]; then
-      systemctl unmask nfs
-   fi
-   if [[ $_dev__autofs__install__install___State = disabled ]]; then
-      systemctl enable nfs
-   fi
-   if ! systemctl is-active nfs --quiet; then
-      systemctl start nfs
-   fi
+   local _dev__autofs__install__install___Service
+   for _dev__autofs__install__install___Service in rpcbind nfs-server autofs; do
+      local _dev__autofs__install__install___State
+      _dev__autofs__install__install___State="$( systemctl is-enabled "$_dev__autofs__install__install___Service" )"
+      if [[ $_dev__autofs__install__install___State = masked ]]; then
+         systemctl unmask "$_dev__autofs__install__install___Service"
+      fi
+      if [[ $_dev__autofs__install__install___State = disabled ]]; then
+         systemctl enable "$_dev__autofs__install__install___Service"
+      fi
+      if ! systemctl is-active "$_dev__autofs__install__install___Service" --quiet; then
+         systemctl start "$_dev__autofs__install__install___Service"
+      fi
+   done
 
    :log: 'Done.'
 }

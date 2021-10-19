@@ -4,12 +4,8 @@
       "hash": "04df91be61d1a1d34d1b29cb64e86fbf",
       "path": "_/_/INDIRECT.sh"
     },
-    ".dev:autofs:enable": {
-      "hash": "2b5e3cbe07fd8600383a64d5d648a0b8",
-      "path": "_/dev/autofs/enable.sh"
-    },
     ".dev:autofs:install": {
-      "hash": "33b0de700479d58131e1f6db7f1df267",
+      "hash": "642fa582e03726e6dbaa566a933dfd29",
       "path": "_/dev/autofs/install.sh"
     },
     ".dev:autofs:restart": {

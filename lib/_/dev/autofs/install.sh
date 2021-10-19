@@ -28,17 +28,20 @@ EOF
    fi
 
    # Ensure nfs is running
-   local (.)_State
-   (.)_State="$( systemctl is-enabled nfs )"
-   if [[ $(.)_State = masked ]]; then
-      systemctl unmask nfs
-   fi
-   if [[ $(.)_State = disabled ]]; then
-      systemctl enable nfs
-   fi
-   if ! systemctl is-active nfs --quiet; then
-      systemctl start nfs
-   fi
+   local (.)_Service
+   for (.)_Service in rpcbind nfs-server autofs; do
+      local (.)_State
+      (.)_State="$( systemctl is-enabled "$(.)_Service" )"
+      if [[ $(.)_State = masked ]]; then
+         systemctl unmask "$(.)_Service"
+      fi
+      if [[ $(.)_State = disabled ]]; then
+         systemctl enable "$(.)_Service"
+      fi
+      if ! systemctl is-active "$(.)_Service" --quiet; then
+         systemctl start "$(.)_Service"
+      fi
+   done
 
    :log: 'Done.'
 }
