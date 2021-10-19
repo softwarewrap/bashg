@@ -4,6 +4,18 @@
       "hash": "04df91be61d1a1d34d1b29cb64e86fbf",
       "path": "_/_/INDIRECT.sh"
     },
+    ".dev:autofs:enable": {
+      "hash": "2b5e3cbe07fd8600383a64d5d648a0b8",
+      "path": "_/dev/autofs/enable.sh"
+    },
+    ".dev:autofs:install": {
+      "hash": "c0fe0521252a2d70d7e39bcd991d1f8e",
+      "path": "_/dev/autofs/install.sh"
+    },
+    ".dev:autofs:restart": {
+      "hash": "c1f611c345031122ee51ec95cb756530",
+      "path": "_/dev/autofs/restart.sh"
+    },
     ".dev:env:netfilter": {
       "hash": "d482b49273ef58dcd92c02718776b5f0",
       "path": "_/dev/env/netfilter.sh"
