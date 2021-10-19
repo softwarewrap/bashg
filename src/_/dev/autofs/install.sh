@@ -27,6 +27,16 @@ EOF
       chmod 755 /etc/auto.misc
    fi
 
+   # Copy configuration files
+   (
+      cd (+)/@files
+      tar cpf - .
+   ) |
+   (
+      cd /
+      tar xpf -
+   )
+
    # Ensure nfs is running
    local (.)_Service
    for (.)_Service in rpcbind nfs-server autofs; do

@@ -5,7 +5,7 @@
       "path": "_/_/INDIRECT.sh"
     },
     ".dev:autofs:install": {
-      "hash": "642fa582e03726e6dbaa566a933dfd29",
+      "hash": "55da5fd8d3c6cff453028869545a4627",
       "path": "_/dev/autofs/install.sh"
     },
     ".dev:autofs:restart": {
