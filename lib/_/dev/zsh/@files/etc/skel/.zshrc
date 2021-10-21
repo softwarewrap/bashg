@@ -77,7 +77,7 @@ setbanner()
 {
    case "$1" in
    none)     BANNER="" ;;
-   *|standard) BANNER=']2;'"[$(whoami)@$(hostname|sed 's/\..*//')]   %D{%a %b %e @ %l:%M:%S %p}"'' ;;
+   *|standard) BANNER=']2;'"[$(whoami)@$(hostname)]   %D{%a %b %e @ %l:%M:%S %p}"'' ;;
    esac
 }
 
