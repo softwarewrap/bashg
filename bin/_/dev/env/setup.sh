@@ -52,10 +52,7 @@ EOF
    fi
 
    :: zsh                                                # Install zsh
-   .dev:zsh:configure /install                      # Configure install user for zsh
-
    :: vim                                                # Install/update vim
-   .dev:vim:configure /install                      # Configure install user for vim
 
    .dev:env:netfilter -u                            # Configure iptables rules
 }
