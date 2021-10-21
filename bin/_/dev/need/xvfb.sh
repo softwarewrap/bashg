@@ -12,7 +12,13 @@
 
    :log: --push-section 'Installing' 'xvfb' "$FUNCNAME $@"
 
-   :require:packages xorg-x11-server-Xvfb
+   if ! :test:has_package xorg-x11-server-Xvfb; then
+      :log: --push 'Installing xorg-x11-server-Xvfb'
+
+      yum -y install xorg-x11-server-Xvfb
+
+      :log: --pop
+   fi
 
    cat >/etc/systemd/system/xvfb@.service <<EOF
 [Unit]

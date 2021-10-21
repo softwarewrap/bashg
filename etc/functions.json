@@ -116,10 +116,6 @@
       "hash": "7346bdd45f35f515906aa50c60e9ec5e",
       "path": "_/dev/need/install_package_jq.sh"
     },
-    ".dev:need:install_package_xorg-x11-server-Xvfb:": {
-      "hash": "43810b4ce8d60407d27deb4f54a2dfd4",
-      "path": "_/dev/need/install_package_xorg-x11-server-Xvfb.sh"
-    },
     ".dev:need:install_package_yum_utils:": {
       "hash": "f0b22914a7d5e0a707effc6474b19717",
       "path": "_/dev/need/install_package_yum_utils.sh"
@@ -165,7 +161,7 @@
       "path": "_/dev/need/vim.sh"
     },
     ".dev:need:xvfb:linux-7": {
-      "hash": "9290b74507daf2d8b07b3bb9b97592e0",
+      "hash": "2bec489cc3161d0261fd18dd205469f2",
       "path": "_/dev/need/xvfb.sh"
     },
     ".dev:need:zsh:": {
