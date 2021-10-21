@@ -185,7 +185,7 @@
       "path": "_/dev/vim/configure.sh"
     },
     ".dev:vim:install": {
-      "hash": "6ec8e32fb3a2d4ba29a481d1cb3001a9",
+      "hash": "5fd6ccad2944668d1fd1688b84425a17",
       "path": "_/dev/vim/install.sh"
     },
     ".dev:vim:install%HELP": {

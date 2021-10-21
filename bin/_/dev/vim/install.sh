@@ -63,6 +63,7 @@ EOF
    cd vim
 
    local -a _dev__vim__install__install___VimFeatures=(
+      --with-tlib=ncurses
       --with-features=huge                               # Provide a rich set of features
       --enable-multibyte                                 # Include unicode support
       --enable-pythoninterp
@@ -70,7 +71,7 @@ EOF
    )
 
    :log: 'Configuring for vim build'
-   ./configure "${_dev__vim__install__install___VimFeatures[@]}"
+   CFLAGS='-fPIC -O2' ./configure "${_dev__vim__install__install___VimFeatures[@]}"
 
    :log: 'Building vim'
    make
