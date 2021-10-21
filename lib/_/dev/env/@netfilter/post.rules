@@ -7,14 +7,13 @@
 -A INPUT -s 240.0.0.0/5 -i %{NIC}% -j LOG_DROP
 -A INPUT -m set --match-set denylist src -j LOG_DROP
 -A INPUT -j DROP
+
 -A FORWARD -m set --match-set denylist src -j LOG_DROP
 -A FORWARD -j DROP
--A OUTPUT -o lo -j ACCEPT
--A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
--A OUTPUT -p icmp -j ACCEPT
--A OUTPUT -j DROP
+
 -A LOG_DROP -j LOG --log-prefix "INPUT:DROP " --log-level 6
 -A LOG_DROP -j DROP
+
 -A PORTSCAN -p tcp -m tcp --tcp-flags FIN,ACK FIN -j DROP
 -A PORTSCAN -p tcp -m tcp --tcp-flags PSH,ACK PSH -j DROP
 -A PORTSCAN -p tcp -m tcp --tcp-flags ACK,URG URG -j DROP
@@ -26,4 +25,5 @@
 -A PORTSCAN -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,PSH,URG -j DROP
 -A PORTSCAN -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,SYN,PSH,URG -j DROP
 -A PORTSCAN -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,SYN,RST,ACK,URG -j DROP
+
 COMMIT

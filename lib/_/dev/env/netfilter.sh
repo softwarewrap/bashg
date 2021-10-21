@@ -233,6 +233,8 @@
 
 - Start()
 {
+   (-):Stop
+
    cd "$(-)_NetFilterDir"
 
    if [[ ! -f untrusted.zones ]]; then
@@ -259,6 +261,8 @@ EOF
    ipset restore -exist < untrusted.ipset
 
    iptables-restore < rules.conf
+   iptables-save > /etc/sysconfig/iptables
+
    systemctl restart iptables 2>/dev/null || true
 
    :log: "Total CIDR ranges denied: $(ipset list denylist | wc -l)"
