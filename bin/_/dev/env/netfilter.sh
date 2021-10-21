@@ -247,10 +247,6 @@
       return
    fi
 
-   ipset flush denylist 2>/dev/null || true
-   systemctl restart iptables 2>/dev/null || true
-   ipset destroy denylist 2>/dev/null || true
-
    {
       cat <<EOF
 create denylist hash:net family inet hashsize 65536 maxelem 262144
@@ -271,7 +267,8 @@ EOF
 .dev:env:netfilter:Stop()
 {
    ipset flush denylist 2>/dev/null || true
-   systemctl restart iptables
+   systemctl restart iptables 2>/dev/null || true
+   sleep 1
    ipset destroy denylist 2>/dev/null || true
 
    iptables -P INPUT ACCEPT
