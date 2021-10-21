@@ -506,6 +506,7 @@ EOF
    local -a _FunctionItems=()
    local _ErrorOutput="$(mktemp)"                        # Any error output from Bash parsing files
    local _BashFile                                       # Iterator
+   local _HashKey                                        # The function hash
 
    for _ShFile in "${_ShFiles[@]}"; do                   # Only .sh files contain functions (and only functions)
       _ShFileFunctions="$(
@@ -557,11 +558,10 @@ EOF
 
       local _FunctionItem                                # Iterator of the form: <function> <hash>
       local _Function                                    # Stores the <function>
-      local _Hash                                        # Stores the <hash>
 
       for _FunctionItem in "${_FunctionItems[@]}"; do    # For all functions
          _Function="${_FunctionItem%% *}"                # Get the <function>
-         _Hash="${_FunctionItem#* }"                     # Get the <hash>
+         _HashKey="${_FunctionItem#* }"                  # Get the <hash>
 
          if [[ -n ${_FunctionToFile[$_Function]} ]]; then
             {
@@ -575,13 +575,15 @@ EOF
          fi
 
          _FunctionToFile[$_Function]="$_ShFile"          # Add the function to file path mapping
-         _FunctionToHash[$_Function]="$_Hash"            # Add the function to hash path mapping
+         _FunctionToHash[$_Function]="$_HashKey"         # Add the function to hash path mapping
 
-         if [[ -n ${_HashToFunction[$_Hash]} ]]; then
-            _HashToFunction[$_Hash]+=" $_ShFile|$_Function"       # Add the reverse mapping of hash to identical function
+         if [[ -n ${_HashToFunction[$_HashKey]} ]]; then
+            _HashToFunction[$_HashKey]+=" $_ShFile|$_Function"
+                                                         # Add the reverse mapping of hash to identical function
 
          else
-            _HashToFunction[$_Hash]="$_ShFile|$_Function"         # Store the reverse mapping of hash to function
+            _HashToFunction[$_HashKey]="$_ShFile|$_Function"
+                                                         # Store the reverse mapping of hash to function
          fi
       done
    done
@@ -591,16 +593,23 @@ EOF
    local -i Duplicates=
    local DuplicateMarkers
 
+   local -a _HashKeys
+   readarray -t _HashKeys < <(
+      printf '%s\n' "${!_HashToFunction[@]}" |
+      LC_ALL=C sort -u |
+      sed '/^\s*$/d'
+   )
+
    {
-      for _Hash in "${!_HashToFunction[@]}"; do
-         if [[ ${_HashToFunction[$_Hash]} =~ ' ' ]]; then
-            DuplicateMarkers="${_HashToFunction[$_Hash]//[^ ]}"
+      for _HashKey in "${_HashKeys[@]}"; do
+         if [[ ${_HashToFunction[$_HashKey]} =~ ' ' ]]; then
+            DuplicateMarkers="${_HashToFunction[$_HashKey]//[^ ]}"
             Duplicates="${#DuplicateMarkers}"
             DuplicateFunctionCount=$(( DuplicateFunctionCount + 1 ))
             TotalDuplicates=$(( TotalDuplicates + Duplicates + 1 ))
 
             echo "#$DuplicateFunctionCount IDENTICAL:"
-            tr ' ' '\n' <<<"${_HashToFunction[$_Hash]}" | sed 's|^|    |'
+            tr ' ' '\n' <<<"${_HashToFunction[$_HashKey]}" | sed 's|^|    |'
             echo
          fi
       done
@@ -618,7 +627,6 @@ EOF
    #######################################################################
    local _Key                                            # The key is the function name
    local _Path                                           # The value is the relative file path
-   local _Hash                                           # The value is the function hash
    local _FunctionJSON=                                  # Start with an empty list
 
    for _Key in "${!_FunctionToFile[@]}"; do              # Iterate over all mappings
@@ -628,7 +636,7 @@ EOF
          LC_ALL=C sed 's|\\n||g'                         # The above code adds a backslash n: remove it
       )"
 
-      _Hash="${_FunctionToHash[$_Key]}"
+      _HashKey="${_FunctionToHash[$_Key]}"
 
       _Key="$(
          python -c 'import json,sys; print (json.dumps(sys.stdin.read()))' <<<"$_Key" |
@@ -636,7 +644,7 @@ EOF
          LC_ALL=C sed 's|\\n||g'                         # The above code adds a backslash n: remove it
       )"
 
-      _FunctionJSON+="$_Key:{\"path\":$_Path,\"hash\":\"$_Hash\"},"
+      _FunctionJSON+="$_Key:{\"path\":$_Path,\"hash\":\"$_HashKey\"},"
                                                          # Add the JSON key:value pair with a comma at the end
    done
 
