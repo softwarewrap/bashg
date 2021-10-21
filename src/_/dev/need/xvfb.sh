@@ -12,7 +12,7 @@
 
    :log: --push-section 'Installing' 'xvfb' "$FUNCNAME $@"
 
-   :require:packages xvfb
+   :require:packages xorg-x11-server-Xvfb
 
    cat >/etc/systemd/system/xvfb@.service <<EOF
 [Unit]

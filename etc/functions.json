@@ -161,7 +161,7 @@
       "path": "_/dev/need/vim.sh"
     },
     ".dev:need:xvfb:linux-7": {
-      "hash": "2334cc8a14e68baa8856fd37e3d3a87b",
+      "hash": "9290b74507daf2d8b07b3bb9b97592e0",
       "path": "_/dev/need/xvfb.sh"
     },
     ".dev:need:zsh:": {
