@@ -61,7 +61,7 @@
       "path": "_/dev/need/disable_user_list.sh"
     },
     ".dev:need:install_fonts:": {
-      "hash": "ec88c1b992e341ac8ec74746cfb87429",
+      "hash": "6d15b29d2887379e7b0cac22e54ef205",
       "path": "_/dev/need/install_fonts.sh"
     },
     ".dev:need:install_package_epel_release:EPELisInstalled": {

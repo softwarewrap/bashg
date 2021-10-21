@@ -8,5 +8,5 @@
 
    [[ -d lucida && -d msttcore && -d vera ]] || return 0 # Fonts are already installed
 
-   ( cd (+)/@fonts; tar cpf - . ) | tar xpf -
+   ( cd (+:env)/@fonts; tar cpf - . ) | tar xpf -
 }

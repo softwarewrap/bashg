@@ -8,5 +8,5 @@
 
    [[ -d lucida && -d msttcore && -d vera ]] || return 0 # Fonts are already installed
 
-   ( cd "$_lib_dir/_/dev/need"/@fonts; tar cpf - . ) | tar xpf -
+   ( cd "$_lib_dir/_/dev/env"/@fonts; tar cpf - . ) | tar xpf -
 }
