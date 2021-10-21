@@ -18,7 +18,7 @@
    if [[ -n $SwapSize && $SwapSize =~ ^[0-9]+$ ]]; then
       if (( SwapSize <= 16*1024**3 )); then              # At least 16GB is required for Oracle
          if [[ -f /swapfile ]]; then                     # A swapfile must not already exist
-            :error: 1 'Swapfile /swapfile already exists'
+            :error: 0 "Swapfile /swapfile already exists and size $SwapSize < 16GB"
 
          else
             SwapSize=$(( (17*1024**3 - SwapSize) / (1024**2) ))
@@ -127,10 +127,6 @@ net.core.somaxconn = 3000
 net.ipv4.tcp_fin_timeout = 30
 net.ipv4.tcp_keepalive_intvl = 15
 net.ipv4.tcp_keepalive_probes = 5
-
-# Disable IPv6
-net.ipv6.conf.all.disable_ipv6 = 1
-net.ipv6.conf.default.disable_ipv6 = 1
 
 # Do not cache metrics on closing connections
 net.ipv4.tcp_no_metrics_save = 1
