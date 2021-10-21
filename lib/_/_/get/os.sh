@@ -105,6 +105,16 @@ EOF
       printf -v "$(-)_Var[distro-major-version]" '%s' "centos-${(.)_Version%%.*}"      # centos-7
       printf -v "$(-)_Var[distro]"               '%s' 'centos'                         # centos
 
+   # ROCKY
+   elif [[ -f /etc/rocky-release && ! -h /etc/rocky-release ]]; then
+      (.)_Version="$( grep -Po '.*release \K[0-9]*(.[0-9]*)?' /etc/rocky-release )"
+
+      # Hierarchical distro names                                                      # EXAMPLE
+      printf -v "$(-)_Var[distro-full-version]"  '%s' "rocky-$(.)_Version-$(.)_Arch"   # rocky-8.4-x86_64
+      printf -v "$(-)_Var[distro-minor-version]" '%s' "rocky-$(.)_Version"             # rocky-8.4
+      printf -v "$(-)_Var[distro-major-version]" '%s' "rocky-${(.)_Version%%.*}"       # rocky-8
+      printf -v "$(-)_Var[distro]"               '%s' 'rocky'                          # rocky
+
    else
       :error: 1 'Could not determine operating system version'
    fi

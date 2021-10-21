@@ -365,7 +365,7 @@
       "path": "_/_/get/os.sh"
     },
     ":get:os:Linux": {
-      "hash": "9fca671ab83b73d1bc3ebe189794bdc0",
+      "hash": "21e5aa787589f2207c114238bb469cfd",
       "path": "_/_/get/os.sh"
     },
     ":getopts:": {
