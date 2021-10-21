@@ -140,6 +140,10 @@
       "hash": "7890df24da5321ee419c2aeee1b2d416",
       "path": "_/dev/need/rsh.sh"
     },
+    ".dev:need:rsh:linux-8": {
+      "hash": "898001b4c46e63694d03da23cf1a926e",
+      "path": "_/dev/need/rsh.sh"
+    },
     ".dev:need:set_timezone:linux-6": {
       "hash": "7a63dc8714e9c8b5bc568f92d44c3307",
       "path": "_/dev/need/set_timezone.sh"
