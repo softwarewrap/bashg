@@ -1,7 +1,36 @@
 #!/bin/bash
 
++ setup%HELP()
+{
+   local (.)_Synopsis='Setup a Linux environment'
+
+   :help: --set "$(.)_Synopsis" <<EOF
+OPTIONS:
+   -h|--hypervisor>     ^The environment is a hypervisor, not a VM
+
+DESCRIPTION:
+   Setup a Linux environment: a VM or a hypervisor
+
+   If the --hypervisor option is specified, then additions specific to hypervisors
+   are added. In particular, this includes libvirtd.
+EOF
+}
+
 + setup()
 {
+   local (.)_Options
+   (.)_Options=$(getopt -o 'h' -l 'hypervisor' -n "${FUNCNAME[0]}" -- "$@") || return
+   eval set -- "$(.)_Options"
+
+   local (.)_IsAHypervisor=true
+   while true ; do
+      case "$1" in
+      -h|--hypervisor)  (.)_IsAHypervisor=true; shift;;
+      --)               shift; break;;
+      *)                break;;
+      esac
+   done
+
    :: sudoers                                            # Update /etc/sudoers to allow sudo access
    :: disable_selinux                                    # Ensure that SELinux is disabled
    :: -- disable_services NetworkManager postfix firewalld
@@ -18,7 +47,9 @@
    :: disable_user_list                                  # Disable login page listing user names
    :: install_fonts                                      # Install fonts (e.g., for use by vnc)
 
-   :: -- disable_services libvirtd                       # Disable after other installations
+   if ! $(.)_IsAHypervisor; then
+      :: -- disable_services libvirtd                    # Disable after other installations
+   fi
 
    :: zsh                                                # Install zsh
    (++:.dev:zsh):configure /install                      # Configure install user for zsh

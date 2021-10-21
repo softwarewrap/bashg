@@ -21,7 +21,7 @@
       "path": "_/dev/env/netfilter.sh"
     },
     ".dev:env:netfilter:Start": {
-      "hash": "32d6f3bed467d48bac2c923148145461",
+      "hash": "82db60a052beb82da131c19b2bf71a7c",
       "path": "_/dev/env/netfilter.sh"
     },
     ".dev:env:netfilter:Stop": {
@@ -37,7 +37,11 @@
       "path": "_/dev/env/netfilter.sh"
     },
     ".dev:env:setup": {
-      "hash": "c5184d74fb8ef8e88a9cc2961829d74c",
+      "hash": "ab54c2499244431fb39ea8af5a32bb1b",
+      "path": "_/dev/env/setup.sh"
+    },
+    ".dev:env:setup%HELP": {
+      "hash": "98079622ce392b0ed894b5863cd95f48",
       "path": "_/dev/env/setup.sh"
     },
     ".dev:need:%STARTUP-1": {

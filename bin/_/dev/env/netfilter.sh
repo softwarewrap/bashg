@@ -246,7 +246,7 @@
    fi
 
    ipset flush denylist 2>/dev/null || true
-   systemctl restart iptables
+   systemctl restart iptables 2>/dev/null || true
    ipset destroy denylist 2>/dev/null || true
 
    {
@@ -259,6 +259,7 @@ EOF
    ipset restore -exist < untrusted.ipset
 
    iptables-restore < rules.conf
+   systemctl restart iptables 2>/dev/null || true
 
    :log: "Total CIDR ranges denied: $(ipset list denylist | wc -l)"
 }
