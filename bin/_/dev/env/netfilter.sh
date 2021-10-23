@@ -281,6 +281,7 @@ EOF
       iptables -t "$_dev__env__netfilter__Stop___Type" -F || true
    done
 
+   iptables -F || true
    iptables -Z || true
    iptables -X LOG_DROP 2>/dev/null || true
    iptables -X PORTSCAN 2>/dev/null || true

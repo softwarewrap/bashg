@@ -25,7 +25,7 @@
       "path": "_/dev/env/netfilter.sh"
     },
     ".dev:env:netfilter:Stop": {
-      "hash": "f196bea4c5b7d25263bd4cd9e4b48f4a",
+      "hash": "354328aa50759ad22d454701ce648658",
       "path": "_/dev/env/netfilter.sh"
     },
     ".dev:env:netfilter:UpdateRules": {

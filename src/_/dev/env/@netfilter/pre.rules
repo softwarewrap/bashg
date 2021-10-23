@@ -12,9 +12,7 @@
 -A INPUT -p tcp -m state --state RELATED,ESTABLISHED -j ACCEPT
 -A INPUT -p udp -m state --state RELATED,ESTABLISHED -j ACCEPT
 -A INPUT -p icmp -j ACCEPT
--A INPUT -p tcp -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN -m state --state NEW -j DROP
 
 -A OUTPUT -o lo -j ACCEPT
 -A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 -A OUTPUT -p icmp -j ACCEPT
--A OUTPUT -j DROP
