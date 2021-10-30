@@ -33,11 +33,11 @@
       "path": "_/dev/env/netfilter.sh"
     },
     ".dev:env:setup": {
-      "hash": "37a8f29992a74971b2448ac8b10c8271",
+      "hash": "d05c9a25a7bd995bdea4a2322bc0bcca",
       "path": "_/dev/env/setup.sh"
     },
     ".dev:env:setup%HELP": {
-      "hash": "98079622ce392b0ed894b5863cd95f48",
+      "hash": "1b56df583a004a0ed8f922ec97dc5afc",
       "path": "_/dev/env/setup.sh"
     },
     ".dev:need:%STARTUP-1": {

@@ -7,29 +7,40 @@
    :help: --set "$(.)_Synopsis" <<EOF
 OPTIONS:
    -h|--hypervisor>     ^The environment is a hypervisor, not a VM
+   -p|--port <port>     ^Set the SSH Port to <port> [default: 22]
 
 DESCRIPTION:
    Setup a Linux environment: a VM or a hypervisor
 
    If the --hypervisor option is specified, then additions specific to hypervisors
    are added. In particular, this includes libvirtd.
+
+   If the --port option is specified, then the SSH port is set to <port>.
 EOF
 }
 
 + setup()
 {
    local (.)_Options
-   (.)_Options=$(getopt -o 'h' -l 'hypervisor' -n "${FUNCNAME[0]}" -- "$@") || return
+   (.)_Options=$(getopt -o 'hp:' -l 'hypervisor,port:' -n "${FUNCNAME[0]}" -- "$@") || return
    eval set -- "$(.)_Options"
 
    local (.)_IsAHypervisor=true
+   local (.)_SSHPort=22
+
    while true ; do
       case "$1" in
       -h|--hypervisor)  (.)_IsAHypervisor=true; shift;;
+      -p|--port)        (.)_Port="$2"; shift 2;;
       --)               shift; break;;
       *)                break;;
       esac
    done
+
+   if [[ ! $(.)_Port =~ ^[0-9]+$ ]]; then
+      :error: 1 "Invalid SSH port: $(.)_Port"
+      return
+   fi
 
    :: sudoers                                            # Update /etc/sudoers to allow sudo access
    :: disable_selinux                                    # Ensure that SELinux is disabled
@@ -53,6 +64,8 @@ EOF
 
    :: zsh                                                # Install zsh
    :: vim                                                # Install/update vim
+
+   (++:ssh):config --port "$(.)_Port"
 
    (++:.dev:env):netfilter -u                            # Configure iptables rules
 }
