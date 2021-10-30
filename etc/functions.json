@@ -1,9 +1,5 @@
 {
   "function": {
-    "-": {
-      "hash": "04df91be61d1a1d34d1b29cb64e86fbf",
-      "path": "_/_/INDIRECT.sh"
-    },
     ".dev:autofs:install": {
       "hash": "55da5fd8d3c6cff453028869545a4627",
       "path": "_/dev/autofs/install.sh"
@@ -68,34 +64,6 @@
       "hash": "6d15b29d2887379e7b0cac22e54ef205",
       "path": "_/dev/need/install_fonts.sh"
     },
-    ".dev:need:install_package_epel_release:EPELisInstalled": {
-      "hash": "15318920f2efd2963a24ca2dddab822b",
-      "path": "_/dev/need/install_package_epel_release.sh"
-    },
-    ".dev:need:install_package_epel_release:InstallEPEL": {
-      "hash": "b0285799458121290304022a4b8a38d3",
-      "path": "_/dev/need/install_package_epel_release.sh"
-    },
-    ".dev:need:install_package_epel_release:centos-7": {
-      "hash": "8c7dba7897349d9db644fcbad0423456",
-      "path": "_/dev/need/install_package_epel_release.sh"
-    },
-    ".dev:need:install_package_epel_release:centos-8": {
-      "hash": "a1cd857a8698e10fba8293d883539667",
-      "path": "_/dev/need/install_package_epel_release.sh"
-    },
-    ".dev:need:install_package_epel_release:linux-6": {
-      "hash": "3f2be49cba54a2c195fdda2e6061509f",
-      "path": "_/dev/need/install_package_epel_release.sh"
-    },
-    ".dev:need:install_package_epel_release:redhat-7": {
-      "hash": "616e198f8b915bc193f8b73272e8be58",
-      "path": "_/dev/need/install_package_epel_release.sh"
-    },
-    ".dev:need:install_package_epel_release:redhat-8": {
-      "hash": "7840b407b12034710acf935db4652abf",
-      "path": "_/dev/need/install_package_epel_release.sh"
-    },
     ".dev:need:install_package_git:centos": {
       "hash": "da2510c5f446f3ddffa0398ff972ff49",
       "path": "_/dev/need/install_package_git.sh"
@@ -111,14 +79,6 @@
     ".dev:need:install_package_git:redhat": {
       "hash": "3f16cd1619555d34db13051cf7628f97",
       "path": "_/dev/need/install_package_git.sh"
-    },
-    ".dev:need:install_package_jq:": {
-      "hash": "2404f6a5e84ec9c2229bd42e9608cfaa",
-      "path": "_/dev/need/install_package_jq.sh"
-    },
-    ".dev:need:install_package_jq:install_jq": {
-      "hash": "7346bdd45f35f515906aa50c60e9ec5e",
-      "path": "_/dev/need/install_package_jq.sh"
     },
     ".dev:need:install_package_yum_utils:": {
       "hash": "f0b22914a7d5e0a707effc6474b19717",
@@ -213,7 +173,11 @@
       "path": "_/doc/comp/unit/demo.sh"
     },
     ".doc:roadmap": {
-      "hash": "76d45be109db44402679c8b73db0d0aa",
+      "hash": "2cc1d111d7ab418269364bd014aa6851",
+      "path": "_/doc/roadmap.sh"
+    },
+    ".doc:roadmap%HELP": {
+      "hash": "cefb0b24cf8ee0414623897969cb8073",
       "path": "_/doc/roadmap.sh"
     },
     "::": {
@@ -227,14 +191,6 @@
     "::%STARTUP-0": {
       "hash": "77c3dc0d8257c868a66f3ee6a390d53e",
       "path": "_/_/RESOLVE.sh"
-    },
-    ":::%STARTUP-0": {
-      "hash": "07ca856172dcbbce35695e3003e83c5f",
-      "path": "_/_/INDIRECT.sh"
-    },
-    ":::%STARTUP-1": {
-      "hash": "eb16295648c9fb19c5758599971d406c",
-      "path": "_/_/PYTHON.sh"
     },
     ":::AddSearch": {
       "hash": "74baaa1ff07147d365cfe41dbd750476",
@@ -277,11 +233,11 @@
       "path": "_/_/array/dump_associative.sh"
     },
     ":array:has_element": {
-      "hash": "8f364f70aa98cc3295bb2a11191ae33a",
+      "hash": "2d10474dc4b6dbb22ff7dc1689d6087c",
       "path": "_/_/array/has_element.sh"
     },
     ":array:has_element%HELP": {
-      "hash": "44786d7daab7e21b0634311840153cdb",
+      "hash": "a1ac80c0f39b1eb4b86281cec378c34f",
       "path": "_/_/array/has_element.sh"
     },
     ":array:sort": {
@@ -303,6 +259,14 @@
     ":array:to_set%HELP": {
       "hash": "f344b9ed4f0ec45ad1d78efdf8f190f0",
       "path": "_/_/array/to_set.sh"
+    },
+    ":builtins:ALIAS:=%STARTUP-0": {
+      "hash": "86ed6e2959195722f35b6d04fe023f77",
+      "path": "_/_/builtins/ALIAS.sh"
+    },
+    ":builtins:PYTHON:%STARTUP-1": {
+      "hash": "83bb2e7ded5d270e654c143541a6b854",
+      "path": "_/_/builtins/PYTHON.sh"
     },
     ":comp:unit:func": {
       "hash": "4236c477a4fb48a0e43c09a3888feac6",
@@ -477,7 +441,7 @@
       "path": "_/_/highlight/_.sh"
     },
     ":highlight:%HELP": {
-      "hash": "96df20610408d61f11e081be262be99e",
+      "hash": "9ad03d5c48f549ad1dcbaf8b0b95ea4b",
       "path": "_/_/highlight/_.sh"
     },
     ":highlight:%STARTUP": {
@@ -485,19 +449,19 @@
       "path": "_/_/highlight/_.sh"
     },
     ":highlight:%TEST": {
-      "hash": "a41a691b48ccf1c48757f11533517e6a",
+      "hash": "5b1c6607559ad650eaafa5c15c35cbdb",
       "path": "_/_/highlight/_.sh"
     },
     ":highlight:_:Man": {
-      "hash": "5224252db086f173b9f8c4c9a7ffe5b9",
+      "hash": "7fe5ef23b616f67d16b39d474fd3f4ff",
       "path": "_/_/highlight/_.sh"
     },
     ":json:escape": {
-      "hash": "7fb5c30df2e54f3446f6331a64201e89",
+      "hash": "e7d5d885c20aee3e426ec173c2fd8f20",
       "path": "_/_/json/escape.sh"
     },
     ":json:is_valid": {
-      "hash": "cb472d61a79ef49fc619913ef2e904ed",
+      "hash": "99ab57ef0c4bd41ed4a9c494c0a28b5d",
       "path": "_/_/json/is_valid.sh"
     },
     ":json:jq": {
@@ -605,7 +569,7 @@
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:Startup": {
-      "hash": "60509bde17e73cb1aacbd0b49eb3c560",
+      "hash": "ac56153a341d2374596ee422212d2ced",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:persist": {
@@ -695,6 +659,46 @@
     ":need:packages:": {
       "hash": "aa7646de2ecdf1736d88d56744c26b44",
       "path": "_/_/need/packages.sh"
+    },
+    ":need:require_epel:EPELisInstalled": {
+      "hash": "15318920f2efd2963a24ca2dddab822b",
+      "path": "_/_/need/require_epel.sh"
+    },
+    ":need:require_epel:InstallEPEL": {
+      "hash": "aac20c53b6af84c63f5e2c308aa6840e",
+      "path": "_/_/need/require_epel.sh"
+    },
+    ":need:require_epel:centos-7": {
+      "hash": "5b622da512196a3c2aeca2dee64f931d",
+      "path": "_/_/need/require_epel.sh"
+    },
+    ":need:require_epel:centos-8": {
+      "hash": "0b495c97b9ef9b21791655ba384e9e6b",
+      "path": "_/_/need/require_epel.sh"
+    },
+    ":need:require_epel:linux-6": {
+      "hash": "d0eb66188b6ce3cd9bbee25d486781b2",
+      "path": "_/_/need/require_epel.sh"
+    },
+    ":need:require_epel:redhat-7": {
+      "hash": "6090012e2ed9e2d3a27f0cb15ccc2ca4",
+      "path": "_/_/need/require_epel.sh"
+    },
+    ":need:require_epel:redhat-8": {
+      "hash": "575b02bfdaa052c021724a85a72e7b00",
+      "path": "_/_/need/require_epel.sh"
+    },
+    ":need:require_jq:": {
+      "hash": "ec39dba1537ff1ae163811d6c5fad2ff",
+      "path": "_/_/need/require_jq.sh"
+    },
+    ":need:require_jq:%HELP": {
+      "hash": "249deadbc64cbed947ef98a949744e29",
+      "path": "_/_/need/require_jq.sh"
+    },
+    ":need:require_jq:install_jq": {
+      "hash": "dddd303c7bf4c1710c56c1ec9b8553fc",
+      "path": "_/_/need/require_jq.sh"
     },
     ":nop:": {
       "hash": "736216a638b0d0da9c2becc148190b84",
@@ -888,8 +892,16 @@
       "hash": "9c39475d046f2505961639c29438ac82",
       "path": "_/_/text/align.sh"
     },
+    ":tput:highlight_off": {
+      "hash": "9add3b9a894be4fa8efd7cf997a12666",
+      "path": "_/_/tput/_.sh"
+    },
+    ":tput:highlight_on": {
+      "hash": "fdf602695ee7d82cee0b99b7ad4cd100",
+      "path": "_/_/tput/_.sh"
+    },
     ":tput:set": {
-      "hash": "3b25d66b0322cf49183a401517e75769",
+      "hash": "4dc20868b21ac08ad702a14eea7b2fe9",
       "path": "_/_/tput/_.sh"
     },
     ":try%STARTUP-0": {
@@ -927,6 +939,10 @@
     ":yum:is_installed": {
       "hash": "fd8ab88e05344436f578515dc11e89f8",
       "path": "_/_/yum/is_installed.sh"
+    },
+    "=": {
+      "hash": "514d837aba2e806bdb732a34244d1ad5",
+      "path": "_/_/builtins/ALIAS.sh"
     }
   }
 }

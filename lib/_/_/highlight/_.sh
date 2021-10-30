@@ -60,6 +60,7 @@ DESCRIPTION:
       \<b>...\</b>   Bold              For mode tags, the closing tag
       \<u>...\</r>   Reverse           is required and cannot be omitted.
       \<u>...\</u>   Underline
+      \<h>...\</h>   Highlight
 
    SHORTCUTS:^<K
       ... \^<X      Apply color X before the shortcut to the beginning of line
@@ -195,7 +196,7 @@ EOF
 
    # Assume that colors and modes are not available
    local _RED= _GREEN= _BLUE= _CYAN= _MAGENTA= _YELLOW= _BLACK= _WHITE=
-   local _BOLD= _BOLD_OFF= _REVERSE= _REVERSE_OFF= _UNDERLINE= _UNDERLINE_OFF= _RESET=
+   local _BOLD= _BOLD_OFF= _REVERSE= _REVERSE_OFF= _UNDERLINE= _UNDERLINE_OFF= _HIGHLIGHT= _HIGHLIGHT_OFF= _RESET=
    local _HRULE='====================================='  # Assume width of 37 for dumb terminals
 
    if ${(+:launcher)_Config[HasColor]} && tput setaf 1 &>/dev/null; then
@@ -206,8 +207,8 @@ EOF
       :tput:set _BLUE setaf 4                            # B   Blue
       :tput:set _CYAN setaf 6                            # C   Cyan
       :tput:set _MAGENTA setaf 5                         # M   Magenta
-      :tput:set _YELLOW setaf 3                          # Y   Yellow
-      :tput:set _BLACK setaf 0                           # K   Black
+      :tput:set _YELLOW setaf 214                        # Y   Yellow (shown as Orange)
+      :tput:set _BLACK setaf 232                         # K   Black
       :tput:set _WHITE setaf 7                           # W   White
 
       # Modes
@@ -218,6 +219,8 @@ EOF
       :tput:set _REVERSE_OFF rmso                        # Reverse OFF
       :tput:set _UNDERLINE smul                          # Underline ON
       :tput:set _UNDERLINE_OFF rmul                      # Underline OFF
+      :tput:highlight_on _HIGHLIGHT                      # Highlight ON
+      :tput:highlight_off _HIGHLIGHT_OFF                 # Highlight OFF
       :tput:set _RESET sgr0                              # Reset all colors and modes
 
       _HRULE="$( printf '%*s' $_COLS | tr ' ' '=' )"
@@ -262,26 +265,28 @@ EOF
       "s|${b}b|$_BOLD|g"                                 # Render {b as Bold where { is the begin mode marker
       "s|${b}r|$_REVERSE|g"                              # Render {r as Reverse where { is the begin mode marker
       "s|${b}u|$_UNDERLINE|g"                            # Render {u as Underline where { is the begin mode marker
+      "s|${b}h|$_HIGHLIGHT|g"                            # Render {h as Highlight where { is the begin mode marker
 
       "s|$n|$_BOLD_OFF|g"                                # Render normal as Bold OFF
       "s|b$e|$_BOLD_OFF|g"                               # Render b} as Bold OFF where } is the end mode marker
       "s|r$e|$_REVERSE_OFF|g"                            # Render r} as Reverse OFF where } is the end mode marker
       "s|u$e|$_UNDERLINE_OFF|g"                          # Render u} as Underline OFF where } is the end mode marker
+      "s|h$e|$_HIGHLIGHT_OFF|g"                          # Render u} as Highlight OFF where } is the end mode marker
    )
 
    local -a RenderModesAsTags=(
       "s|$s$n||g"                                        # Remove empty BOLD ON/OFF
       "s|$s|$_BLUE$_BOLD<b$_RESET|g"                     # Render as <b for standout
-      "s|$b\([bru]\)|$_BLUE$_BOLD<\1$_RESET|g"           # Render as <X for begin mode X
-      "s|\([bru]\)$e|$_BLUE$_BOLD\1>$_RESET|g"           # Render as X> for end mode X
+      "s|$b\([bruh]\)|$_BLUE$_BOLD<\1$_RESET|g"          # Render as <X for begin mode X
+      "s|\([bruh]\)$e|$_BLUE$_BOLD\1>$_RESET|g"          # Render as X> for end mode X
       "s|$n|$_BLUE${_BOLD}b>$_RESET|g"                   # Render as b> for standend
    )
 
    local -a RenderModesAsNoColor=(
       "s|$s$n||g"                                        # Remove empty BOLD ON/OFF
       "s|$s||g"                                          # Remove standout
-      "s|$b\([bru]\)||g"                                 # Remove begin mode
-      "s|\([bru]\)$e||g"                                 # Remove end mode
+      "s|$b\([bruh]\)||g"                                # Remove begin mode
+      "s|\([bruh]\)$e||g"                                # Remove end mode
       "s|$n||g"                                          # Remove standend
    )
 
@@ -312,8 +317,8 @@ EOF
    # Prior to normalization, replace shortcut idioms with the long-form equivalents
    local -a IdiomReplacement=(
       # Do First: Change encoding for escaped sequences to make substitutions later easier
-      "s|\\\\^<\([RGBCMYKWbru]\)|${T}rl\1$T|g"                 # Escape \^<X for color X with tag rl (render left)
-      "s|\\\\^>\([RGBCMYKWbru]\)|${T}rr\1$T|g"                 # Escape \^<X for color X with tag rr (render right)
+      "s|\\\\^<\([RGBCMYKWbruh]\)|${T}rl\1$T|g"                # Escape \^<X for color X with tag rl (render left)
+      "s|\\\\^>\([RGBCMYKWbruh]\)|${T}rr\1$T|g"                # Escape \^<X for color X with tag rr (render right)
       "s|\\\\^^|${T}cbr$T|g"                                   # Escape \^^ with Tag cbr (carat color blue to the right)
       "s|\\\\^|${T}cbl$T|g"                                    # Escape \^ with Tag cbl (carat color blue to the left)
       "s|\\\\<\(/\{0,1\}[a-zA-Z_][a-zA-Z0-9_]*\)>|${T}g\1$T|g" # Escape \<tag> with Tag t (general word tag)
@@ -326,8 +331,8 @@ EOF
       "s|\\\\n|$N|g"                                     # Render escaped newline as newline
 
       # The = is used as a delimiter as | is used for group alternation \(...\|...\) in some sed constructs below
-      "s=$L^<\([RGBCMYKWbru]\)=\2<\4>\3</\4>=g"          # ^<X for color X Before is specified color or mode
-      "s=$L^>\([RGBCMYKWbru]\)$F=\2\3<\4>\5</\4>=g"      # ^>X for color X After is specified color or mode
+      "s=$L^<\([RGBCMYKWbruh]\)=\2<\4>\3</\4>=g"         # ^<X for color X Before is specified color or mode
+      "s=$L^>\([RGBCMYKWbruh]\)$F=\2\3<\4>\5</\4>=g"     # ^>X for color X After is specified color or mode
 
       # Horizontal rule
       "s/\s*<hr>\s*/<hr>/g"                              # Remove spaces before/after a <hr>
@@ -368,16 +373,19 @@ EOF
          "s=\\\\\([nN][oO][tT][eE][sS]\{0,1\}:\)=\1=g"
 
          # Auto-bolding of uppercase words beginning in column 1
-         "s=\(^\|$N\)\\\\\([0-9.]\+\s*\)\?\([A-Z0-9_][-A-Z0-9_, ]*:\)=\1${T}lead\2\3$T=g"
-         "s=\(^\|$N\)\([0-9.]\+\s*\)\?\([A-Z0-9_][-A-Z0-9_, ]*:\)=\1<b>\2\3</b>=g"
+#        "s=\(^\|$N\)\\\\\([0-9.]\+\s*\)\?\([A-Z0-9_][-A-Z0-9_, ]*:\)=\1${T}lead\2\3$T=g"
+#        "s=\(^\|$N\)\([0-9.]\+\s*\)\?\([A-Z0-9_][-A-Z0-9_, ]*:\)=\1<b>\2\3</b>=g"
+
+         "s=\(^\|$N\)\\\\\([^\sa-z][^a-z]*:\s*\)\($\|$N\)=\1${T}lead\2\3$T=g"
+         "s=\(^\|$N\)\([^\sa-z][^a-z]*:\s*\)\($\|$N\)=\1<b>\2\3</b>=g"
       )
    fi
 
    # Normalization: Replace idioms with marker-encoded equivalents
    local -a Normalization=(
       # Mode Normalization
-      "s|<\([bru]\)>|$b\1|g"                             # Begin mode
-      "s|</\([bru]\)>|\1$e|g"                            # End mode
+      "s|<\([bruh]\)>|$b\1|g"                            # Begin mode
+      "s|</\([bruh]\)>|\1$e|g"                           # End mode
 
       # Color Normalization
       "s|<\([RGBCMYKW]\)>|$B\1|g"                        # Begin color
@@ -501,6 +509,7 @@ EOF
       "normal <C>cyan <M>magenta <Y>yellow <K>black</K> yellow</Y> magenta</M> cyan</C> normal"
       "normal <r><C>cyan <M>magenta <Y>yellow <K>black</K></r> yellow</Y> magenta</M> cyan</C> normal"
       "normal <u><C>cyan <M>magenta <Y>yellow <K>black</K></u> yellow</Y> magenta</M> cyan</C> normal"
+      "normal <h>highlight text</h> normal"
 
       "\nRed to marker^<R, but not after"
       "Green to marker^<G, but not after"
@@ -563,10 +572,10 @@ EOF
       "\<variable> with escapes at the beginning, \<middle>, and \<end>"
       "A \<Y> variable that is otherwise markup is underlined when escaped"
 
-      "\n<R>Multiline</R> <b>Beginning here"
-      "and extending <R>across <u>multiple"
-      "lines <b>with bold text</b> and </u>still</R> going"
-      "until the end</b> at which point"
+      "\n<R>Multiline</R> text that <b>begins here"
+      "and extends <B>across <u>multiple"
+      "lines and</u> still</B> going"
+      "until it ends here</b> after which point"
       "the <R>highlighting</R> is off"
    )
 

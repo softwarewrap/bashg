@@ -776,13 +776,15 @@ EOF
       local BinFile="${DstFile#bin/}"                    # Get the portion following bin/
       local SrcMap=" $BinFile:[^ ]* "                    # Create a regex to find this src mapping
 
-      if [[ " ${_SrcDstMap[@]} " =~ $SrcMap ]]; then     # If the src mapping exists,
+      if (( ${#_SrcDstMap[@]} > 0 )) && ArrayContains --match _SrcDstMap "$SrcMap"; then
+                                                         # If the src mapping exists,
          local _MapIndex
-         _MapIndex="$(declare -p _SrcDstMap | grep -oP "\[\K[0-9]+(?=\]=\"$BinFile:.*\")")"
+         _MapIndex="$(declare -p _SrcDstMap | grep -oP "\[\K[0-9]+(?=\]=\"$BinFile(\.sh)?:.*\")")"
                                                          # Get the index containing that src:dst mapping
          if [[ -n $_MapIndex ]]; then                    # A non-empty index means a match was found
             DstFile="${_SrcDstMap[$_MapIndex]#*:}"       # Get the dst from the src:dst mapping; prefix with bin/
          fi
+
 
       else
          DstFile="$BinFile"
@@ -1192,6 +1194,36 @@ EOF
          echo -n "$_Value" | tr -cd '[:alnum:]._-'       # Delete characters other than [a-zA-Z0-9._-]
       fi
    )"
+}
+
+ArrayContains()
+{
+   local IFS=$'\x01'                                     # Use $IFS to separate array entries
+
+   local Options
+   Options=$(getopt -o '' -l 'match:' -n "${FUNCNAME[0]}" -- "$@") || return
+   eval set -- "$Options"
+
+   local Match=false
+   while true ; do
+      case "$1" in
+      --match) Match=true; shift;;
+      --)      shift; break;;
+      *)       break;;
+      esac
+   done
+
+   local ArrayName="$1"                                  # The array name to be checked
+   local String="$2"                                     # The string: see if this is an element of the array
+   local Indirect="$ArrayName[*]"                        # Create an indirection string: expand in place
+
+   if $Match; then
+      # Perform an anchored RegEx match
+      [[ "$IFS${!Indirect}$IFS" =~ $IFS${String} ]]
+   else
+      # Perform a literal string match
+      [[ "$IFS${!Indirect}$IFS" =~ "$IFS${String}$IFS" ]]
+   fi
 }
 
 :main "$@"; exit

@@ -17,7 +17,7 @@
 
    else
       if tput "$@" &>/dev/null; then
-         (.)_Code="$( tput "$@" )"
+         ! ${(+:launcher)_Config[HasColor]} || (.)_Code="$( tput "$@" )"
 
       elif [[ $1 = cols ]]; then
          if [[ -n $COLUMNS ]]; then
@@ -31,4 +31,34 @@
    [[ -v $(.)_Var ]] || local -g "$(.)_Var"              # Ensure the variable exists
 
    printf -v "$(.)_Var" '%s' "$(.)_Code"
+}
+
++ highlight_on()
+{
+   local (.)_Var="${1:-(.)_UnassignedVar}"               # The variable to set
+
+   if ! ${(+:launcher)_Config[HasColor]}; then
+      printf -v "$(.)_Var" ''
+
+   elif tput "$@" &>/dev/null; then
+      printf -v "$(.)_Var" '%s' "$(tput setab 226)$(tput setaf 232)"
+
+   else
+      printf -v "$(.)_Var" '%s' $'\E[48;5;226m\E[30m'
+   fi
+}
+
++ highlight_off()
+{
+   local (.)_Var="${1:-(.)_UnassignedVar}"               # The variable to set
+
+   if ! ${(+:launcher)_Config[HasColor]}; then
+      printf -v "$(.)_Var" ''
+
+   elif tput "$@" &>/dev/null; then
+      printf -v "$(.)_Var" "$(tput op)"
+
+   else
+      printf -v "$(.)_Var" $'\E[39;49m'
+   fi
 }

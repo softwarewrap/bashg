@@ -192,8 +192,7 @@
 
    :launcher:_:RedirectIO                                        # Define variables, redirection, and Bash settings
 
-   :test:has_command jq || :require:packages epel-release
-   :require:packages jq                                  # These packages must be installed to continue
+   :: require_jq                                         # jq is required for JSON parsing
 }
 
 :launcher:_:RedirectIO()

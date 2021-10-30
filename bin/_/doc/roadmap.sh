@@ -1,5 +1,10 @@
 #!/bin/bash
 
+.doc:roadmap%HELP()
+{
+   .doc:roadmap
+}
+
 .doc:roadmap()
 {
    :highlight: <<'EOF'
@@ -8,17 +13,17 @@
 
    Idioms fall into only 6 categories:
 
-      <namespace-group> <function>()                     ^<G# Declare functions with namespace protection
-         @ + -                                           ^<G# The namespaces in which functions can be declared
+      <namespace-group> <function>()                     ^<K# Declare functions with namespace protection
+         @ + -                                           ^<K# The namespaces in which functions can be declared
 
-      (<idiom-id><idiom-detail>)[<idiom-type>]           ^<G# Most idioms syntactically match this pattern
-         <idiom-id>:    @ + - ! { } < >                  ^<G# Idioms for: namespace, indirection, plugins, redirection
-         <idiom-type>:  _ : / =                          ^<G# Variable, function, path, and access idioms
+      (<idiom-id><idiom-detail>)[<idiom-type>]           ^<K# Most idioms syntactically match this pattern
+         <idiom-id>:    @ + - ! { } < >                  ^<K# Idioms for: namespace, indirection, plugins, redirection
+         <idiom-type>:  _ : / =                          ^<K# Variable, function, path, and access idioms
 
-      .. <instance>                                      ^<G# Set instance for chaining
-      + <method> <args>                                  ^<G# Chain current instance and invoke method with args
-      : <annotation>                                     ^<G# Idiom is outside of functions: modifies code generation
-      = <injection>                                      ^<G# Facilitate hooks and callbacks code injection
+      .. <instance>                                      ^<K# Set instance for chaining
+      + <method> <args>                                  ^<K# Chain current instance and invoke method with args
+      : <annotation>                                     ^<K# Idiom is outside of functions: modifies code generation
+      = <injection>                                      ^<K# Facilitate hooks and callbacks code injection
 
    Everything below is an expanded discussion of the above summary.
 
@@ -29,14 +34,14 @@
 1.1 REFERENCES:
 
    The top-level namespace is the package and optional sub-package taken together,
-   and collectively called the <b>package namespace</b>.
+   and collectively called the <R>package namespace</R>.
    The component is the second-level namespace: typically, a collection of related APIs.
    The unit is the third-level namespace: typically, an implementation of an API.
 
-   p: package                                            ^<G# Example: com.example
-   s: sub-package                                        ^<G# Example: utils.numbers
-   c: component                                          ^<G# Example: compare
-   u: unit                                               ^<G# Example: complex
+   p: package                                            ^<K# Example: com.example
+   s: sub-package                                        ^<K# Example: utils.numbers
+   c: component                                          ^<K# Example: compare
+   u: unit                                               ^<K# Example: complex
 
    <b>PACKAGE NAMESPACE</b>
 
@@ -118,20 +123,20 @@
 
    -  Unit namespace macros for complex component implementation are placed under a unit directory level
 
-   src/<TLD>/<SUBPACKAGE>/<FILE>.sh                       ^<G#Package directory level: Package macros only
-   src/<TLD>/<SUBPACKAGE>/<COMPONENT>/<FILE>.sh           ^<G#Component directory level: All macros
-   src/<TLD>/<SUBPACKAGE>/<COMPONENT>/<UNIT>/**/<FILE>.sh ^<G#Unit directory level: Unit macros only
+   src/<TLD>/<SUBPACKAGE>/<FILE>.sh                       ^<K#Package directory level: Package macros only
+   src/<TLD>/<SUBPACKAGE>/<COMPONENT>/<FILE>.sh           ^<K#Component directory level: All macros
+   src/<TLD>/<SUBPACKAGE>/<COMPONENT>/<UNIT>/**/<FILE>.sh ^<K#Unit directory level: Unit macros only
 
    Where:
 
-      <PACKAGE>   ::= <TLD> [ "." <SUBPACKAGE> ]         ^<K# Optional portion only if <SUBPACKAGE> is not empty
-      <TLD>       ::= { reverse DNS top-level domain } | ^<K# Domains registered by NIC registry operators
-                      "_"                                ^<K# The _ TLD is the "system" TLD
-      <SUBPACKAGE> ::= { reverse sub-package } |         ^<K# Dot-separated sub-package
-                      "_"                                ^<K# The _ SUBPACKAGE indicates there is no sub-package
-      <COMPONENT> ::= { component namespace name }       ^<K# The _ COMPONENT indicates there is no component directory
-      <UNIT>      ::= { unit namespace name }            ^<K# The _ UNIT indicates there is no unit directory or file
-      <FILE>      ::= { file name }                      ^<K# The file name does not include the filetype extension
+      <PACKAGE>    ::= <TLD> [ "." <SUBPACKAGE> ]        ^<K# Optional portion only if <SUBPACKAGE> is not empty
+      <TLD>        ::= { reverse DNS top-level domain }  ^<K# Domains registered by NIC registry operators
+                   |    "_"                              ^<K# The _ TLD is the "system" TLD
+      <SUBPACKAGE> ::= { reverse sub-package }           ^<K# Dot-separated sub-package
+                   |    "_"                              ^<K# The _ SUBPACKAGE indicates there is no sub-package
+      <COMPONENT>  ::= { component namespace name }      ^<K# The _ COMPONENT indicates there is no component directory
+      <UNIT>       ::= { unit namespace name }           ^<K# The _ UNIT indicates there is no unit directory or file
+      <FILE>       ::= { file name }                     ^<K# The file name does not include the filetype extension
 
 1.3 FUNCTION DECLARATIONS:
 
@@ -144,9 +149,9 @@
    Note: unit namespace functions are typically private APIs only; however, it is permissible to
    create a public unit namespace function.
 
-   PACKAGE DECL            @ public_func() { ... }       ^# A public package namespace function declaration
-   COMPONENT DECL          + public_func() { ... }       ^# A public component namespace function declaration
-   UNIT DECL               - PrivateFunc() { ... }       ^# A private unit namespace function declaration
+   PACKAGE DECL            @ public_func() { ... }       ^<K# A public package namespace function declaration
+   COMPONENT DECL          + public_func() { ... }       ^<K# A public component namespace function declaration
+   UNIT DECL               - PrivateFunc() { ... }       ^<K# A private unit namespace function declaration
 
    For example (noting the definitions begin in column 1):
 
@@ -164,45 +169,74 @@
 
    Builtins are namespace-unprotected function names that provide special capabilities.
    Commonly, these builtins consist of non-alphabetic characters that are permissible
-   for use as function names.
+   for use as function names. Builtins include:
 
-2.1 INDIRECTION BUILTIN: -
+2.1 + THE CHAIN BUILTIN:
 
-   The - builtin, otherwise known as the indirection builtin, is intended to provide
+   Mnemonic for + is "AND then do"
+
+   In Bash++ OOP, the <R>active instance</R> is set either when an instance is created, returned,
+   or explicitly set, or when an instance constructor or method function is called.
+   The active instance is accessed by the + builtin.
+
+   The <R>function instance</R> is set only when an instance is created or explicitly set,
+   or when an instance constructor or method function is called.
+   A function instance is unaffected by calls outside of the function in which it is used.
+   The function instance is accessed by the ++ builtin.
+
+   Access to active or function instance methods or data is called <R>chaining</R>.
+
+   Syntax:
+      + [<options>] <accessor> [<arguments>]             ^<K# Active instance usage
+      ++ [<options>] <accessor> [<arguments>]            ^<K# Function instance usage
+
+   Examples:
+
+      :new :JSON (.)_ConfigurationJSON                   ^# The active instance is set by the :new function
+      + readfile /path/to/file                           ^# Returns a :JSON instance
+      + to_string                                        ^# Converts JSON and returns a :String instance
+      + --var (.)_Size .size                             ^# The data accessor does not change the active instance
+      ++ join \({:) "size": $(.)_Size \(})               ^# Better than: $(.)_ConfigurationJSON join ...
+      + writefile /path/to/file                          ^# The active instance is updated by the above call
+
+2.2 = THE ALIAS BUILTIN:
+
+   Mnemonic for = is "IS A SUBSTITUTE for / EQUALS"
+
+   The = builtin, otherwise known as the alias builtin, is intended to provide
    an alternate implementation or a wrapper for external commands and functions.
 
    Syntax:
-      - --def <indirect-from> <indirect-to>              # Define <indirect-from> to call <indirect-to>
-      - <options> <indirect-from> [<arguments>]          # Use <indirect-from> to call <indirect-to>
+      = --def <indirect-from> <indirect-to>              ^<K# Define <indirect-from> to call <indirect-to>
+      = <options> <indirect-from> [<arguments>]          ^<K# Use <indirect-from> to call <indirect-to>
 
-   For example, the bashc framework provides an indirection builtin definition for 'python' to
+   For example, the bashc framework provides an alias builtin definition for 'python' to
    ensure that some valid python executable can be relied on to be available.
    Consider the implementation of (++:json):is_valid:
 
-      - python -c "import sys,json;json.loads(sys.stdin.read())" &>/dev/null
+      = python -c "import sys,json;json.loads(sys.stdin.read())" &>/dev/null
 
    This idiom can be used to ensure that commands and functions can be relied on to be available
    with desired semantics and yet be done in a way that requires only minimal syntactic intrusion.
 
-2.2 INJECTION BUILTIN: =
+2.3 - THE INJECT BUILTIN:
 
-   The = builtin, otherwise known as the injection builtin, is intended to provide
+   Mnemonic for - is "think of - as a short NEEDLE that INJECTS"
+
+   The - builtin, otherwise known as the injection builtin, is intended to provide
    an implementation of the Hooks and Callbacks design pattern. This design pattern
    makes it possible to treat functions as templates with specific implementations
    at designated places within function bodies.
 
-   Syntax:  = <directive> [<arguments>]
+   Syntax:  - <directive> [<arguments>]
 
-   = add HookName .doc::List <add-args>                    # Add callbacks to the HookName hook with add-provided args
-   = del HookName .doc::List                               # Delete callbacks from the HookName hook
-   = run HookName <run-args>                             # Run HookName callbacks with add- and run-provided args
+   - add HookName (+):List <add-args>                    ^<K# Add callbacks to the HookName hook with add-provided args
+   - del HookName (+):List                               ^<K# Delete callbacks from the HookName hook
+   - run HookName <run-args>                             ^<K# Run HookName callbacks with add- and run-provided args
 
-2.3 CHAINING BUILTIN: +
+2.4 : THE ANNOTATE BUILTIN:
 
-   The + builtin, otherwise known as the chaining builtin, is intended to provide
-   access to instance methods. See section 3 below.
-
-2.4 ANNOTATION BUILTIN: :
+   Mnemonic for : is "DECORATE with"
 
    The : builtin, otherwise known as the annotation builtin, is intended to modify
    code generation and execution behavior.
@@ -212,10 +246,10 @@
 
    Annotations are invoked as follows:
 
-      : <name> <args>                                    # Find and apply annotation <name> with <args>
-      : <name> <args> <<MARKER                           # Find and apply annotation <name> with <args> and <stdin>
+      : <name> <args>                                    ^<K# Find and apply annotation <name> with <args>
+      : <name> <args> <<MARKER                           ^<K# Find and apply annotation <name> with <args> and <stdin>
       ...
-      MARKER
+      MARKER^<K
 
    The compiler operates in 2 passes: it first compiles all code without annotations, but makes note of the
    annotation requests that are encountered along with contextual information (such as the current namespace and
@@ -232,18 +266,19 @@
 
 3. OBJECT ORIENTATION:
 
+   Bash++ offers object-oriented capabilities.
+
 3.1 CONSTRUCTOR, DESTRUCTOR, AND METHOD DECLARATIONS:
 
-   : extends <OtherClass>                                ^<K# Extend this <Class> from <OtherClass>
    @ <Class>:()                                          ^<K# The constructor is the <class> with a colon suffix
    {
-      (!).<field>[=<value>]                              ^<K# Define <field> in $_this, with optional <value>
-      :def <Class> <field>                               ^<K# Define <field> a separate class field
+      + extends <OtherClass>                             ^<K# Extend this <Class> from <OtherClass>
+      + .<field> [<value>]                               ^<K# Getter/Setter for <field>
    }
 
    @ ~<Class>:()                                         ^<K# The destructor is the constructor name with a tilde prefix
    {^<K
-      :delete <field>                                    ^<K# Delete <field>
+      + destroy <field>                                  ^<K# Destroy instance <field> via chaining
    }^<K
 
    @ <Class>:<method>()                                  ^<K# A method name follows the class name
@@ -256,12 +291,13 @@
 
 3.2 NEW AND DESTROY INSTANCE:
 
-   :new <Class> <instance-var>                           ^<K# :new Array a
-   :destroy <instance>                                   ^<K# :destroy $a
+   :new <Class> <instance-var> [ + <ctor> ] [ <args> ]   ^<K# Create instance, possibly using ctor method and args
+   :destroy <instance>                                   ^<K# Destroy instance using dereferenced instance variable
 
    Example:
-      :new Array _doc_____a                                   ^# Create the instance _doc_____a
-      :destroy $_doc_____a                                    ^# Note that an <instance> not an <instance-var> is used
+      :new Array (+)_a 1 2 3                             ^# Create instance (+)_a from positional arguments
+      :new Array (+)_b + copy $(+)_a                     ^# Create instance (+)_a using copy ctor
+      :destroy $(+)_a $(+)_b                             ^# Note that an <instance> not an <instance-var> is used
 
 3.3 SETTERS AND GETTERS:
 
@@ -301,8 +337,8 @@
    Plugins are idioms that are replaced at compile time to achieve added capabilities.
 
    Syntax:
-      ({<name> [<args>]})                                ^<K# Plugin without input
-      ({<name> [<args>])<input>(})                       ^<K# Plugin with input between markers
+      \({<name> [<args>]})                                ^<K# Plugin without input
+      \({<name> [<args>])<input>\(})                       ^<K# Plugin with input between markers
 
    The <name> is a function alias or an existing function name that is to be called.
    The <args> are arguments to be passed to that function.
@@ -313,15 +349,15 @@
 
 4.1 CLOSURE PLUGIN EXAMPLE:
 
-   The closure idiom ({)...(}) is replaced by a function call to a dynamically-generated function reference:
+   The closure idiom \({)...\(}) is replaced by a function call to a dynamically-generated function reference:
 
-      local c=({)^
+      local c=\({)^
       local -i Sum=0 I^
       for (( I=$1; I<$2; I++ )); do^
          Sum=$(( Sum += I ))^
       done^
       + return "$Sum"^
-      (})^
+      \(})^
 
       $c:call 1 10                                       ^# Computes the sum from 1..10 = 55
 
@@ -330,18 +366,18 @@
    The with plugin
 
    Syntax:
-      ({with <instance> [as <alias>])...(})              ^<K# Allow data access to <instance>
+      \({with <instance> [as <alias>])...\(})              ^<K# Allow data access to <instance>
 
    Example:
-      ({with $JSONInstance as j)                         ^# Start a context block
+      \({with $JSONInstance as j)                         ^# Start a context block
          (!).a.b.c=37                                    ^# Assign value in current context $JSONInstance
          (!!j).a.b.c=37                                  ^# Assign value in context using the alias name
          (!k).x.y.z=42                                   ^# Assign value to some non-context instance
-      (})                                                ^# End a context block
+      \(})                                                ^# End a context block
 
 4.3 JSON EXAMPLE:
 
-   local j=({:) { "a": 1 } (})                           ^# Create a JSON instance j
+   local j=\({:) { "a": 1 } \(})                           ^# Create a JSON instance j
 
    $j:join --string '{"b": 2}'                           ^# Use the join method on the created-JSON instance
    $j:dump                                               ^# Emits: {"a": 1, "b": 2}
@@ -365,5 +401,6 @@
       sed 's|Hi|There!!|' (<in) (>out)                   ^# Script in and script out
       echo '{"result":3}' (>data)                        ^# Script data
       echo 'Succeeded!!!' (>log)                         ^# Script log
+
 EOF
 }
