@@ -76,7 +76,8 @@ is()
 setbanner()
 {
    case "$1" in
-   none)     BANNER="" ;;
+   none)       BANNER="";;
+   =)          BANNER=']2;'"${@:2}"''; print -Pn "$BANNER";;
    *|standard) BANNER=']2;'"[$(whoami)@$(hostname)]   %D{%a %b %e @ %l:%M:%S %p}"'' ;;
    esac
 }

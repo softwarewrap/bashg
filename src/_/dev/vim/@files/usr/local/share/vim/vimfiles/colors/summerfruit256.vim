@@ -282,33 +282,33 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
     call <SID>X("Identifier", "d70000", "", "")
     call <SID>X("Label", "ff0086", "", "")
 
-    " Eggsh
-    call <SID>X("eggshPackageFunctionDecl", "00005f", "afff87", "")
-    call <SID>X("eggshPackageFunction", "0000ff", "d7ffaf", "")
-    call <SID>X("eggshPackageDirectory", "000000", "d7ffaf", "bold")
-    call <SID>X("eggshPackageVariable", "005fff", "ffd7ff", "")
+    " BashG
+    call <SID>X("bashgPackageFunctionDecl", "000000", "ffd7ff", "bold")
+    call <SID>X("bashgPackageFunction", "00005f", "ffd7ff", "")
+    call <SID>X("bashgPackageVariable", "0000ff", "ffd7ff", "")
+    call <SID>X("bashgPackageDirectory", "000087", "ffd7ff", "bold")
 
-    call <SID>X("eggshComponentFunctionDecl", "00005f", "ffaf5f", "")
-    call <SID>X("eggshComponentFunction", "0000ff", "ffd7af", "")
-    call <SID>X("eggshComponentDirectory", "000000", "ffd7af", "bold")
-    call <SID>X("eggshComponentVariable", "005fff", "ffd7af", "")
+    call <SID>X("bashgComponentFunctionDecl", "000000", "ffd7af", "bold")
+    call <SID>X("bashgComponentFunction", "00005f", "ffd7af", "")
+    call <SID>X("bashgComponentVariable", "0000ff", "ffd7af", "")
+    call <SID>X("bashgComponentDirectory", "000087", "ffd7af", "bold")
 
-    call <SID>X("eggshUnitFunctionDecl", "00005f", "87ffff", "")
-    call <SID>X("eggshUnitFunction", "0000d7", "d7ffff", "")
-    call <SID>X("eggshUnitDirectory", "0000d7", "d7ffff", "bold")
-    call <SID>X("eggshUnitVariable", "005fd7", "d7ffff", "")
+    call <SID>X("bashgUnitFunctionDecl", "000000", "d7ffff", "bold")
+    call <SID>X("bashgUnitFunction", "00005f", "d7ffff", "")
+    call <SID>X("bashgUnitVariable", "0000ff", "d7ffff", "")
+    call <SID>X("bashgUnitDirectory", "000087", "d7ffff", "bold")
 
-    call <SID>X("eggshFunctionVariable", "005fd7", "d7ffaf", "")
+    call <SID>X("bashgFunctionVariable", "005fd7", "d7ffaf", "")
 
-    call <SID>X("eggshAndOr", "000000", "d7ffff", "")
-    call <SID>X("eggshClosure", "000000", "ffafff", "bold")
+    call <SID>X("bashgAndOr", "000000", "d7ffff", "")
+    call <SID>X("bashgClosure", "000000", "ffafff", "bold")
 
-    call <SID>X("eggshEscaped", "005fd7", "e4e4e4", "")
+    call <SID>X("bashgEscaped", "005fd7", "e4e4e4", "")
 
     call <SID>X("Comment", "262626", "e4e4e4", "")
-    call <SID>X("eggshComment", "262626", "e4e4e4", "")
+    call <SID>X("bashgComment", "262626", "e4e4e4", "")
     exec "hi Comment ctermfg=235 ctermbg=254 cterm=none"
-    exec "hi eggshComment ctermfg=235 ctermbg=254 cterm=none"
+    exec "hi bashgComment ctermfg=235 ctermbg=254 cterm=none"
 
 
     " Python Highlighting

@@ -54,7 +54,7 @@
    \(@@:.s)_Var      (@@:.s)_Var       _s___Var
 
    \(@):Func         (@):Func          .doc:Func
-   \(@:.s):Func      (@:.s):Func       .doc.s:Func
+   \(@:.s):Func      (@:.s):Func       _.s:Func
    \(@:p):Func       (@:p):Func        p:Func
    \(@@):Func        (@@):Func         :Func
    \(@@:.s):Func     (@@:.s):Func      .s:Func

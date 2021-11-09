@@ -67,7 +67,7 @@ fu! RefreshEggHighlighting()
    let U_Name=':[%a-zA-Z][%a-zA-Z0-9_\.-]*'
    let U_RE='\(' . '\(' . U_Name . '\)\?' . '\|' . '\(' . '-' . '\|' . '-\?' . C_Name . '\)' . U_Name . '\)'
 
-   let FunctionRE='\.\{0,2}\([a-zA-Z_:%][a-zA-Z0-9_,:%.+-]*\)\?'
+   let FunctionRE='\.\{0,2}\([a-zA-Z_:%=-][a-zA-Z0-9_,:%.+-]*\)\?'
    let FunctionAsVarRE='\(_[a-zA-Z0-9_]*\(\[[^]]*\]\)\?\)'
 
    let P_Variable='(@' . P_RE . ')' . FunctionAsVarRE
@@ -90,52 +90,52 @@ fu! RefreshEggHighlighting()
    let E_AndOr='\((||)\|(&&)\)'
    let E_Closure='\(({[^)]*)\|(})\)'
 
-   " Highlighting for in-use Eggsh macros
-   call matchadd('eggshAndOr', E_AndOr, -1)
-   call matchadd('eggshClosure', E_Closure, -1)
-   call matchadd('eggshPackageFunctionDecl', P_Function_Decl, -1)
-   call matchadd('eggshPackageFunction', '(@' . P_RE . ')', -1)
-   call matchadd('eggshPackageFunction', P_Function_Ref, -1)
-   call matchadd('eggshPackageDirectory', P_Directory, -1)
-   call matchadd('eggshPackageVariable', P_Variable, -1)
+   " Highlighting for in-use BashG macros
+   call matchadd('bashgAndOr', E_AndOr, -1)
+   call matchadd('bashgClosure', E_Closure, -1)
+   call matchadd('bashgPackageFunctionDecl', P_Function_Decl, -1)
+   call matchadd('bashgPackageFunction', '(@' . P_RE . ')', -1)
+   call matchadd('bashgPackageFunction', P_Function_Ref, -1)
+   call matchadd('bashgPackageDirectory', P_Directory, -1)
+   call matchadd('bashgPackageVariable', P_Variable, -1)
 
-   call matchadd('eggshComponentFunctionDecl', C_Function_Decl, -1)
-   call matchadd('eggshComponentFunction', C_Function_Ref, -1)
-   call matchadd('eggshComponentDirectory', C_Directory, -1)
-   call matchadd('eggshComponentVariable', C_Variable, -1)
+   call matchadd('bashgComponentFunctionDecl', C_Function_Decl, -1)
+   call matchadd('bashgComponentFunction', C_Function_Ref, -1)
+   call matchadd('bashgComponentDirectory', C_Directory, -1)
+   call matchadd('bashgComponentVariable', C_Variable, -1)
 
-   call matchadd('eggshUnitFunctionDecl', U_Function_Decl, -1)
-   call matchadd('eggshUnitFunction', U_Function_Ref, -1)
-   call matchadd('eggshUnitDirectory', U_Directory, -1)
-   call matchadd('eggshUnitVariable', U_Variable, -1)
+   call matchadd('bashgUnitFunctionDecl', U_Function_Decl, -1)
+   call matchadd('bashgUnitFunction', U_Function_Ref, -1)
+   call matchadd('bashgUnitDirectory', U_Directory, -1)
+   call matchadd('bashgUnitVariable', U_Variable, -1)
 
-   call matchadd('eggshFunctionVariable', F_Variable, -1)
+   call matchadd('bashgFunctionVariable', F_Variable, -1)
 
-   " Escaped highlighting for Eggsh macros
-   call matchadd('eggshEscaped','^\\' . '@\s\+' . FunctionRE . '\s*(\s*)', -1)
-   call matchadd('eggshEscaped','\\' . '(@' . P_RE . ')', -1)
-   call matchadd('eggshEscaped','\\' . P_Function_Ref, -1)
-   call matchadd('eggshEscaped','\\' . P_Directory, -1)
-   call matchadd('eggshEscaped','\\' . P_Variable, -1)
+   " Escaped highlighting for BashG macros
+   call matchadd('bashgEscaped','^\\' . '@\s\+' . FunctionRE . '\s*(\s*)', -1)
+   call matchadd('bashgEscaped','\\' . '(@' . P_RE . ')', -1)
+   call matchadd('bashgEscaped','\\' . P_Function_Ref, -1)
+   call matchadd('bashgEscaped','\\' . P_Directory, -1)
+   call matchadd('bashgEscaped','\\' . P_Variable, -1)
 
-   call matchadd('eggshEscaped','^\\' . '+\s\+' . FunctionRE . '\s*(\s*)', -1)
-   call matchadd('eggshEscaped','\\' . C_Function_Ref, -1)
-   call matchadd('eggshEscaped','\\' . C_Directory, -1)
-   call matchadd('eggshEscaped','\\' . C_Variable, -1)
+   call matchadd('bashgEscaped','^\\' . '+\s\+' . FunctionRE . '\s*(\s*)', -1)
+   call matchadd('bashgEscaped','\\' . C_Function_Ref, -1)
+   call matchadd('bashgEscaped','\\' . C_Directory, -1)
+   call matchadd('bashgEscaped','\\' . C_Variable, -1)
 
-   call matchadd('eggshEscaped','^\\' . '-\s\+' . FunctionRE . '\s*(\s*)', -1)
-   call matchadd('eggshEscaped','\\' . U_Function_Ref, -1)
-   call matchadd('eggshEscaped','\\' . U_Directory, -1)
-   call matchadd('eggshEscaped','\\' . U_Variable, -1)
+   call matchadd('bashgEscaped','^\\' . '-\s\+' . FunctionRE . '\s*(\s*)', -1)
+   call matchadd('bashgEscaped','\\' . U_Function_Ref, -1)
+   call matchadd('bashgEscaped','\\' . U_Directory, -1)
+   call matchadd('bashgEscaped','\\' . U_Variable, -1)
 
-   call matchadd('eggshEscaped','\\' . F_Variable, -1)
+   call matchadd('bashgEscaped','\\' . F_Variable, -1)
 
-   call matchadd('eggshEscaped','\\' . E_AndOr, -1)
-   call matchadd('eggshEscaped','\\' . E_Closure, -1)
+   call matchadd('bashgEscaped','\\' . E_AndOr, -1)
+   call matchadd('bashgEscaped','\\' . E_Closure, -1)
 
    " Comments
-   call matchadd('eggshComment','^\s*\zs#.*$', -1)
-   call matchadd('eggshComment','^\s\zs#.*$', -1)
+   call matchadd('bashgComment','^\s*\zs#.*$', -1)
+   call matchadd('bashgComment','^\s\zs#.*$', -1)
 
    echo
 endfunc
@@ -520,7 +520,7 @@ map ,g <C-W><C-F>
 " Search for next log entry
 map ,l /^\[[^]]*\]<CR>
 
-" Search for Eggsh token
+" Search for BashG token
 map ,k /%{[^}]*}%<cr>
 
 " Read a template into the current buffer

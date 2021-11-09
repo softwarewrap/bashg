@@ -4,7 +4,7 @@
 {
    cat <<'EOF'
 
-NAMESPACE PROTECTION: idioms in demofunc() in file _/doc/macros/unit/demo.sh
+NAMESPACE PROTECTION: idioms in demofunc() in file _/doc/comp/unit/demo.sh
 
 .doc:comp:unit:References
 
@@ -14,17 +14,17 @@ NAMESPACE PROTECTION: idioms in demofunc() in file _/doc/macros/unit/demo.sh
 
    PACKAGE
 
+   \(@):Func        (@):Func         .doc:Func
+   \(@:.s):Func     (@:.s):Func      _.s:Func
+   \(@:p):Func      (@:p):Func       p:Func
+   \(@@):Func       (@@):Func        :Func
+   \(@@:.s):Func    (@@:.s):Func     .s:Func
+
    \(@)_Var         (@)_Var          _doc___Var
    \(@:.s)_Var      (@:.s)_Var       _s___Var
    \(@:p)_Var       (@:p)_Var        p___Var
    \(@@)_Var        (@@)_Var         ___Var
    \(@@:.s)_Var     (@@:.s)_Var      _s___Var
-
-   \(@):Func        (@):Func         .doc:Func
-   \(@:.s):Func     (@:.s):Func      .doc.s:Func
-   \(@:p):Func      (@:p):Func       p:Func
-   \(@@):Func       (@@):Func        :Func
-   \(@@:.s):Func    (@@:.s):Func     .s:Func
 
    \(@)/Path        (@)/Path         "$_lib_dir/_/doc"/Path
    \(@:.s)/Path     (@:.s)/Path      "$_lib_dir/_/s"/Path
@@ -34,19 +34,19 @@ NAMESPACE PROTECTION: idioms in demofunc() in file _/doc/macros/unit/demo.sh
 
    COMPONENT
 
-   \(+)_Var         (+)_Var          _doc__comp___Var
-   \(+:c)_Var       (+:c)_Var        _doc__c___Var
-   \(+:.s:c)_Var    (+:.s:c)_Var     _s__c___Var
-   \(+:p:c)_Var     (+:p:c)_Var      p__c___Var
-   \(++:c)_Var      (++:c)_Var       __c___Var
-   \(++:.s:c)_Var   (++:.s:c)_Var    _s__c___Var
-
    \(+):Func        (+):Func         .doc:comp:Func
    \(+:c):Func      (+:c):Func       .doc:c:Func
    \(+:.s:c):Func   (+:.s:c):Func    .doc.s:c:Func
    \(+:p:c):Func    (+:p:c):Func     p:c:Func
    \(++:c):Func     (++:c):Func      :c:Func
    \(++:.s:c):Func  (++:.s:c):Func   .s:c:Func
+
+   \(+)_Var         (+)_Var          _doc__comp___Var
+   \(+:c)_Var       (+:c)_Var        _doc__c___Var
+   \(+:.s:c)_Var    (+:.s:c)_Var     _s__c___Var
+   \(+:p:c)_Var     (+:p:c)_Var      p__c___Var
+   \(++:c)_Var      (++:c)_Var       __c___Var
+   \(++:.s:c)_Var   (++:.s:c)_Var    _s__c___Var
 
    \(+)/Path        (+)/Path         "$_lib_dir/_/doc/comp"/Path
    \(+:c)/Path      (+:c)/Path       "$_lib_dir/_/doc/c"/Path
@@ -57,15 +57,15 @@ NAMESPACE PROTECTION: idioms in demofunc() in file _/doc/macros/unit/demo.sh
 
    UNIT
 
-   \(-)_Var         (-)_Var          _doc__comp__unit___Var
-   \(-:u)_Var       (-:u)_Var        _doc__comp__u___Var
-   \(-:c:u)_Var     (-:c:u)_Var      _doc__c__u___Var
-   \(--:c:u)_Var    (--:c:u)_Var     __c__u___Var
-
    \(-):Func        (-):Func         .doc:comp:unit:Func
    \(-:u):Func      (-:u):Func       .doc:comp:u:Func
    \(-:c:u):Func    (-:c:u):Func     .doc:c:u:Func
    \(--:c:u):Func   (--:c:u):Func    :c:u:Func
+
+   \(-)_Var         (-)_Var          _doc__comp__unit___Var
+   \(-:u)_Var       (-:u)_Var        _doc__comp__u___Var
+   \(-:c:u)_Var     (-:c:u)_Var      _doc__c__u___Var
+   \(--:c:u)_Var    (--:c:u)_Var     __c__u___Var
 
    \(-)/Path        (-)/Path         "$_lib_dir/_/doc/comp/unit"/Path
    \(-:u)/Path      (-:u)/Path       "$_lib_dir/_/doc/comp/u"/Path

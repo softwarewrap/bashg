@@ -169,11 +169,11 @@
       "path": "_/dev/zsh/install.sh"
     },
     ".doc:comp:unit:func": {
-      "hash": "98c17345a7d79343503f8f50c83d0c7a",
+      "hash": "9ab865eb1fb80035fad22acd7181a51b",
       "path": "_/doc/comp/unit/demo.sh"
     },
     ".doc:roadmap": {
-      "hash": "2cc1d111d7ab418269364bd014aa6851",
+      "hash": "135547ebd438cd96fd6032e190821ac9",
       "path": "_/doc/roadmap.sh"
     },
     ".doc:roadmap%HELP": {
@@ -269,7 +269,7 @@
       "path": "_/_/builtins/PYTHON.sh"
     },
     ":comp:unit:func": {
-      "hash": "4236c477a4fb48a0e43c09a3888feac6",
+      "hash": "66566ef91b786fe833191d1a279ab4ca",
       "path": "_/_/comp/unit/demo.sh"
     },
     ":curl:": {

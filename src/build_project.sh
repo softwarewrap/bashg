@@ -946,6 +946,8 @@ EOF
 
    # At this point, $Package is a 2-level directory: <package>/<sub-package>
 
+   local PTLDPackage="${Package%/*}"
+
    local Component=                                      # The component is the optional 2nd level directory
    local Unit=                                           # The Unit is the optional 3rd level directory
    local Script=                                         # The Script consists of unit directories and the filename
@@ -977,8 +979,9 @@ EOF
    #########################
    if [[ $Package = '.' ]]; then                         # For common package variables and functions:
       local PVar=                                        # No prefix for system variables
-      local PTLDVar=
       local PFunc=                                       # No prefix for system functions
+      local PTLDVar=
+      local PTLDFunc=
       local PTLDDir=_                                    # The system TLD is _
 
    else
@@ -987,6 +990,8 @@ EOF
                                                          # The prefix for non-system variables has var syntax
       local PTLDVar
       PTLDVar="$( echo -n "${DstFile%%/*}" | tr -c 'a-zA-Z0-9' _  | sed 's|^_$||' )"
+
+      local PTLDFunc="$PTLDPackage"
                                                          # The prefix for the top-level package
       local PFunc="$Package"                             # The prefix for non-system functions is the package name
       local PTLDDir="${DstFile%%/*}"                     # The TLD is the top directory from $DstFile
@@ -1042,7 +1047,7 @@ EOF
 
       ### FUNCTIONS
       s,\(^\|[^\]\)(@):,\1$PFunc:,g                                     # (@):func        Current package func
-      s,\(^\|[^\]\)(@:\(\.[^/)]\+\)):,\1\x03$PFunc\2\x04:,g             # (@:.s):func     Package TLD.s func
+      s,\(^\|[^\]\)(@:\(\.[^/)]\+\)):,\1\x03$PTLDFunc\2\x04:,g          # (@:.s):func     Package TLD.s func
       s,\(^\|[^\]\)(@:\([^/)]\+\)):,\1\x03\2\x04:,g                     # (@:p):func      Package p func
       s,\(^\|[^\]\)(@@):,\1:,g                                          # (@@):func       Common package func
       s,\(^\|[^\]\)(@@:\(\.[^/)]\+\)):,\1\2:,g                          # (@@:.s):func    Package TLD.s func
