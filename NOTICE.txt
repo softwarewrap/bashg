@@ -1,12 +1,12 @@
 PRODUCT
 =======
 
-Product Name: Eggsh Framework
+Product Name: Bash Generator
 
-The Eggsh framework is project intended to make powerful scripting easy.
+Bash Generator is a project intended to make powerful scripting easy.
 You can learn more about this framework by visiting:
 
-   https://eggsh.com
+   https://bashg.com
 
 COPYRIGHT
 =========
@@ -38,9 +38,3 @@ on the apache.org website shall supersede the LICENSE.txt file included herein.
 License inquiries may be directed via e-mail to:
 
    license@serverscience.com
-
-CONTRIBUTIONS
-=============
-Portions of this software were developed by:
-
-   SAS Institute (http://sas.com)
