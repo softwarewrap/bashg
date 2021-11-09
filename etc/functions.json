@@ -176,10 +176,6 @@
       "hash": "135547ebd438cd96fd6032e190821ac9",
       "path": "_/doc/roadmap.sh"
     },
-    ".doc:roadmap%HELP": {
-      "hash": "cefb0b24cf8ee0414623897969cb8073",
-      "path": "_/doc/roadmap.sh"
-    },
     "::": {
       "hash": "85c9fb47cc355e34ccb9d7ee3c3516c2",
       "path": "_/_/RESOLVE.sh"

@@ -1,10 +1,5 @@
 #!/bin/bash
 
-.doc:roadmap%HELP()
-{
-   .doc:roadmap
-}
-
 .doc:roadmap()
 {
    :highlight: <<'EOF'
