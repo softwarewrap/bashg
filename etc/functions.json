@@ -256,6 +256,10 @@
       "hash": "f344b9ed4f0ec45ad1d78efdf8f190f0",
       "path": "_/_/array/to_set.sh"
     },
+    ":assert": {
+      "hash": "81f8a338bdb8489d74f56c469ce5a15f",
+      "path": "_/_/assert/_.sh"
+    },
     ":builtins:ALIAS:=%STARTUP-0": {
       "hash": "86ed6e2959195722f35b6d04fe023f77",
       "path": "_/_/builtins/ALIAS.sh"
@@ -425,7 +429,7 @@
       "path": "_/_/glob/_.sh"
     },
     ":help:": {
-      "hash": "6df05c1ee984c4ea368b2c5aeed7de1f",
+      "hash": "e6c8e859764ab6f2e366746520b06c3f",
       "path": "_/_/help/_.sh"
     },
     ":help:%HELP": {
@@ -791,6 +795,14 @@
     ":ssh:config%HELP": {
       "hash": "b254376b62c5a582ba304c9b72807d26",
       "path": "_/_/ssh/config.sh"
+    },
+    ":string:join": {
+      "hash": "6c450111f0b0d09772465fb9e25758ac",
+      "path": "_/_/string/join.sh"
+    },
+    ":string:join%TEST": {
+      "hash": "9ac756f69ef83275d2a603f4342ecac0",
+      "path": "_/_/string/join.sh"
     },
     ":string:to_array": {
       "hash": "3e771699dfee4157981d1a255c46f054",

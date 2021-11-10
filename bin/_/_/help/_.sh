@@ -174,10 +174,10 @@ EOF
       __help______Input="$(cat)"                                 # The raw man page is delivered via stdin
 
       {
-         echo "\nSYNOPSIS: <B>${FUNCNAME[1]%\%HELP}</B> $__help________Usage"
+         echo "\nSYNOPSIS:^<K <B>${FUNCNAME[1]%\%HELP}</B> $__help________Usage"
          [[ -z $__help______Synopsis ]] || echo "   <G>$__help______Synopsis</G>"
          echo "\n$__help______Input"
-      } | :highlight: --pager 'less -R'
+      } | :highlight: --pager 'less -X -F'
 
       return 0
    fi
