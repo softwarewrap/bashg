@@ -9,8 +9,8 @@
 
 :glob:set()
 {
-   __glob___GlobstarSave="$(shopt -p globstar)"               # Save for later restore
-   __glob___NullGlobSave="$(shopt -p nullglob)"               # Save for later restore
+   __glob___GlobstarSave="$(shopt -p globstar || true)"       # Save for later restore
+   __glob___NullGlobSave="$(shopt -p nullglob || true)"       # Save for later restore
 
    shopt -s globstar nullglob
 }

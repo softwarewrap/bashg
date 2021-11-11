@@ -29,7 +29,7 @@
       "path": "_/dev/env/netfilter.sh"
     },
     ".dev:env:netfilter:UpdateTrust": {
-      "hash": "2a9aab1fb59ef7758565f3e3e81448f9",
+      "hash": "72c6a6410c0d8e95f9fbc2117ed35a10",
       "path": "_/dev/env/netfilter.sh"
     },
     ".dev:env:setup": {
@@ -425,7 +425,7 @@
       "path": "_/_/glob/_.sh"
     },
     ":glob:set": {
-      "hash": "098449ee6ce082030d4541f92e9bdcf1",
+      "hash": "f0780a2b445ac1967dabacccf79c3034",
       "path": "_/_/glob/_.sh"
     },
     ":help:": {

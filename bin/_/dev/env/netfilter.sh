@@ -158,16 +158,14 @@
       fi
    done
 
-   if (( ${#_dev__env__netfilter__UpdateTrust___AllowedCountries[@]} > 0 )); then
-      :glob:set                                          # Expand "no match" to the empty string
-      local -a _dev__env__netfilter__UpdateTrust___Untrusted=(
-         untrusted/*                                     # Get the list of untrusted zones, if any
-      )
-      :glob:reset
+   :glob:set                                             # Expand "no match" to the empty string
+   local -a _dev__env__netfilter__UpdateTrust___Untrusted=(
+      untrusted/*                                        # Get the list of untrusted zones, if any
+   )
+   :glob:reset
 
-      if (( ${#_dev__env__netfilter__UpdateTrust___Untrusted > 0 )); then
-         cat "${_dev__env__netfilter__UpdateTrust___Untrusted[@]}" > untrusted.zones
-      fi
+   if (( ${#_dev__env__netfilter__UpdateTrust___Untrusted[@]} > 0 )); then
+      cat "${_dev__env__netfilter__UpdateTrust___Untrusted[@]}" > untrusted.zones
    else
       touch untrusted.zones
    fi

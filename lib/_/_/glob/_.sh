@@ -9,8 +9,8 @@
 
 + set()
 {
-   (+)_GlobstarSave="$(shopt -p globstar)"               # Save for later restore
-   (+)_NullGlobSave="$(shopt -p nullglob)"               # Save for later restore
+   (+)_GlobstarSave="$(shopt -p globstar || true)"       # Save for later restore
+   (+)_NullGlobSave="$(shopt -p nullglob || true)"       # Save for later restore
 
    shopt -s globstar nullglob
 }
