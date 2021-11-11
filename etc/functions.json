@@ -29,11 +29,11 @@
       "path": "_/dev/env/netfilter.sh"
     },
     ".dev:env:netfilter:UpdateTrust": {
-      "hash": "39c08e3486702a88e35492e2f96a501f",
+      "hash": "2a9aab1fb59ef7758565f3e3e81448f9",
       "path": "_/dev/env/netfilter.sh"
     },
     ".dev:env:setup": {
-      "hash": "d05c9a25a7bd995bdea4a2322bc0bcca",
+      "hash": "89a9b4a2f90fc069b017f29d18e0be2c",
       "path": "_/dev/env/setup.sh"
     },
     ".dev:env:setup%HELP": {

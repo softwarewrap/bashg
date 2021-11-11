@@ -159,7 +159,15 @@
    done
 
    if (( ${#(.)_AllowedCountries[@]} > 0 )); then
-      cat untrusted/* > untrusted.zones
+      :glob:set                                          # Expand "no match" to the empty string
+      local -a (.)_Untrusted=(
+         untrusted/*                                     # Get the list of untrusted zones, if any
+      )
+      :glob:reset
+
+      if (( ${#(.)_Untrusted > 0 )); then
+         cat "${(.)_Untrusted[@]}" > untrusted.zones
+      fi
    else
       touch untrusted.zones
    fi

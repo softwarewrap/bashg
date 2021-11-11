@@ -26,7 +26,7 @@ EOF
    eval set -- "$(.)_Options"
 
    local (.)_IsAHypervisor=true
-   local (.)_SSHPort=22
+   local (.)_Port=22
 
    while true ; do
       case "$1" in

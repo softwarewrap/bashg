@@ -26,7 +26,7 @@ EOF
    eval set -- "$_dev__env__setup__setup___Options"
 
    local _dev__env__setup__setup___IsAHypervisor=true
-   local _dev__env__setup__setup___SSHPort=22
+   local _dev__env__setup__setup___Port=22
 
    while true ; do
       case "$1" in
