@@ -33,7 +33,7 @@
       "path": "_/dev/env/netfilter.sh"
     },
     ".dev:env:setup": {
-      "hash": "89a9b4a2f90fc069b017f29d18e0be2c",
+      "hash": "ca9b8357883c3f655f5b61fa2130efb8",
       "path": "_/dev/env/setup.sh"
     },
     ".dev:env:setup%HELP": {

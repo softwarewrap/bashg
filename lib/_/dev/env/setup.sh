@@ -51,7 +51,6 @@ EOF
    :: iptables                                           # Ensure iptables is installed and flush rules
    :: tune_sysctl                                        # Tune sysctl; add swap file if needed; remove IPv6
    :: tune_limits                                        # Tune /etc/security/limits.conf parameters
-   :: rsh                                                # Install rsh
    :: xvfb                                               # Install virtual framebuffer for X11
    :: mount_all                                          # Ensure that all defined mounts are mounted
    :: os_packages                                        # Install extra OS packages
