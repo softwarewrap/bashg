@@ -20,7 +20,6 @@ export LESSBINFMT='*u%x'
 export READNULLCMD=less
 export SHELL=/bin/zsh
 export TAB=$'\011'
-export GREP_OPTIONS="-sI"
 export TERM=xterm-256color
 
 setopt                        \
