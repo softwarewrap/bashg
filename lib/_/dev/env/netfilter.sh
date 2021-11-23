@@ -54,6 +54,11 @@
       (-):UpdateRules
    fi
 
+   if [[ ! -f /etc/rsyslog.d/netfilter.conf ]]; then
+      cp (+)/@files/etc/rsyslog.d/netfilter.conf /etc/rsyslog.d/netfilter.conf
+      systemctl restart rsyslog
+   fi
+
    if :test:has_func "(-):${1^}"; then
       "(-):${1^}"
    fi

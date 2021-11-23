@@ -14,7 +14,7 @@
 -A FORWARD -m set --match-set denylist src -j LOG_DROP
 -A FORWARD -j DROP
 
--A LOG_DROP -j LOG --log-prefix "INPUT:DROP " --log-level 6
+-A LOG_DROP -j LOG --log-prefix "IPTABLES-DROP: " --log-level 6
 -A LOG_DROP -j DROP
 
 -A PORTSCAN -p tcp -m tcp --tcp-flags FIN,ACK FIN -j DROP

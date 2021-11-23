@@ -54,6 +54,11 @@
       .dev:env:netfilter:UpdateRules
    fi
 
+   if [[ ! -f /etc/rsyslog.d/netfilter.conf ]]; then
+      cp "$_lib_dir/_/dev/env"/@files/etc/rsyslog.d/netfilter.conf /etc/rsyslog.d/netfilter.conf
+      systemctl restart rsyslog
+   fi
+
    if :test:has_func ".dev:env:netfilter:${1^}"; then
       ".dev:env:netfilter:${1^}"
    fi

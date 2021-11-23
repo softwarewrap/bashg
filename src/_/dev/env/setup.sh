@@ -46,6 +46,7 @@ EOF
 
    :: sudoers                                            # Update /etc/sudoers to allow sudo access
    :: disable_selinux                                    # Ensure that SELinux is disabled
+   :: -- require_jq --version 1.6                        # Version 1.5 (default) has vulnerabilities; get 1.6
    :: -- disable_services postfix firewalld              # Disable these systemd services
    :: resolv_conf                                        # Make resolv.conf static
    :: clean_yum                                          # Clean the yum and rpm caches

@@ -9,7 +9,7 @@
       "path": "_/dev/autofs/restart.sh"
     },
     ".dev:env:netfilter": {
-      "hash": "b1142372a8c2a2bbdfda3e2c5ad8f1fc",
+      "hash": "2bd7f09fb96961bf3adab4f560996b82",
       "path": "_/dev/env/netfilter.sh"
     },
     ".dev:env:netfilter:GetZoneData": {
@@ -33,7 +33,7 @@
       "path": "_/dev/env/netfilter.sh"
     },
     ".dev:env:setup": {
-      "hash": "75d33b3ee53df8799ed4ff4bea8a55f2",
+      "hash": "d58b9b5ca273dcdb4d2b538eeb61c964",
       "path": "_/dev/env/setup.sh"
     },
     ".dev:env:setup%HELP": {
