@@ -21,6 +21,8 @@ EOF
 
 .dev:env:setup()
 {
+   :sudo || :reenter                                     # This function must run as root
+
    local _dev__env__setup__setup___Options
    _dev__env__setup__setup___Options=$(getopt -o 'hp:' -l 'hypervisor,port:' -n "${FUNCNAME[0]}" -- "$@") || return
    eval set -- "$_dev__env__setup__setup___Options"
@@ -44,8 +46,8 @@ EOF
 
    :: sudoers                                            # Update /etc/sudoers to allow sudo access
    :: disable_selinux                                    # Ensure that SELinux is disabled
-   :: -- disable_services NetworkManager postfix firewalld
-                                                         # Disable these systemd services
+   :: -- disable_services postfix firewalld              # Disable these systemd services
+   :: resolv_conf                                        # Make resolv.conf static
    :: clean_yum                                          # Clean the yum and rpm caches
    :: set_timezone                                       # Set the timezone to the default
    :: iptables                                           # Ensure iptables is installed and flush rules
