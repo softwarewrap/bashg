@@ -7,7 +7,8 @@ OPTIONS:
    --callback <callback-name>    ^Call <callback-name> that can add or modify curl(1) args before calling curl
 
    --info-var <info-var>>        ^Store metadata information in the indicated Bash associative <array>
-   --body-var <body-var>         ^Store the result body in the indicated Bash <body-var>
+   --body-var <body-var>         ^Store the response body in the indicated <body-var> variable
+   --headers-var <headers-var>   Store the response headers in the indicated <headers-var> variable
    --get <curl-output-name>      ^Get metadata information for the indicated <curl-output-name>
 
    --filter <filter>             ^Apply JSON <filter> to result body
@@ -38,6 +39,8 @@ DESCRIPTION:
    If --body-var is specified, then it must be the case that the result body must be non-binary data.
    That is, Bash variables do not support storing NULL (hex 00) character strings.
 
+   If --headers-var is specified, then store the response headers in this variable.
+
    If --expect is specified, then the http_code variable must match the anchored <http-expect> regex.
    If the <http-expect> code is a single digit, then [0-9][0-9] is automatically appended.
    For example, <B>--expect 2</B> is equivalent to <B>--expect '2[0-9][0-9]'</B>.
@@ -48,8 +51,8 @@ DESCRIPTION:
 
       The <info-var> variable should not be declared before use. It is automatically unset and then declared.
       The <body-var> variable may be declared in advance, but if it is not declared, it will automatically
-      be declared.
-      Both of the above variables are declared with global scope.
+      be declared. The same applies to the <headers-var> variable.
+      The above variables are declared with global scope.
 
       If -- is present as an argument, then all arguments before it are parsed as (+): arguments.
       Those that follow -- are passed directly to the underlying curl command.
@@ -68,6 +71,7 @@ EXAMPLE:
    local -a Options=(            ^^>GThe first block of args are consumed by :curl:
       --info-var  Info           ^Use the Info variable to store metadata information
       --body-var  Body           ^Store the response body in the Body variable
+      --headers-var Header       ^Store the response headers in the Header variable
       --get       http_code      ^Get the response HTTP code
       --get       url_effective  ^Get the effective URL, if present
       --                         ^^>GThe second block of args are consumed directly by curl(1)
@@ -98,7 +102,7 @@ EOF
 {
    :getopts: begin \
       -o ':s:h:p:r:u:o:e:' \
-      -l 'callback:,info-var:,get:,body-var:,filter:,timeout:,debug,quiet,scheme:,host:,port:,resource:,url:,output:,expect:' \
+      -l 'callback:,info-var:,get:,body-var:,headers-var:,filter:,timeout:,debug,quiet,scheme:,host:,port:,resource:,url:,output:,expect:' \
       -- "$@"
 
    local (.)_Option                                      # Iterate over options
@@ -109,7 +113,9 @@ EOF
    local (.)_InfoVar="(.)_UnspecifiedInfoVar"            # Use this variable name if none is specified by --info-var
    local -a (.)_GetVars=()                               # Get curl variables. See curl(1): --write-out
 
-   local (.)_BodyVar="(.)_UnspecifiedBodyVar"            # Store the result body in this variable
+   local (.)_BodyVar="(.)_UnspecifiedBodyVar"            # Store the response body in this variable
+   local (.)_HeadersVar="(.)_UnspecifiedHeadersVar"      # Store the response headers in this variable
+   local (.)_HeadersTmpFile=                             # Store the response headers temporarily in this file
    local (.)_Filter=                                     # Apply the JSON jq filter to the result body
 
    local (.)_Timeout=                                    # Terminate the curr command after the given duration
@@ -136,7 +142,8 @@ EOF
       --info-var)    (.)_InfoVar="$(.)_Value";;          # Store metdata information in this variable
       --get)         (.)_GetVars+=( "$(.)_Value" );;     # Get curl variables
 
-      --body-var)    (.)_BodyVar="$(.)_Value";;          # Store the result body in this variable
+      --body-var)    (.)_BodyVar="$(.)_Value";;          # Store the response body in this variable
+      --headers-var) (.)_HeadersVar="$(.)_Value";;       # Store the response headers in this variable
       --filter)      (.)_Filter="$(.)_Value";;           # Apply the JSON jq filter to the result body
 
       --timeout)     (.)_Timeout="$(.)_Value";;          # Terminate the curl command after specified duration
@@ -164,11 +171,18 @@ EOF
 
    local (.)_ReturnStatus=0                              # Presume success
 
+   ### Save Response Body to a File
    if [[ -z $(.)_Output ]]; then                         # If no explicit output file is specified,
       (.)_Output="$(mktemp)"                             # then create a temporary file for the output
       (.)_IsTmpOutput=true                               # and mark this as temporary
    fi
    (+)_Args+=( -o "$(.)_Output" )                        # Save response body to the specified file
+
+   ### Save Response Headers to a Temporary File
+   if [[ -n $(.)_HeadersVar ]]; then
+      (.)_HeadersTmpFile="$(mktemp)"                     # Create a temporary file to store response headers
+      (.)_Args+=( -D "$(.)_HeadersTmpFile" )             # Dump the headers to this file
+   fi
 
    ##########################################################################################
    # Construct URL; See: Scheme definition: https://tools.ietf.org/html/rfc3986#section-3.1 #
@@ -349,6 +363,16 @@ EOF
 
    elif $(.)_IsTmpOutput; then                           # If not saving to BodyVar and no output file is defined,
       cat "$(.)_Output"                                  # then just emit to stdout
+   fi
+
+   #################################
+   # Store data in the Headers Var #
+   #################################
+   if [[ $(.)_HeadersVar != (.)_UnspecifiedHeadersVar ]]; then
+      [[ -v $(.)_HeadersVar ]] || local -g $(.)_HeadersVar
+
+      printf -v "$(.)_HeadersVar" "%s" "$(cat "$(.)_HeadersTmpFile")"
+      rm -f "$(.)_HeadersTmpFile"
    fi
 
    ##################################
