@@ -326,9 +326,13 @@ EOF
       (.)_Remaining+=( "${(.)_Args[@]:OPTIND-1}" )
                                                          # Slice the array, adding only the unprocessed args
 
-      declare -ga "$(.)_SaveVar"=
-      eval "$(.)_SaveVar"=$(declare -p (.)_Remaining | LC_ALL=C sed -e 's|^[^=]*=||' -e "s|^'||" -e "s|'$||")
-                                                         # Write to the save var, being careful of special chars
+      local (.)_Decl
+      (.)_Decl="$(
+         declare -p (.)_Remaining |                      # Emit a declaration that is safe to eval
+         LC_ALL=C sed -e "s|^[^=]*=|declare -ag $(.)_SaveVar=|"
+                                                         # Change the variable name to that of the SaveVar
+      )"
+      eval "$(.)_Decl"                                   # Run eval, saving the unprocessed arguments
    fi
 
    if (( $(-)_t >= 0 )); then

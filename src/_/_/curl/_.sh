@@ -11,7 +11,7 @@ OPTIONS:
    --headers-var <headers-var>   Store the response headers in the indicated <headers-var> variable
    --get <curl-output-name>      ^Get metadata information for the indicated <curl-output-name>
 
-   --filter <filter>             ^Apply JSON <filter> to result body
+   --filter <filter>             ^Apply JSON <filter> to response body
 
    --timeout <duration>          ^Terminate the curl command if it is still running after <duration> seconds
    --debug                       ^Write command to stdout prior to execution
@@ -23,7 +23,7 @@ OPTIONS:
    -r|--resource <path>          ^URL resource path that identifies the specific resource on the host to access
    -u|--url <path>               ^A full URL or local filesystem path as an alternative to the above 4 options
 
-   -o|--output <file>            ^Store the result body to <file>
+   -o|--output <file>            ^Store the response body to <file>
 
    -e|--expect <http-expect>     ^Expect the http_code matching the given regex
 
@@ -36,7 +36,7 @@ DESCRIPTION:
    and optionally includes <port> and <context>, or it can be a filesystem path that is either
    relative or absolute.
 
-   If --body-var is specified, then it must be the case that the result body must be non-binary data.
+   If --body-var is specified, then it must be the case that the response body must be non-binary data.
    That is, Bash variables do not support storing NULL (hex 00) character strings.
 
    If --headers-var is specified, then store the response headers in this variable.
@@ -116,7 +116,7 @@ EOF
    local (.)_BodyVar="(.)_UnspecifiedBodyVar"            # Store the response body in this variable
    local (.)_HeadersVar="(.)_UnspecifiedHeadersVar"      # Store the response headers in this variable
    local (.)_HeadersTmpFile=                             # Store the response headers temporarily in this file
-   local (.)_Filter=                                     # Apply the JSON jq filter to the result body
+   local (.)_Filter=                                     # Apply the JSON jq filter to the response body
 
    local (.)_Timeout=                                    # Terminate the curr command after the given duration
    local (.)_Debug=false                                 # Write the curl command to stdout prior to execution
@@ -128,7 +128,7 @@ EOF
    local (.)_ResourcePath=                               # The resource path follows the host and port
    local (.)_Url=                                        # A fully-formed alternative to the above 4 variables
 
-   local (.)_Output=                                     # Store the result body to a file
+   local (.)_Output=                                     # Store the response body to a file
    local (.)_IsTmpOutput=false
 
    local (.)_Expect=
@@ -144,7 +144,7 @@ EOF
 
       --body-var)    (.)_BodyVar="$(.)_Value";;          # Store the response body in this variable
       --headers-var) (.)_HeadersVar="$(.)_Value";;       # Store the response headers in this variable
-      --filter)      (.)_Filter="$(.)_Value";;           # Apply the JSON jq filter to the result body
+      --filter)      (.)_Filter="$(.)_Value";;           # Apply the JSON jq filter to the response body
 
       --timeout)     (.)_Timeout="$(.)_Value";;          # Terminate the curl command after specified duration
       --debug)       (.)_Debug=true;;                    # Enable debug output
