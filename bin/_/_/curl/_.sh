@@ -2,57 +2,75 @@
 
 :curl:%HELP()
 {
-   :help: --set 'Call curl with additional functionaltity' --usage '<options> [-- <curl-pass-thru-options> [<url>] ]' <<'EOF'
-OPTIONS:
-   --callback <callback-name>    ^Call <callback-name> that can add or modify curl(1) args before calling curl
+   :help: --set 'Call curl with additional functionaltity' --usage '<options> [-- <curl-pass-thru-options> ]' <<'EOF'
+RESULTS OPTIONS:
+   --info-var <info-var>^
+      Store metadata information in the associative array <info-var>. Metadata keys include:
+         http_code   - The http_code returned when running the underlying curl(1) command
+         status      - the return status of the underlying curl(1) command
+         <format>    - the value returned by using the --get option
+   --body-var <body-var>^
+      Store the response body in the <body-var> variable.
+      It must be the case that the response body must be non-binary data because Bash variables
+      do not support storing NULL (hex 00) character strings.
+      To store binary data, use the --output option.
+   --headers-var <headers-var>^
+      Store the response headers in the <headers-var> variable
+   --get <format>^
+      The underlying curl(1) command supports writing out metadata via the --write-out <format> option.
+      This option stores the value obtained into the <info-var> associative array variable.
+   --filter <filter>^
+      Apply the JSON <filter> to the response body before storing the result in the <body-var>.
 
-   --info-var <info-var>>        ^Store metadata information in the indicated Bash associative <array>
-   --body-var <body-var>         ^Store the result body in the indicated Bash <body-var>
-   --get <curl-output-name>      ^Get metadata information for the indicated <curl-output-name>
+CURL ARGUMENTS OPTIONS:
+   --callback <callback-name>^
+      Call the function <callback-name> that modifies the \(++curl)_Args array variable.
+   --url <path>
+      A full URL or local filesystem path as an alternative to using the 4 options below:
+      The path can be either a URL that includes <scheme> and <host> and optionally includes
+      <port> and <context>, or it can be a filesystem path that is either relative or absolute.
 
-   --filter <filter>             ^Apply JSON <filter> to result body
+      --scheme <scheme>^
+         HTTP scheme: one of http or https only
+      --host <host>^
+         A resolvable host name or IP address
+      --port <port>^
+         a port number.
+      --resource <path>^
+         URL resource path that identifies the specific resource on the host to access.
 
-   --timeout <duration>          ^Terminate the curl command if it is still running after <duration> seconds
-   --debug                       ^Write command to stdout prior to execution
-   --quiet                       ^Do not emit error messages
-
-   -s|--scheme <scheme>          ^HTTP scheme: one of http or https only
-   -h|--host <host>              ^Host or IP address
-   -p|--port <port>              ^Port number
-   -r|--resource <path>          ^URL resource path that identifies the specific resource on the host to access
-   -u|--url <path>               ^A full URL or local filesystem path as an alternative to the above 4 options
-
-   -o|--output <file>            ^Store the result body to <file>
-
-   -e|--expect <http-expect>     ^Expect the http_code matching the given regex
-
+EXECUTION OPTIONS:
+   --timeout <duration>^
+      Terminate the underlying curl(1) command if it is still running after <duration> seconds.
+   --show^
+      Show command to stdout prior to execution.
+   --show-change <change>^
+      When showing, perform the <change> replacement.
+   --dry-run^
+      Do not execute the curl command (implies --show).
+   --quiet^
+      Do not emit error messages.
+   --output <file>^
+      Store the response body to <file>
+   --expect <code-regex>^
+      Expect the <info-var> <b>http_code</b> to match the anchored <code-regex>.
+      If the <http-expect> code is a single digit, then [0-9][0-9] is automatically appended.
+      For example, <B>--expect 2</B> is equivalent to <B>--expect '2[0-9][0-9]'</B>.
+      Quoting must be used when passing regex strings that include characters that might otherwise
+      be interpreted immediately by the shell.
 
 DESCRIPTION:
    Wrapper for curl(1) that provides convenience functionality including curl variable extraction,
    callbacks for authentication and custom needs, JSON parsing, timeouts, and more.
 
-   If --path is specified, then the path can be either a URL that includes <scheme> and <host>
-   and optionally includes <port> and <context>, or it can be a filesystem path that is either
-   relative or absolute.
-
-   If --body-var is specified, then it must be the case that the result body must be non-binary data.
-   That is, Bash variables do not support storing NULL (hex 00) character strings.
-
-   If --expect is specified, then the http_code variable must match the anchored <http-expect> regex.
-   If the <http-expect> code is a single digit, then [0-9][0-9] is automatically appended.
-   For example, <B>--expect 2</B> is equivalent to <B>--expect '2[0-9][0-9]'</B>.
-
    Notes:
-      Quoting must be used when passing regex strings that include characters that might otherwise
-      be interpreted immediately by the shell.
-
       The <info-var> variable should not be declared before use. It is automatically unset and then declared.
       The <body-var> variable may be declared in advance, but if it is not declared, it will automatically
-      be declared.
-      Both of the above variables are declared with global scope.
+      be declared. The same applies to the <headers-var> variable.
+      The above variables are declared with global scope.
 
-      If -- is present as an argument, then all arguments before it are parsed as :curl: arguments.
-      Those that follow -- are passed directly to the underlying curl command.
+      If -- is present as an argument, then all arguments before it are parsed as \(++):curl_Args arguments
+      and those follow -- are passed directly to the underlying curl(1) command.
 
 CALLBACK VARIABLES:
    (++:curl)_Args               ^The options to pass to curl that can be modified by callbacks
@@ -60,35 +78,38 @@ CALLBACK VARIABLES:
 RETURN STATUS:
    0  ^Success
    1  ^Error with the invocation of :curl:
-   2  ^The native curl returned non-zero and is stored in the <info-var>> <b>status</b> element.
-   3  ^JSON <filter> returned non-zero and is stored in the <info-var>> <b>status</b> element.
-   4  ^The <http-expect> test returned non-zero: consult the <info-var>> <b>http_code</b> element.
+   2  ^The native curl returned non-zero and is stored in the <info-var> <b>status</b> element.
+   3  ^JSON <filter> returned non-zero and is stored in the <info-var> <b>status</b> element.
+   4  ^The <http-expect> test returned non-zero: consult the <info-var> <b>http_code</b> element.
 
 EXAMPLE:
-   local -a Options=(            ^^>GThe first block of args are consumed by :curl:
-      --info-var  Info           ^Use the Info variable to store metadata information
-      --body-var  Body           ^Store the response body in the Body variable
-      --get       http_code      ^Get the response HTTP code
-      --get       url_effective  ^Get the effective URL, if present
-      --                         ^^>GThe second block of args are consumed directly by curl(1)
-      -s -k                      ^Additional arguments
+   local -a (.)_Options=(           ^^>GThe first block of args are consumed by :curl:
+      --info-var     (.)_Info       ^Use the Info variable to store metadata information
+      --body-var     (.)_Body       ^Store the response body in the Body variable
+      --headers-var  (.)_Header     ^Store the response headers in the Header variable
+      --get          http_code      ^Get the response HTTP code
+      --get          url_effective  ^Get the effective URL, if present
+
+      --                            ^^>GThe second block of args are consumed directly by curl(1)
+      -s -k                         ^Additional arguments
    )^
-   :curl: --url 'https://some/path' "${Options[@]}" -L^
-                                 ^Get metadata info needed for second :curl: call
+   :curl: --url 'https://some/path' "${(.)_Options[@]}" -L^
+                                    Get metadata info needed for second :curl: call
 
-   if [[ -n ${Info[url_effective]} ]]; then^
-      MY_Redirect="$(MY_get_redirect "${Info[url_effective]}")"^
-                                 ^Modify the effective URL
-      local -a Callback=( :curl:auth_tmpl --basic "admin:mypassword" )^
-                                 Array contains function call parameters that inject into
-                                 options processed by :curl:
-      :curl: --url "$MY_Redirect" --callback Callback "${Options[@]}"^
-                                 ^Add authentication to this :curl: call
+   if [[ -n ${(.)_Info[url_effective]} ]]; then^
+      (.)_MY_Redirect="$((.)_MY_get_redirect "${Info[url_effective]}")"^
+                                    Modify the effective URL
+      local -a Callback=( (++:curl)_auth_tmpl --basic "admin:mypassword" )^
+                                    Array contains function call parameters that inject into
+                                    options processed by :curl:
 
-      if [[ ${Info[http_code]} =~ ^2[0-9][0-9]$ ]]; then^
-         echo 'Success'^
+      :curl: --url "$(.)_MY_Redirect" --callback Callback "${(.)_Options[@]}"^
+                                    Add (++:curl)_auth_tmpl callback for authentication to this :curl: call
+
+      if [[ ${(.)_Info[http_code]} =~ ^2[0-9][012]$ ]]; then^
+         echo 'Success'             ^Success on HTTP OK, Created, or Accepted
       else^
-         echo 'Fail'^
+         echo 'Fail'                ^Indicate failure otherwise
       else^
    fi^
 EOF
@@ -98,7 +119,7 @@ EOF
 {
    :getopts: begin \
       -o ':s:h:p:r:u:o:e:' \
-      -l 'callback:,info-var:,get:,body-var:,filter:,timeout:,debug,quiet,scheme:,host:,port:,resource:,url:,output:,expect:' \
+      -l 'callback:,info-var:,get:,body-var:,headers-var:,filter:,timeout:,show,show-change:,dry-run,quiet,scheme:,host:,port:,resource:,url:,output:,expect:' \
       -- "$@"
 
    local __curl________Option                                      # Iterate over options
@@ -109,11 +130,17 @@ EOF
    local __curl________InfoVar="__curl________UnspecifiedInfoVar"            # Use this variable name if none is specified by --info-var
    local -a __curl________GetVars=()                               # Get curl variables. See curl(1): --write-out
 
-   local __curl________BodyVar="__curl________UnspecifiedBodyVar"            # Store the result body in this variable
-   local __curl________Filter=                                     # Apply the JSON jq filter to the result body
+   local __curl________BodyVar="__curl________UnspecifiedBodyVar"            # Store the response body in this variable
+   local __curl________HeadersVar="__curl________UnspecifiedHeadersVar"      # Store the response headers in this variable
+   local __curl________HeadersTmpFile=                             # Store the response headers temporarily in this file
+   local __curl________Filter=                                     # Apply the JSON jq filter to the response body
 
    local __curl________Timeout=                                    # Terminate the curr command after the given duration
-   local __curl________Debug=false                                 # Write the curl command to stdout prior to execution
+
+   local __curl________Show=false                                  # Show the curl command to stdout prior to execution
+   local -a __curl________Changes=()                               # Do not show these patterns
+
+   local __curl________DryRun=false                                # Perform a dry run only
    local __curl________Quiet=false                                 # Emit error messages
 
    local __curl________Scheme=                                     # Either http or https
@@ -122,7 +149,7 @@ EOF
    local __curl________ResourcePath=                               # The resource path follows the host and port
    local __curl________Url=                                        # A fully-formed alternative to the above 4 variables
 
-   local __curl________Output=                                     # Store the result body to a file
+   local __curl________Output=                                     # Store the response body to a file
    local __curl________IsTmpOutput=false
 
    local __curl________Expect=
@@ -136,11 +163,17 @@ EOF
       --info-var)    __curl________InfoVar="$__curl________Value";;          # Store metdata information in this variable
       --get)         __curl________GetVars+=( "$__curl________Value" );;     # Get curl variables
 
-      --body-var)    __curl________BodyVar="$__curl________Value";;          # Store the result body in this variable
-      --filter)      __curl________Filter="$__curl________Value";;           # Apply the JSON jq filter to the result body
+      --body-var)    __curl________BodyVar="$__curl________Value";;          # Store the response body in this variable
+      --headers-var) __curl________HeadersVar="$__curl________Value";;       # Store the response headers in this variable
+      --filter)      __curl________Filter="$__curl________Value";;           # Apply the JSON jq filter to the response body
 
       --timeout)     __curl________Timeout="$__curl________Value";;          # Terminate the curl command after specified duration
-      --debug)       __curl________Debug=true;;                    # Enable debug output
+
+      --show)        __curl________Show=true;;                     # Enable showing the curl command prior to execution
+      --show-change) __curl________Changes=("$__curl________Value")          # Do not show <curl-pass-thru-options> matching <name>
+                     __curl________Show=true;;
+
+      --dry-run)     __curl________DryRun=true; __curl________Show=true;;    # Dry run: just show then return
       --quiet)       __curl________Quiet=true;;                    # Do not emit error messages
 
       -s|--scheme)   __curl________Scheme="$__curl________Value";;           # http or https
@@ -164,11 +197,18 @@ EOF
 
    local __curl________ReturnStatus=0                              # Presume success
 
+   ### Save Response Body to a File
    if [[ -z $__curl________Output ]]; then                         # If no explicit output file is specified,
       __curl________Output="$(mktemp)"                             # then create a temporary file for the output
       __curl________IsTmpOutput=true                               # and mark this as temporary
    fi
    __curl___Args+=( -o "$__curl________Output" )                        # Save response body to the specified file
+
+   ### Save Response Headers to a Temporary File
+   if [[ $__curl________HeadersVar != __curl________UnspecifiedHeadersVar ]]; then
+      __curl________HeadersTmpFile="$(mktemp)"                     # Create a temporary file to store response headers
+      __curl___Args+=( -D "$__curl________HeadersTmpFile" )             # Dump the headers to this file
+   fi
 
    ##########################################################################################
    # Construct URL; See: Scheme definition: https://tools.ietf.org/html/rfc3986#section-3.1 #
@@ -179,7 +219,7 @@ EOF
 
          if [[ ! -f  $__curl________Url ]]; then
             if ! $__curl________Quiet; then
-               :error: "No such file: $__curl________Url"       # If file doesn't exist and not quiet, emit message
+               :error: "No such file: $__curl________Url"          # If file doesn't exist and not quiet, emit message
             fi
 
             printf -v "$__curl________InfoVar[status]" '%s' 1
@@ -266,10 +306,48 @@ EOF
    ###################################
    ### RUN THE NATIVE CURL COMMAND ###
    ###################################
-   if $__curl________Debug; then
+   if $__curl________Show; then
+      local -a __curl________ShowArgs=()                           # The collected list of args to show
+      local __curl________Arg                                      # Iterator over __curl___Args
+
+      local __curl________Change                                   # Iterator over __curl________Changes
+
+      # Nested iterators: over __curl___Args and __curl________Changes
+      for __curl________Arg in "${__curl___Args[@]}"; do
+         for __curl________Change in "${__curl________Changes[@]}"; do
+            local D="${__curl________Change:0:1}"                  # Get the delimiter
+            __curl________Search="${__curl________Change:1}"                 # Remove the leading delimiter
+            __curl________Search="${__curl________Search%$D}"                # Remove the trailing delimiter
+
+            ###################################################################################################
+            # The replacement can have capture groups. The printf escapes everything, including the backslash #
+            # in front of capture groups resulting in two backslashes. Replace \\<capture-group> with         #
+            # \<capture-group> that preserves the capture group as is, but otherwise adds quoting to treat    #
+            # characters as literals instead of actionable sequences such as redirection (< >),               #
+            # backgrounding (&), parameter dereferencing ($), etc.                                            #
+            ###################################################################################################
+            __curl________Replace="$(printf '%q\n' "${__curl________Search#*$D}" | sed 's|\\\\\([0-9]\+\)|\\\1|g')"
+
+            __curl________Search="${__curl________Search%%$D*}"              # Remove the replacement, leaving just the search string
+
+            if [[ $__curl________Arg =~ $__curl________Search ]]; then       # If a change is needed, then make it
+               __curl________Replace="$( sed 's|\\\([0-9]\+\)|\${BASH_REMATCH\[\1\]}|g' <<<"$__curl________Replace" )"
+                                                         # Convert capture groups to reference the match variable
+               eval __curl________Arg="$__curl________Replace"               # Eval to dereference the match variable BASH_REMATCH.
+                                                         # This is safe due to the quoting above.
+            fi
+         done
+
+         __curl________ShowArgs+=( "$__curl________Arg" )
+      done
+
+      echo "================================================== CURL INVOCATION"
+      echo "curl ${__curl________ShowArgs[@]}"
       echo "=================================================="
-      echo "curl ${__curl___Args[@]}"
-      echo "=================================================="
+   fi
+
+   if $__curl________DryRun; then                                  # If this is a dry run, then just return
+      return 0
    fi
 
    local __curl________HTTPResponse                                # Store the HTTP response (not response headers)
@@ -349,6 +427,16 @@ EOF
 
    elif $__curl________IsTmpOutput; then                           # If not saving to BodyVar and no output file is defined,
       cat "$__curl________Output"                                  # then just emit to stdout
+   fi
+
+   #################################
+   # Store data in the Headers Var #
+   #################################
+   if [[ $__curl________HeadersVar != __curl________UnspecifiedHeadersVar ]]; then
+      [[ -v $__curl________HeadersVar ]] || local -g $__curl________HeadersVar
+                                                         # Ensure the HeadersVar variable is declared
+      printf -v "$__curl________HeadersVar" "%s" "$(cat "$__curl________HeadersTmpFile")"
+      rm -f "$__curl________HeadersTmpFile"
    fi
 
    ##################################
@@ -436,33 +524,4 @@ EOF
          --data-urlencode "password=${__curl_____auth_tmpl___OAuth#*:}"
       )
    fi
-}
-
-:curl:tenant_token_auth_tmpl()
-{
-   local __curl_____tenant_token_auth_tmpl___Options
-   __curl_____tenant_token_auth_tmpl___Options=$(getopt -o '' -l "tenant-id:,credentials:" -n "${FUNCNAME[0]}" -- "$@") || return
-   eval set -- "$__curl_____tenant_token_auth_tmpl___Options"
-
-   local __curl_____tenant_token_auth_tmpl___TenantID=                                   # The tenant ID
-   local __curl_____tenant_token_auth_tmpl___Credentials=                                # Pre-constructed credentials
-
-   while true ; do
-      case "$1" in
-      --tenant-id)   __curl_____tenant_token_auth_tmpl___TenantID="$2"; shift 2;;
-      --credentials) __curl_____tenant_token_auth_tmpl___Credentials="$2"; shift 2;;
-      --)            shift; break;;
-      *)             break;;
-      esac
-   done
-
-   [[ -n $__curl_____tenant_token_auth_tmpl___TenantID && -n $__curl_____tenant_token_auth_tmpl___Credentials ]] || return
-
-   __curl___Args+=(
-      '-H' 'Accept: application/json'
-      '-H' 'Content-Type: application/x-www-form-urlencoded'
-      '-H' "X-Identity-Zone-Id: $__curl_____tenant_token_auth_tmpl___TenantID"
-      '-H' "Authorization: bearer $__curl_____tenant_token_auth_tmpl___Credentials"
-      '-d' 'grant_type=client_credentials'
-   )
 }

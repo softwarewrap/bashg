@@ -41,7 +41,7 @@ EOF
    local __json__jq__jq___NullToEmpty=true                            # By default, convert 'null' to ''
    local __json__jq__jq___SaveEmpty=true                              # By default, save to variable even if 'null' or ''
 
-   local -a __json__jq__jq___Args=()
+   local -ag __json__jq__jq___Args=()
 
    while :getopts: next __json__jq__jq___Option __json__jq__jq___Value; do
       case "$__json__jq__jq___Option" in

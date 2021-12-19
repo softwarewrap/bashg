@@ -41,7 +41,7 @@ EOF
    local (.)_NullToEmpty=true                            # By default, convert 'null' to ''
    local (.)_SaveEmpty=true                              # By default, save to variable even if 'null' or ''
 
-   local -a (.)_Args=()
+   local -ag (.)_Args=()
 
    while :getopts: next (.)_Option (.)_Value; do
       case "$(.)_Option" in

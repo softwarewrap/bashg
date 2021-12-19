@@ -326,9 +326,13 @@ EOF
       __getopts_____Directive_end___Remaining+=( "${__getopts_____Directive_end___Args[@]:OPTIND-1}" )
                                                          # Slice the array, adding only the unprocessed args
 
-      declare -ga "$__getopts_____Directive_end___SaveVar"=
-      eval "$__getopts_____Directive_end___SaveVar"=$(declare -p __getopts_____Directive_end___Remaining | LC_ALL=C sed -e 's|^[^=]*=||' -e "s|^'||" -e "s|'$||")
-                                                         # Write to the save var, being careful of special chars
+      local __getopts_____Directive_end___Decl
+      __getopts_____Directive_end___Decl="$(
+         declare -p __getopts_____Directive_end___Remaining |                      # Emit a declaration that is safe to eval
+         LC_ALL=C sed -e "s|^[^=]*=|declare -ag $__getopts_____Directive_end___SaveVar=|"
+                                                         # Change the variable name to that of the SaveVar
+      )"
+      eval "$__getopts_____Directive_end___Decl"                                   # Run eval, saving the unprocessed arguments
    fi
 
    if (( $__getopts______t >= 0 )); then
