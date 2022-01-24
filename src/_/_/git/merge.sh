@@ -172,7 +172,7 @@ EOF
                                                          # Merge into the ToBranch (current) from the FromBranch
 
    local (.)_Changes                                     # Used for identifying pending changes
-   (.)_Changes="$( git status --porcelain Source/content 2>/dev/null )"
+   (.)_Changes="$( git status --porcelain 2>/dev/null )"
 
    if [[ -z $(.)_Changes && -z $( git ls-files -u ) ]]; then
       echo 'No changes to merge'
@@ -223,7 +223,7 @@ EOF
 
    else
       local (.)_Changes                                  # Used for identifying pending changes
-      (.)_Changes="$( git status --porcelain Source/content 2>/dev/null )"
+      (.)_Changes="$( git status --porcelain 2>/dev/null )"
 
       # If there are changes or if merge conflicts presently exist, then error return
       if [[ -n $(.)_Changes || -n $( git ls-files -u ) ]]; then
