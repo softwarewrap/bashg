@@ -281,7 +281,7 @@
       "path": "_/_/curl/_.sh"
     },
     ":curl:%HELP": {
-      "hash": "36ed81108695510b5d6d44e14187aca5",
+      "hash": "e827cbac516b82b9e040a50a6a79d0ee",
       "path": "_/_/curl/_.sh"
     },
     ":curl:auth_tmpl": {
@@ -393,11 +393,11 @@
       "path": "_/_/git/merge.sh"
     },
     ":git:merge:CheckOrCleanBranch": {
-      "hash": "3eee43a3e949bc5c4b44271b451eb3c4",
+      "hash": "6d3760178621534bafdc2a7d4f0abe1c",
       "path": "_/_/git/merge.sh"
     },
     ":git:merge:PerformMerge": {
-      "hash": "ea94ffa9d02cb3392d77b38ad8f98f6d",
+      "hash": "73c651289dd4056e91970d5b20665a50",
       "path": "_/_/git/merge.sh"
     },
     ":git:merge:ProcessOptionsAndValidate": {

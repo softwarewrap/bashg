@@ -24,8 +24,8 @@ RESULTS OPTIONS:
 
 CURL ARGUMENTS OPTIONS:
    --callback <callback-name>^
-      Call the function <callback-name> that modifies the \(++curl)_Args array variable.
-   --url <path>
+      Call the function <callback-name> that modifies the <B>(++:curl)_Args</B> array variable.
+   --url <path>^
       A full URL or local filesystem path as an alternative to using the 4 options below:
       The path can be either a URL that includes <scheme> and <host> and optionally includes
       <port> and <context>, or it can be a filesystem path that is either relative or absolute.
@@ -99,12 +99,12 @@ EXAMPLE:
    if [[ -n ${(.)_Info[url_effective]} ]]; then^
       (.)_MY_Redirect="$((.)_MY_get_redirect "${Info[url_effective]}")"^
                                     Modify the effective URL
-      local -a Callback=( (++:curl)_auth_tmpl --basic "admin:mypassword" )^
+      local -a Callback=( (++:curl):auth_tmpl --basic "admin:mypassword" )^
                                     Array contains function call parameters that inject into
                                     options processed by :curl:
 
       :curl: --url "$(.)_MY_Redirect" --callback Callback "${(.)_Options[@]}"^
-                                    Add (++:curl)_auth_tmpl callback for authentication to this :curl: call
+                                    Add <B>(++:curl):auth_tmpl</B> callback for authentication to this :curl: call
 
       if [[ ${(.)_Info[http_code]} =~ ^2[0-9][012]$ ]]; then^
          echo 'Success'             ^Success on HTTP OK, Created, or Accepted
