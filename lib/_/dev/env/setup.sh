@@ -27,7 +27,7 @@ EOF
    (.)_Options=$(getopt -o 'hp:' -l 'hypervisor,port:' -n "${FUNCNAME[0]}" -- "$@") || return
    eval set -- "$(.)_Options"
 
-   local (.)_IsAHypervisor=true
+   local (.)_IsAHypervisor=false
    local (.)_Port=22
 
    while true ; do
@@ -45,11 +45,12 @@ EOF
    fi
 
    :: sudoers                                            # Update /etc/sudoers to allow sudo access
+   :: python                                             # Ensure python is not no-python
+   :: clean_yum                                          # Clean the yum and rpm caches
    :: disable_selinux                                    # Ensure that SELinux is disabled
    :: -- require_jq --version 1.6                        # Version 1.5 (default) has vulnerabilities; get 1.6
    :: -- disable_services postfix firewalld              # Disable these systemd services
    :: resolv_conf                                        # Make resolv.conf static
-   :: clean_yum                                          # Clean the yum and rpm caches
    :: set_timezone                                       # Set the timezone to the default
    :: iptables                                           # Ensure iptables is installed and flush rules
    :: tune_sysctl                                        # Tune sysctl; add swap file if needed; remove IPv6
@@ -59,6 +60,7 @@ EOF
    :: os_packages                                        # Install extra OS packages
    :: disable_user_list                                  # Disable login page listing user names
    :: install_fonts                                      # Install fonts (e.g., for use by vnc)
+   :: autofs                                             # Install the auto-mount daemon
 
    if ! $(.)_IsAHypervisor; then
       :: -- disable_services libvirtd                    # Disable after other installations
@@ -68,6 +70,4 @@ EOF
    :: vim                                                # Install/update vim
 
    (++:ssh):config --port "$(.)_Port"
-
-   (++:.dev:env):netfilter -u                            # Configure iptables rules
 }

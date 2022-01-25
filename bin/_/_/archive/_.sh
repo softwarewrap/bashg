@@ -10,6 +10,7 @@ OPTIONS:
    -a|--archive-dir <dir>  ^Specify the archive <dir> [default for users: root: /orig, others: $HOME/.orig]
    -m|--move               ^Move instead of copying
    -f|--force              ^Archive even if previously archived
+   -q|--quiet              ^Do not emit warning messages
    -v|--verbose            ^Indicate actions taken
    -0|--no-error           ^Return 0 even if archiving was not performed
 
@@ -34,11 +35,12 @@ EOF
 :archive:()
 {
    local __archive________Options
-   __archive________Options=$(getopt -o a:mfv0n -l "archive-dir:,move,force,verbose,no-error,dry-run" -n "${FUNCNAME[0]}" -- "$@") || return
+   __archive________Options=$(getopt -o a:mfv0n -l "archive-dir:,move,force,quiet,verbose,no-error,dry-run" -n "${FUNCNAME[0]}" -- "$@") || return
    eval set -- "$__archive________Options"
 
    local __archive________Move=false
    local __archive________Force=false
+   local __archive________Quiet=false
    local __archive________Verbose=false
    local __archive________ArchiveDir=
    local __archive________DryRun=false
@@ -49,6 +51,7 @@ EOF
       -a|--archive-dir) __archive________ArchiveDir="$(readlink -fm "$2")"; shift 2;;
       -m|--move)        __archive________Move=true; shift;;
       -f|--force)       __archive________Force=true; shift;;
+      -q|--quiet)       __archive________Quiet=true; shift;;
       -v|--verbose)     __archive________Verbose=true; shift;;
       -0|--no-error)    __archive________ErrorIfNotArchived=false; shift;;
       -n|--dry-run)     __archive________DryRun=true; __archive________Verbose=true; shift;;
@@ -65,7 +68,7 @@ EOF
 
    else
       if [[ -n $__archive________ArchiveDir && $__archive________ArchiveDir != "$HOME"/* ]]; then
-         :highlight: <<<"<b>The archive directory must be a subdirectory of:</b> <R>$HOME</R>"
+         $__archive________Quiet || :highlight: <<<"<b>The archive directory must be a subdirectory of:</b> <R>$HOME</R>"
          return 1
       fi
       [[ -n $__archive________ArchiveDir ]] || __archive________ArchiveDir="$HOME/.orig"
@@ -94,7 +97,7 @@ EOF
    for __archive________SourceItem in ${__archive________SourceItems[@]}; do
       # Ensure the source item exists
       if [[ ! -e $__archive________SourceItem ]]; then
-         :highlight: <<<"<b>No such item:</b> <R>$__archive________SourceItem</R>"
+         $__archive________Quiet || :highlight: <<<"<b>No such item:</b> <R>$__archive________SourceItem</R>"
          continue
       fi
 
@@ -103,7 +106,7 @@ EOF
 
       # If non-root, the path must be within the user's HOME directory
       if [[ $_whoami != root && $__archive________Src != "$HOME"/* ]]; then
-         :highlight: <<<"<b>Skipping path not under home directory:</b> <R>$__archive________SourceItem</R>"
+         $__archive________Quiet || :highlight: <<<"<b>Skipping path not under home directory:</b> <R>$__archive________SourceItem</R>"
          continue
       fi
 
@@ -115,7 +118,7 @@ EOF
 
       [[ -e $__archive________Dst ]] && __archive________DstExists=true || __archive________DstExists=false
       if $__archive________DstExists && ! $__archive________Force; then
-         :highlight: <<<"<b>Not archived because already exists:</b> <R>$__archive________Dst</R>"
+         $__archive________Quiet || :highlight: <<<"<b>Not archived because already exists:</b> <R>$__archive________Dst</R>"
          continue
       fi
 

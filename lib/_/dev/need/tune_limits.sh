@@ -14,7 +14,7 @@
 
    :log: 'Updating /etc/security/limits.conf'
 
-   :archive: --no-error /etc/security/limits.conf        # Archive the original version
+   :archive: --quiet --no-error /etc/security/limits.conf # Archive the original version
 
    cat > /etc/security/limits.conf <<EOF
 # /etc/security/limits.conf
@@ -73,7 +73,7 @@ EOF
 
    :log: 'Updating /etc/security/limits.d/20-nproc.conf'
 
-   :archive: --no-error /etc/security/limits.d/20-nproc.conf
+   :archive: --quiet --no-error /etc/security/limits.d/20-nproc.conf
                                                          # Archive the original version
 
    cat > /etc/security/limits.d/20-nproc.conf <<EOF

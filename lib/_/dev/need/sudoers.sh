@@ -8,7 +8,7 @@
 {
    :sudo || :reenter                                     # This function must run as root
 
-   :log: --push-section 'Updating /etc/sudoers' "$FUNCNAME $@"
+   :log: --push-section 'Updating sudoers file' "/etc/sudoers $FUNCNAME $@"
 
    :file:ensure_nl_at_end /etc/sudoers                   # Ensure the file ends with a newline
 

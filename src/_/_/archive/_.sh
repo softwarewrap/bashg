@@ -10,6 +10,7 @@ OPTIONS:
    -a|--archive-dir <dir>  ^Specify the archive <dir> [default for users: root: /orig, others: $HOME/.orig]
    -m|--move               ^Move instead of copying
    -f|--force              ^Archive even if previously archived
+   -q|--quiet              ^Do not emit warning messages
    -v|--verbose            ^Indicate actions taken
    -0|--no-error           ^Return 0 even if archiving was not performed
 
@@ -34,11 +35,12 @@ EOF
 + ()
 {
    local (.)_Options
-   (.)_Options=$(getopt -o a:mfv0n -l "archive-dir:,move,force,verbose,no-error,dry-run" -n "${FUNCNAME[0]}" -- "$@") || return
+   (.)_Options=$(getopt -o a:mfv0n -l "archive-dir:,move,force,quiet,verbose,no-error,dry-run" -n "${FUNCNAME[0]}" -- "$@") || return
    eval set -- "$(.)_Options"
 
    local (.)_Move=false
    local (.)_Force=false
+   local (.)_Quiet=false
    local (.)_Verbose=false
    local (.)_ArchiveDir=
    local (.)_DryRun=false
@@ -49,6 +51,7 @@ EOF
       -a|--archive-dir) (.)_ArchiveDir="$(readlink -fm "$2")"; shift 2;;
       -m|--move)        (.)_Move=true; shift;;
       -f|--force)       (.)_Force=true; shift;;
+      -q|--quiet)       (.)_Quiet=true; shift;;
       -v|--verbose)     (.)_Verbose=true; shift;;
       -0|--no-error)    (.)_ErrorIfNotArchived=false; shift;;
       -n|--dry-run)     (.)_DryRun=true; (.)_Verbose=true; shift;;
@@ -65,7 +68,7 @@ EOF
 
    else
       if [[ -n $(.)_ArchiveDir && $(.)_ArchiveDir != "$HOME"/* ]]; then
-         :highlight: <<<"<b>The archive directory must be a subdirectory of:</b> <R>$HOME</R>"
+         $(.)_Quiet || :highlight: <<<"<b>The archive directory must be a subdirectory of:</b> <R>$HOME</R>"
          return 1
       fi
       [[ -n $(.)_ArchiveDir ]] || (.)_ArchiveDir="$HOME/.orig"
@@ -94,7 +97,7 @@ EOF
    for (.)_SourceItem in ${(.)_SourceItems[@]}; do
       # Ensure the source item exists
       if [[ ! -e $(.)_SourceItem ]]; then
-         :highlight: <<<"<b>No such item:</b> <R>$(.)_SourceItem</R>"
+         $(.)_Quiet || :highlight: <<<"<b>No such item:</b> <R>$(.)_SourceItem</R>"
          continue
       fi
 
@@ -103,7 +106,7 @@ EOF
 
       # If non-root, the path must be within the user's HOME directory
       if [[ $_whoami != root && $(.)_Src != "$HOME"/* ]]; then
-         :highlight: <<<"<b>Skipping path not under home directory:</b> <R>$(.)_SourceItem</R>"
+         $(.)_Quiet || :highlight: <<<"<b>Skipping path not under home directory:</b> <R>$(.)_SourceItem</R>"
          continue
       fi
 
@@ -115,7 +118,7 @@ EOF
 
       [[ -e $(.)_Dst ]] && (.)_DstExists=true || (.)_DstExists=false
       if $(.)_DstExists && ! $(.)_Force; then
-         :highlight: <<<"<b>Not archived because already exists:</b> <R>$(.)_Dst</R>"
+         $(.)_Quiet || :highlight: <<<"<b>Not archived because already exists:</b> <R>$(.)_Dst</R>"
          continue
       fi
 

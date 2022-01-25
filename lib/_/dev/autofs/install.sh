@@ -41,7 +41,8 @@ EOF
    local (.)_Service
    for (.)_Service in rpcbind nfs-server autofs; do
       local (.)_State
-      (.)_State="$( systemctl is-enabled "$(.)_Service" )"
+      (.)_State="$( systemctl is-enabled "$(.)_Service" || true)"
+
       if [[ $(.)_State = masked ]]; then
          systemctl unmask "$(.)_Service"
       fi

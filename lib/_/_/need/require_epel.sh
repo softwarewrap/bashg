@@ -1,19 +1,12 @@
 #!/bin/bash
 
-- linux-6()
-{
-   :sudo || :reenter                                     # This function must run as root
-
-   if ! (-):EPELisInstalled; then
-      (-):InstallEPEL 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm'
-   fi
-}
-
 - redhat-7()
 {
    :sudo || :reenter                                     # This function must run as root
 
    if ! (-):EPELisInstalled; then
+      :log: --push-section 'Require EPEL on RHEL 7' "$FUNCNAME $@"
+
       (-):InstallEPEL 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'
 
       local -a (.)_Options=(
@@ -21,6 +14,8 @@
          --enable='rhel-*-extras-rpms'
       )
       subscription-manager repos "${(.)_Options[@]}"
+
+      :log: --pop
    fi
 }
 
@@ -29,7 +24,11 @@
    :sudo || :reenter                                     # This function must run as root
 
    if ! (-):EPELisInstalled; then
+      :log: --push-section 'Require EPEL on CentOS 7' "$FUNCNAME $@"
+
       (-):InstallEPEL 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'
+
+      :log: --pop
    fi
 }
 
@@ -38,13 +37,17 @@
    :sudo || :reenter                                     # This function must run as root
 
    if ! (-):EPELisInstalled; then
+      :log: --push-section 'Require EPEL on RHEL 8' "$FUNCNAME $@"
+
       (-):InstallEPEL 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm'
 
       local -a (.)_Options=(
-         --enable "codeready-builder-for-rhel-8-$(arch)"
+         --enable "codeready-builder-for-rhel-8-$(arch)-rpms"
       )
       subscription-manager repos "${(.)_Options[@]}"
-      dnf config-manager --set-enabled PowerTools || true
+      dnf config-manager --set-enabled PowerTools 2>/dev/null || true
+
+      :log: --pop
    fi
 }
 
@@ -53,7 +56,11 @@
    :sudo || :reenter                                     # This function must run as root
 
    if ! (-):EPELisInstalled; then
+      :log: --push-section 'Require EPEL on CentOS 8' "$FUNCNAME $@"
+
       (-):InstallEPEL 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm'
+
+      :log: --pop
    fi
 }
 
@@ -63,7 +70,7 @@
 
    :log: --push 'Installing epel-release'
 
-   if ! yum -y install epel-release; then
+   if ! yum -y install epel-release 2>/dev/null; then
       :log: 'Trying alternative approach to installing epel repository'
 
       yum -y install "$(.)_RPM" &>/dev/null

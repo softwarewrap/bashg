@@ -41,7 +41,8 @@ EOF
    local _dev__autofs__install__install___Service
    for _dev__autofs__install__install___Service in rpcbind nfs-server autofs; do
       local _dev__autofs__install__install___State
-      _dev__autofs__install__install___State="$( systemctl is-enabled "$_dev__autofs__install__install___Service" )"
+      _dev__autofs__install__install___State="$( systemctl is-enabled "$_dev__autofs__install__install___Service" || true)"
+
       if [[ $_dev__autofs__install__install___State = masked ]]; then
          systemctl unmask "$_dev__autofs__install__install___Service"
       fi

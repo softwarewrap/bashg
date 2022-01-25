@@ -1,7 +1,7 @@
 {
   "function": {
     ".dev:autofs:install": {
-      "hash": "55da5fd8d3c6cff453028869545a4627",
+      "hash": "968fe0e1135faeb589d58e17ea4597cf",
       "path": "_/dev/autofs/install.sh"
     },
     ".dev:autofs:restart": {
@@ -33,7 +33,7 @@
       "path": "_/dev/env/netfilter.sh"
     },
     ".dev:env:setup": {
-      "hash": "dbd6b9a0e788537756339a1db6f0eb2f",
+      "hash": "8a026f0afaf7743da1cfc9a049890f1c",
       "path": "_/dev/env/setup.sh"
     },
     ".dev:env:setup%HELP": {
@@ -43,6 +43,10 @@
     ".dev:need:%STARTUP-1": {
       "hash": "2558f7f2030672243b16bfedb28c94fa",
       "path": "_/dev/need/_.sh"
+    },
+    ".dev:need:autofs:": {
+      "hash": "74a7238bd1edc0018e995a7ad5958958",
+      "path": "_/dev/need/autofs.sh"
     },
     ".dev:need:clean_yum:": {
       "hash": "0ace58df38f77f786cabc86b9dfb9288",
@@ -96,6 +100,10 @@
       "hash": "9cd8718fed353c76c9d3d59c081da523",
       "path": "_/dev/need/os_packages.sh"
     },
+    ".dev:need:python:": {
+      "hash": "b618ebaabec05669b177eff802602226",
+      "path": "_/dev/need/python.sh"
+    },
     ".dev:need:resolv_conf:linux-8": {
       "hash": "2a1f17e3c8a7f42f616ad2cd92f30593",
       "path": "_/dev/need/resolv_conf.sh"
@@ -117,11 +125,11 @@
       "path": "_/dev/need/set_timezone.sh"
     },
     ".dev:need:sudoers:": {
-      "hash": "89bfe62d17ee4fe71428b86d4e1ed408",
+      "hash": "db17f15974896e10f4e05985ddf0f822",
       "path": "_/dev/need/sudoers.sh"
     },
     ".dev:need:tune_limits:": {
-      "hash": "a74d287712d677a11cca827ce3170acc",
+      "hash": "5bd48c0021e97c338d01ffb0f6602538",
       "path": "_/dev/need/tune_limits.sh"
     },
     ".dev:need:tune_sysctl:": {
@@ -209,11 +217,11 @@
       "path": "_/_/try.sh"
     },
     ":archive:": {
-      "hash": "19a0b80e8caae161e05fda9f3e59ae78",
+      "hash": "4c881b787375ce2c33a2d9cdb9168b9b",
       "path": "_/_/archive/_.sh"
     },
     ":archive:%HELP": {
-      "hash": "e72250b213950a7da9ade2e21c1295b9",
+      "hash": "2d9c12a6b0478d102cfef2b849a45627",
       "path": "_/_/archive/_.sh"
     },
     ":array:copy_associative": {
@@ -665,27 +673,23 @@
       "path": "_/_/need/require_epel.sh"
     },
     ":need:require_epel:InstallEPEL": {
-      "hash": "aac20c53b6af84c63f5e2c308aa6840e",
+      "hash": "2a19b04c4baae3cc5b153f4f6020ec33",
       "path": "_/_/need/require_epel.sh"
     },
     ":need:require_epel:centos-7": {
-      "hash": "5b622da512196a3c2aeca2dee64f931d",
+      "hash": "ae916e8b7d4f41fe8320d39b1139e5e1",
       "path": "_/_/need/require_epel.sh"
     },
     ":need:require_epel:centos-8": {
-      "hash": "0b495c97b9ef9b21791655ba384e9e6b",
-      "path": "_/_/need/require_epel.sh"
-    },
-    ":need:require_epel:linux-6": {
-      "hash": "d0eb66188b6ce3cd9bbee25d486781b2",
+      "hash": "5c0baa479d3f0aad3654117885097373",
       "path": "_/_/need/require_epel.sh"
     },
     ":need:require_epel:redhat-7": {
-      "hash": "6090012e2ed9e2d3a27f0cb15ccc2ca4",
+      "hash": "24f430ffc160c31ed1d6cc431d5976a8",
       "path": "_/_/need/require_epel.sh"
     },
     ":need:require_epel:redhat-8": {
-      "hash": "575b02bfdaa052c021724a85a72e7b00",
+      "hash": "5314023a3f25a1bcd5bc1e3d99232851",
       "path": "_/_/need/require_epel.sh"
     },
     ":need:require_jq:": {
@@ -751,6 +755,14 @@
     ":sed:escape": {
       "hash": "dfca628c136cef63a65b365501ffc585",
       "path": "_/_/sed/escape.sh"
+    },
+    ":service:exists": {
+      "hash": "574a81a8cfee6f3df397272b023c9cfd",
+      "path": "_/_/service/exists.sh"
+    },
+    ":service:is_active": {
+      "hash": "db42b66a06c2e3a82dbef41318dbd51b",
+      "path": "_/_/service/is_active.sh"
     },
     ":set:%STARTUP-1": {
       "hash": "8fdcfb984ccfbc23aad7bd159f9fef83",
