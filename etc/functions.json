@@ -45,7 +45,7 @@
       "path": "_/dev/need/_.sh"
     },
     ".dev:need:autofs:": {
-      "hash": "74a7238bd1edc0018e995a7ad5958958",
+      "hash": "d2edac42601fee2e2f4011b83bb7a6fa",
       "path": "_/dev/need/autofs.sh"
     },
     ".dev:need:clean_yum:": {
@@ -173,7 +173,7 @@
       "path": "_/dev/zsh/configure.sh"
     },
     ".dev:zsh:install": {
-      "hash": "6a2e88edd02879e25026691050744ca4",
+      "hash": "91f9bb77c67a218227d5cd34dac068fc",
       "path": "_/dev/zsh/install.sh"
     },
     ".dev:zsh:install%HELP": {
@@ -181,11 +181,11 @@
       "path": "_/dev/zsh/install.sh"
     },
     ".doc:comp:unit:func": {
-      "hash": "9ab865eb1fb80035fad22acd7181a51b",
+      "hash": "5ef3999077def2f47661118a84049293",
       "path": "_/doc/comp/unit/demo.sh"
     },
     ".doc:roadmap": {
-      "hash": "135547ebd438cd96fd6032e190821ac9",
+      "hash": "161374f639eee3fbe6de6bc0eed37668",
       "path": "_/doc/roadmap.sh"
     },
     "::": {
@@ -532,6 +532,10 @@
       "hash": "ae010762d8058be3ca3f2b36c7821d0a",
       "path": "_/_/launcher/_.sh"
     },
+    ":launcher:_:CloseCustomFDs": {
+      "hash": "9517d95b4bf02202f2629844378bd763",
+      "path": "_/_/launcher/_.sh"
+    },
     ":launcher:_:DispatchRequests": {
       "hash": "e20f84e86a9546d34b8b644e66df1bf7",
       "path": "_/_/launcher/_.sh"
@@ -546,6 +550,10 @@
     },
     ":launcher:_:DispatchRequests.standard": {
       "hash": "cbb21150a1b6a6874de324b598851156",
+      "path": "_/_/launcher/_.sh"
+    },
+    ":launcher:_:OpenCustomFDs": {
+      "hash": "54e0c71090b31e5da808d7738f986070",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:PreStartup": {
@@ -569,11 +577,11 @@
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:RedirectIO": {
-      "hash": "b341263db6a16a157bae8118a2c3af01",
+      "hash": "fbc919fa0088d9fe2b0eb6f1cc7b99aa",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:Shutdown": {
-      "hash": "68a7088f0fba7b0cb680b41aac393e11",
+      "hash": "3044489da1d044fb111629e6911fe48e",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:Startup": {
@@ -660,6 +668,14 @@
       "hash": "75f4cd7c0b569998168317c2ef2242eb",
       "path": "_/_/log/_.sh"
     },
+    ":lvm:get_pvs": {
+      "hash": "596372f4f912c4cfc5ae4cf66ce55a63",
+      "path": "_/_/lvm/get_pvs.sh"
+    },
+    ":lvm:get_pvs%HELP": {
+      "hash": "b83890e3d1063ce65d665becb1dfb902",
+      "path": "_/_/lvm/get_pvs.sh"
+    },
     ":mkdir:": {
       "hash": "452bb17cf899ce6d6a7704dda024f9c7",
       "path": "_/_/mkdir/_.sh"
@@ -673,7 +689,7 @@
       "path": "_/_/need/require_epel.sh"
     },
     ":need:require_epel:InstallEPEL": {
-      "hash": "2a19b04c4baae3cc5b153f4f6020ec33",
+      "hash": "d046c44a6430f2503b18c84cbd54b48f",
       "path": "_/_/need/require_epel.sh"
     },
     ":need:require_epel:centos-7": {
@@ -959,6 +975,10 @@
     ":yum:is_installed": {
       "hash": "fd8ab88e05344436f578515dc11e89f8",
       "path": "_/_/yum/is_installed.sh"
+    },
+    ":yum:package_exists": {
+      "hash": "85162520ec46a6a74638f071334955c9",
+      "path": "_/_/yum/package_exists.sh"
     },
     "=": {
       "hash": "514d837aba2e806bdb732a34244d1ad5",

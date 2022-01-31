@@ -70,7 +70,8 @@
 
    :log: --push 'Installing epel-release'
 
-   if ! yum -y install epel-release 2>/dev/null; then
+   # Try an alternative approach if the epel-release package doesn't exist or if the installation fails
+   if ! (+:yum):package_exists epel-release || ! yum -y install epel-release 2>/dev/null; then
       :log: 'Trying alternative approach to installing epel repository'
 
       yum -y install "$(.)_RPM" &>/dev/null

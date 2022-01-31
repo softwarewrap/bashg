@@ -209,16 +209,7 @@
    ######################################
    # Define Additional File Descriptors #
    ######################################
-   # FDs 3, 4, and 5 preserve original FDs as is needed when input/output are being redirected to the log file
-   { <&3; } 2>/dev/null || exec 3<&0                     # 3: scrin:  Duplicate of stdin
-   { >&4; } 2>/dev/null || exec 4>&1                     # 4: scrout: Duplicate of stdout
-   { >&5; } 2>/dev/null || exec 5>&2                     # 5: screrr: Duplicate of stderr
-
-   # Additional FDs to be used as needed
-   { >&6; } 2>/dev/null || exec 6>/dev/null              # 6: Data payload file descriptor
-   { >&7; } 2>/dev/null || exec 7>/dev/null              # 7: API-specific purpose
-   { >&8; } 2>/dev/null || exec 8>/dev/null              # 8: API-specific purpose
-   { >&9; } 2>/dev/null || exec 9>/dev/null              # 9: API-specific purpose
+   (-):OpenCustomFDs
 
    ################################
    # Perform Logging Redirections #
@@ -250,6 +241,31 @@
          :error: "Could not open log file for writing: ${(+)_Config[Log]}"
       fi                                                 # The log file was not writable
    fi
+}
+
+- OpenCustomFDs()
+{
+   # FDs 3, 4, and 5 preserve original FDs as is needed when input/output are being redirected to the log file
+   { <&3; } 2>/dev/null || exec 3<&0                     # 3: scrin:  Duplicate of stdin
+   { >&4; } 2>/dev/null || exec 4>&1                     # 4: scrout: Duplicate of stdout
+   { >&5; } 2>/dev/null || exec 5>&2                     # 5: screrr: Duplicate of stderr
+
+   # Additional FDs to be used as needed
+   { >&6; } 2>/dev/null || exec 6>/dev/null              # 6: Data payload file descriptor
+   { >&7; } 2>/dev/null || exec 7>/dev/null              # 7: API-specific purpose
+   { >&8; } 2>/dev/null || exec 8>/dev/null              # 8: API-specific purpose
+   { >&9; } 2>/dev/null || exec 9>/dev/null              # 9: API-specific purpose
+}
+
+- CloseCustomFDs()
+{
+   exec 3<&-                                             # Close duplicate of stdin or user-provided input file
+   exec 4>&-                                             # Close duplicate of stdout our user-provided output file
+   exec 5>&-                                             # Close duplicate of stderr our user-provided output file
+   exec 6>&-                                             # Close data payload file descriptor
+   exec 7>&-                                             # Close API-specific file descriptor
+   exec 8>&-                                             # Close API-specific file descriptor
+   exec 9>&-                                             # Close API-specific file descriptor
 }
 
 - DispatchRequests()
@@ -328,13 +344,7 @@
       "$(.)_ShutdownFunction"
    done
 
-   exec 3<&-                                             # Close duplicate of stdin or user-provided input file
-   exec 4>&-                                             # Close duplicate of stdout our user-provided output file
-   exec 5>&-                                             # Close duplicate of stderr our user-provided output file
-   exec 6>&-                                             # Close data payload file descriptor
-   exec 7>&-                                             # Close API-specific file descriptor
-   exec 8>&-                                             # Close API-specific file descriptor
-   exec 9>&-                                             # Close API-specific file descriptor
+   (-):CloseCustomFDs                                          # Close additional file descriptors
 
    # When using tee with multiple file descriptors, output synchronization problems may occur.
    # Running a trivial command in a subshell is a workaround to force correct synchronization so

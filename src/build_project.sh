@@ -991,7 +991,7 @@ EOF
       local PTLDVar
       PTLDVar="$( echo -n "${DstFile%%/*}" | tr -c 'a-zA-Z0-9' _  | sed 's|^_$||' )"
 
-      local PTLDFunc="$PTLDPackage"
+      local PTLDFunc="${PTLDPackage/_/}"                 # For TLD.s constructions, remove leading . converted to _
                                                          # The prefix for the top-level package
       local PFunc="$Package"                             # The prefix for non-system functions is the package name
       local PTLDDir="${DstFile%%/*}"                     # The TLD is the top directory from $DstFile
@@ -1002,7 +1002,7 @@ EOF
    local CFunc=":$Component"                             # The function prefix is : followed by the component name
 
    local UVar
-   UVar="__$( echo -n "$Unit" | tr -c 'a-zA-Z0-9' _ )"      # The variable prefix is __ followed by the unit name
+   UVar="__$( echo -n "$Unit" | tr -c 'a-zA-Z0-9' _ )"   # The variable prefix is __ followed by the unit name
    local UFunc=":$Unit"                                  # The function prefix is : followed by the unit name
 
    local DstSource
@@ -1017,7 +1017,7 @@ EOF
       -v Script="${Script}__" \
       <<<"$DstSource" \
    '
-   BEGIN { FuncVarPrefix="" }                                 # Start as not inside a function block
+   BEGIN { FuncVarPrefix="" }                            # Start as not inside a function block
       # RS breaks content into $0 and RT blocks
       #     - $0 is the content that precedes the NEXT function block
       #     - RT is the declaration of the next function
@@ -1074,7 +1074,7 @@ EOF
 
       ### VARIABLES
       s,\(^\|[^\]\)(+)_,\1${PVar}${CVar}___,g                           # (+)_var         Current component var
-      s,\(^\|[^\]\)(+:\([^/:)]\+\))_,\1${PVar}__\2___,g                 # (+:c)_var       Current component c var
+      s,\(^\|[^\]\)(+:\([^/:)]\+\))_,\1${PVar}__\2___,g                 # (+:c)_var       Component c var
       s,\(^\|[^\]\)(+:\.\([^/:)]\+\):\([^/:)]\+\))_,\1\x01${PTLDVar}_\2\x02__\3___,g
                                                                         # (+:.s:c)_var    Package TLD.s component c var
       s,\(^\|[^\]\)(+:\([^/:)]\+\):\([^/:)]\+\))_,\1\x01\2\x02__\3___,g # (+:p:c)_var     Package p component c var
@@ -1083,8 +1083,8 @@ EOF
 
       ### FUNCTIONS
       s,\(^\|[^\]\)(+):,\1$PFunc$CFunc:,g                               # (+):func        Current component func
-      s,\(^\|[^\]\)(+:\([^/:)]\+\)):,\1$PFunc:\2:,g                     # (+:c):func      Current component c func
-      s,\(^\|[^\]\)(+:\(\.[^/:)]\+\):\([^/:)]\+\)):,\1\x03$PFunc\2\x04:\3:,g
+      s,\(^\|[^\]\)(+:\([^/:)]\+\)):,\1$PFunc:\2:,g                     # (+:c):func      Component c func
+      s,\(^\|[^\]\)(+:\(\.[^/:)]\+\):\([^/:)]\+\)):,\1\x03$PTLDFunc\2\x04:\3:,g
                                                                         # (+:.s:c):func   Package TLD.s component c func
       s,\(^\|[^\]\)(+:\([^/:)]\+\):\([^/:)]\+\)):,\1\x03\2\x04:\3:,g    # (+:p:c):func    Package p component c func
       s,\(^\|[^\]\)(++:\(\.[^:)]\+\):\([^/:)]\+\)):,\1\2:\3:,g          # (++:.s:c):func  Common TLD.s component c func
@@ -1092,13 +1092,13 @@ EOF
 
       ### PATHS
       s,\(^\|[^\]\)(+)/,\1\"\$_lib_dir/$PackageDir/$Component\"/,g      # (+)/            Current current component path
-      s,\(^\|[^\]\)(+:\([^/:)]\+\))/,\1\"\$_lib_dir/$PackageDir/\2\"/,g # (+:c)/          Current component c path
+      s,\(^\|[^\]\)(+:\([^/:)]\+\))/,\1\"\$_lib_dir/$PackageDir/\2\"/,g # (+:c)/          Component c path
       s,\(^\|[^\]\)(+:\.\([^/:)]\+\):\([^/:)]\+\))/,\1\"\$_lib_dir/$PTLDDir/\2/\3\"/,g
                                                                         # (+:.s:c)/       Package TLD.s component c path
       s,\(^\|[^\]\)(+:\([^/:)]\+/[^/:)]\+\):\([^/:)]\+\))/,\1\"\$_lib_dir/\2/\3\"/,g
                                                                         # (+:t/s:c)/      Package p component c path
       s,\(^\|[^\]\)(++:\.\([^:)]\+\):\([^)]\+\))/,\1\"\$_lib_dir/_/\2/\3\"/,g
-                                                                        # (++:.s:c)/       Package TLD.s component c path
+                                                                        # (++:.s:c)/      Package TLD.s component c path
       s,\(^\|[^\]\)(++:\([^/)]\+\))/,\1\"\$_lib_dir/_/_/\2\"/,g         # (++:c)/         Common component c path
 
       ### Escaped idioms
@@ -1111,30 +1111,32 @@ EOF
       ########
       # UNIT #
       ########
+      ### All mappings are within the current package
+
       s|^-\s\+|$PFunc$CFunc$UFunc:|
 
       ### VARIABLES
-      s,\(^\|[^\]\)(-)_,\1${PVar}$CVar${UVar}___,g                      # (-)_var         Current unit var
-      s,\(^\|[^\]\)(-:\([^:)]\+\))_,\1${PVar}${CVar}__\2___,g           # (-:u)_var       Current univ u var
+      s,\(^\|[^\]\)(-)_,\1${PVar}$CVar${UVar}___,g                      # (-)_var         Current component current unit var
+      s,\(^\|[^\]\)(-:\([^:)]\+\))_,\1${PVar}${CVar}__\2___,g           # (-:u)_var       Current component unit u var
       s,\(^\|[^\]\)(-:\([^/:)]\+\):\([^/:)]\+\))_,\1${PVar}__\2__\3___,g
-                                                                        # (-:c:u)_var     Current component c, component v var
-      s,\(^\|[^\]\)(--:\([^/:)]\+\):\([^/:)]\+\))_,\1__\2__\3___,g      # (--:c:u)_var    Common component c, univ u var
+                                                                        # (-:c:u)_var     Component c unit v var
+      s,\(^\|[^\]\)(--:\([^/:)]\+\):\([^/:)]\+\))_,\1__\2__\3___,g      # (--:c:u)_var    Common component c unit u var
 
       ### FUNCTIONS
-      s,\(^\|[^\]\)(-):,\1$PFunc$CFunc$UFunc:,g                         # (-):func        Current unit func
-      s,\(^\|[^\]\)(-:\([^:/)]\+\)):,\1$PFunc$CFunc:\2:,g               # (-:u):func      Current component v func
-      s,\(^\|[^\]\)(-:\([^/:)]\+\):\([^/:)]\+\)):,\1$PFunc:\2:\3:,g     # (-:c:u):func    Current package d, component v func
-      s,\(^\|[^\]\)(--:\([^/:)]\+\):\([^/:)]\+\)):,\1:\2:\3:,g          # (--:c:u):func   Common component c, univ u func
+      s,\(^\|[^\]\)(-):,\1$PFunc$CFunc$UFunc:,g                         # (-):func        Current component current unit func
+      s,\(^\|[^\]\)(-:\([^:/)]\+\)):,\1$PFunc$CFunc:\2:,g               # (-:u):func      Current component u func
+      s,\(^\|[^\]\)(-:\([^/:)]\+\):\([^/:)]\+\)):,\1$PFunc:\2:\3:,g     # (-:c:u):func    Component c unit u func
+      s,\(^\|[^\]\)(--:\([^/:)]\+\):\([^/:)]\+\)):,\1:\2:\3:,g          # (--:c:u):func   Common component c unit u func
 
       ### PATHS
       s,\(^\|[^\]\)(-)/,\1\"\$_lib_dir/$PackageDir/$Component/$Unit\"/,g
                                                                         # (-/)            Current unit path
       s,\(^\|[^\]\)(-:\([^/:)]\+\))/,\1\"\$_lib_dir/$PackageDir/$Component/\2\"/,g
-                                                                        # (-:u/)    Current unit d path
+                                                                        # (-:u/)          Current component current unit u path
       s,\(^\|[^\]\)(-:\([^/:)]\+\):\([^/:)]\+\))/,\1\"\$_lib_dir/$PackageDir/\2/\3\"/,g
-                                                                        # (-:c:u/)  Current component c, univ u path
+                                                                        # (-:c:u/)        Component c unit u path
       s,\(^\|[^\]\)(--:\([^/:)]\+\):\([^/:)]\+\))/,\1\"\$_lib_dir/_/_/\2/\3\"/,g
-                                                                        # (--:c:u/) Common component c, univ u path
+                                                                        # (--:c:u/)       Common component c unit u path
 
       ### OTHER
       s#\(^\|[^\]\)(||)#\1; (exit \$?) ||#g                             # (||) alternative to || - Does not mask errors (set -e)

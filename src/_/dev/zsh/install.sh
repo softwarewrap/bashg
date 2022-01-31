@@ -45,7 +45,9 @@ EOF
    for (.)_SourceFile in *.c; do
       (.)_Executable="/usr/local/bin/${(.)_SourceFile%.c}"
                                                          # Strip off the .c extension
-      gcc -o "$(.)_Executable" "$(.)_SourceFile"
+      :log: "Compiling $(.)_SourceFile"
+
+      gcc -o "$(.)_Executable" "$(.)_SourceFile" &>/dev/null
    done
 
    (+):configure /root "$_entry_home"                    # Configure these home directories

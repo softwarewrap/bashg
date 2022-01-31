@@ -45,7 +45,9 @@ EOF
    for _dev__zsh__install__install___SourceFile in *.c; do
       _dev__zsh__install__install___Executable="/usr/local/bin/${_dev__zsh__install__install___SourceFile%.c}"
                                                          # Strip off the .c extension
-      gcc -o "$_dev__zsh__install__install___Executable" "$_dev__zsh__install__install___SourceFile"
+      :log: "Compiling $_dev__zsh__install__install___SourceFile"
+
+      gcc -o "$_dev__zsh__install__install___Executable" "$_dev__zsh__install__install___SourceFile" &>/dev/null
    done
 
    .dev:zsh:configure /root "$_entry_home"                    # Configure these home directories

@@ -15,7 +15,7 @@ NAMESPACE PROTECTION: idioms in demofunc() in file _/doc/comp/unit/demo.sh
    PACKAGE
 
    \(@):Func        (@):Func         .doc:Func
-   \(@:.s):Func     (@:.s):Func      _.s:Func
+   \(@:.s):Func     (@:.s):Func      .s:Func
    \(@:p):Func      (@:p):Func       p:Func
    \(@@):Func       (@@):Func        :Func
    \(@@:.s):Func    (@@:.s):Func     .s:Func
@@ -36,7 +36,7 @@ NAMESPACE PROTECTION: idioms in demofunc() in file _/doc/comp/unit/demo.sh
 
    \(+):Func        (+):Func         .doc:comp:Func
    \(+:c):Func      (+:c):Func       .doc:c:Func
-   \(+:.s:c):Func   (+:.s:c):Func    .doc.s:c:Func
+   \(+:.s:c):Func   (+:.s:c):Func    .s:c:Func
    \(+:p:c):Func    (+:p:c):Func     p:c:Func
    \(++:c):Func     (++:c):Func      :c:Func
    \(++:.s:c):Func  (++:.s:c):Func   .s:c:Func

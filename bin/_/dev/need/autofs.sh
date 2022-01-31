@@ -7,7 +7,7 @@
    if ! .dev:service:exists autofs; then
       :log: --push-section 'Installing autofs'
 
-      .dev.dev:autofs:install                            # Install the autofs service
+      .dev:autofs:install                            # Install the autofs service
 
       :log: --pop
    fi
@@ -24,7 +24,7 @@
    if ! .dev:service:is_active; then
       :log: --push-section 'Restarting autofs'
 
-      .dev.dev:autofs:restart                            # Restart the autofs service
+      .dev:autofs:restart                            # Restart the autofs service
 
       :log: --pop
    fi
