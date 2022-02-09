@@ -98,6 +98,8 @@ EOF
       fi
    fi
 
+   rm -f "$(.)_ErrorFile"
+
    return $(.)_Return
 }
 

@@ -26,7 +26,9 @@
    #################################################
    # Execute Functions based on Command-Line Input #
    #################################################
-   :launcher:_:DispatchRequests "${__launcher______Args[@]}"                 # Process the request
+   if [[ ${__launcher___Config[LoadOnly]} != true ]]; then
+      :launcher:_:DispatchRequests "${__launcher______Args[@]}"              # Process the request
+   fi
 
    ###############################
    # Perform an Orderly Shutdown #
@@ -79,6 +81,10 @@
 
    ### ENVIRONMENT VARIABLES
    local -gx LESS="-X -F -r"
+
+   if [[ ! :$PATH: =~ :/usr/local/bin: ]]; then
+      PATH="${PATH%:}:/usr/local/bin"
+   fi
 }
 
 :launcher:_:ProcessOptions()
@@ -94,7 +100,7 @@
 
    :getopts: begin \
       -o '=:eEhu:x' \
-      -l 'declare:,edit,edit-bin,help,log:,entryuser:,trace,no-color,stdout,mask-errors' \
+      -l 'declare:,edit,edit-bin,help,log:,load-only,entryuser:,trace,no-color,stdout,mask-errors,shx:' \
       -- $( envsubst <<<"\$$_env_var" ) "$@"
 
    local __launcher_____ProcessOptions___Option                                      # Option letter or word
@@ -110,9 +116,11 @@
       -x|--trace)       :launcher:_:ProcessOptions.trace;;
 
       --log)            __launcher___Config[Log]="$(readlink -fm "$__launcher_____ProcessOptions___Value")";;
+      --load-only)      __launcher___Config[LoadOnly]=true;;
       --no-color)       __launcher___Config[HasColor]=false;;
       --stdout)         __launcher___Config[DupLogToStdout]=true;;
       --mask-errors)    __launcher___Config[MaskErrors]=true;;    # Ignore errors as they happen
+      --shx)            __launcher___Config[ShxPassword]="$__launcher_____ProcessOptions___Value";;
 
       *)          break;;
       esac
@@ -181,6 +189,7 @@
       [HasColor]=true                                    # Color output is available
       [DupLogToStdout]=false                             # Send stdout/stderr to both the log file and stdout
       [Log]=                                             # Do not write to a log file (non-empty is the log file path)
+      [LoadOnly]=false                                   # Load functions only; do not run the dispatcher
    )
 
    local __launcher_____Startup___ConfigDefault
@@ -209,7 +218,7 @@
    ######################################
    # Define Additional File Descriptors #
    ######################################
-   :launcher:_:OpenCustomFDs
+   [[ ${__launcher___Config[LoadOnly]} = true ]] || :launcher:OpenCustomFDs
 
    ################################
    # Perform Logging Redirections #
@@ -243,7 +252,7 @@
    fi
 }
 
-:launcher:_:OpenCustomFDs()
+:launcher:OpenCustomFDs()
 {
    # FDs 3, 4, and 5 preserve original FDs as is needed when input/output are being redirected to the log file
    { <&3; } 2>/dev/null || exec 3<&0                     # 3: scrin:  Duplicate of stdin
@@ -257,7 +266,7 @@
    { >&9; } 2>/dev/null || exec 9>/dev/null              # 9: API-specific purpose
 }
 
-:launcher:_:CloseCustomFDs()
+:launcher:CloseCustomFDs()
 {
    exec 3<&-                                             # Close duplicate of stdin or user-provided input file
    exec 4>&-                                             # Close duplicate of stdout our user-provided output file
@@ -277,8 +286,37 @@
       :help: "$@"
 
    elif (( $# == 0 )); then
-      :highlight: <<<"For help, invoke: <B>$__ help</B>"
       return 0
+
+   elif [[ -f $1 ]]; then
+      if [[ $1 = *.shx ]]; then
+         if ! command 7za &>/dev/null; then
+            :error: 'The command 7za is not installed'
+            return 1
+
+         elif [[ -n "${__launcher___Config[ShxPassword]}" ]]; then
+            (
+               local __launcher_____DispatchRequests___Dir="$(dirname "$1")"
+               if [[ ${__launcher___Config[ShxPassword]} = - ]]; then
+                  read -sp 'Password: ' __launcher___Config[ShxPassword]
+                  echo
+               fi
+               7za e -y -o"$__launcher_____DispatchRequests___Dir" -p"${__launcher___Config[ShxPassword]}" "$1" &>/dev/null || true
+            )
+
+            if [[ -s ${1%.shx}.sh ]]; then
+               echo "Unzipped: $1"
+            else
+               echo "Failed to unzip: $1"
+               rm -f "${1%.shx}.sh"
+               return 1
+            fi
+
+         else
+            :error: "The option --shx must be used to unzip: $1"
+            return 1
+         fi
+      fi
 
    elif :test:has_func "$1"; then
       if $__launcher______Edit; then
@@ -344,7 +382,7 @@
       "$__launcher_____Shutdown___ShutdownFunction"
    done
 
-   :launcher:_:CloseCustomFDs                                          # Close additional file descriptors
+   :launcher:CloseCustomFDs                                          # Close additional file descriptors
 
    # When using tee with multiple file descriptors, output synchronization problems may occur.
    # Running a trivial command in a subshell is a workaround to force correct synchronization so

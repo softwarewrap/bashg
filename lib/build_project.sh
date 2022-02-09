@@ -3,33 +3,36 @@
 :main%HELP()
 {
    cat <<EOF
-OPTIONS:
+SELECTION OPTIONS:
    -p|--package <package-dirs>   : Restrict files to those under <packages-dirs>
 
    -t|--tag <tags>               : Restrict files to those containing any or all listed <tags>
    --any                         : For files with set tags, at least one of <tags> must be set to allow inclusion
    --all                         : For files with set tags, all <tags> must be set to allow inclusion
 
+   --shx <password>              : Include .shx files and use <password> for decryption
+
+GENERATION OPTIONS:
    --map <src>:<dst>             : Map src/<package>/bin/<src>.sh to bin/<dst>
-   -o|--optimize <level>         : Optimize compiler code generation
+   -o|--optimize <level>         : Optimize code generation
    --no-warn                     : Do not warn in the case of duplicate functions
-   -v|--verbose                  : Emit more verbose messages during compilation
+   -v|--verbose                  : Emit more verbose messages during generation
 
    -h|--help                     : Show this help
 
 DESCRIPTION:
-   Compile files into distributable form.
+   Generate files into distributable form.
 
    All files are located under a <base> directory, located under any writable directory.
 
    Under the <base> directory, the following directories are present:
 
-      src - Original source code: some content might not be distributable, compiled into the other directories.
-      bin - Distributable compiled functions
+      src - Original source code: some content might not be distributable, generate into the other directories.
+      bin - Distributable generated functions
       etc - Distributable configuration files
       lib - Re-distributable source code
 
-   All source code is organized under <package> names that are used by the compiler to provide namespace protection.
+   All source code is organized under <package> names that are used by the generator to provide namespace protection.
    The source code for <package> is found under the src/<package-dir> directory.
 
       <package>     ::= <package-tld>.<package-subdomain>
@@ -43,20 +46,20 @@ DESCRIPTION:
 
       -  A <package-subdomain> named underscore (_) indicates code belongs to the top-level domain.
 
-      -  The system <package-tld> is always indicated by an underscore (_) to future proof the compiler
+      -  The system <package-tld> is always indicated by an underscore (_) to future proof the generator
          and conveys namespace naming features.
 
 FILE TYPES:
-   Files under the src/<package-dir> directory fall into the following types based on filename
-   or directory construction:
+   Files under the src/<package-dir> directory fall into the following types based on file
+   or directory naming syntax:
 
       NON-DISTRIBUTABLE
          A file or directory name that begins with an % character indicates that the file or directory
-         is to be skipped during compilation, resulting in no change to the bin, etc, and lib directories.
+         is to be skipped during generation, resulting in no change to the bin, etc, or lib directories.
          In the case of the % prefix on a directory, all subdirectories are unconditionally skipped.
 
          A file or directory is also skipped if tag evaluation indicates exclusion (see TAG EVALUATION);
-         however, in the case of directories the exclusion can be reversed by a subdirectory that
+         however, in the case of directories tag exclusion can be reversed by a subdirectory that
          requests inclusion.
 
          All other files and directories are considered to be distributable.
@@ -71,13 +74,23 @@ FILE TYPES:
          Function calls within .bash files are not permitted.
          This content will always be executed at program load time.
 
+      ENCRYPTION
+         Source .shx files are presumed to be encrypted with 7-zip (https://7-zip.org).
+         Decrypted .shx files generate output only if the --shx option is used.
+
+         Other than the decryption for .shx files, both .shx and .shc files follow code generation
+         identically to .sh files. The generated results are then post-processed by the shc(1) utility
+         that create binary executables with encrypted content and are named with the extensions removed.
+
+         Note: .shc and .shx files are NOT copied to the lib directory.
+
       DATA
          A file or directory name that begins with an @ character indicates that the file or directory
          is a data file and will only be copied to the lib directory.
 
 TAG EVALUATION:
    The : tag annotation, found in .bash and .sh files, causes evaluation for all distributable files
-   as to whether or not the file should be included or skipped by the compiler based on tag-matching criteria.
+   as to whether or not the file should be included or skipped by the generator based on tag-matching criteria.
 
    The : tag annotation parses each argument as a tag request. Requests take the following forms:
 
@@ -95,12 +108,12 @@ TAG EVALUATION:
 
       .bash
          The : tag annotation determines whether the directory and all subdirectories of the .bash file
-         are included for compilation or are skipped by the compiler. Unlike the % prefix on directories,
+         are included for generation or are skipped by the generator. Unlike the % prefix on directories,
          tags defined at a subdirectory level can override the exclusion made in a parent directory.
 
       .sh
-         The : tag annotation determines whether the current file is included for compilation or is
-         skipped by the compiler.
+         The : tag annotation determines whether the current file is included for generation or is
+         skipped by the generator.
 
    NOTES:
       -  It is customary to place the : tag annotation before other non-comment content.
@@ -111,22 +124,33 @@ TAG EVALUATION:
       -  If the same tag is defined in multiple .bash files in the same directory,
          then the tag state is indeterminate.
 
-COMPILER OPTIONS:
+SELECTION OPTIONS:
    --package <package-dirs>
-      If no --package options are specified, then all packages are compiled.
-      If one or more --package options are specified, then only files under the listed packages are compiled.
+      If no --package options are specified, then all packages are selected for generation.
+      If one or more --package options are specified, then only files under the listed packages are
+      selected for generation.
 
       The <package-dirs> argument is a comma-separated list of <package-dir> paths.
 
-   --tag
-      Restrict which files are considered by the compiler. This option can be used multiple times.
+   --tag <tags>
+      Restrict which files are considered by the generator. This option can be used multiple times.
+      The <tags> argument is a comma-separated list of tag names.
+   --any
+      If any specified tag is defined for a given file, then that file is included.
+   --all
+      All specified tags must be defined for a given file for that file to be included.
+
+   NOTES:
       If neither the options --any nor --all are specified, then --any is presumed.
 
-      The <tags> argument is a comma-separated list of tag names.
+   --shx <password>
+      Generate files that have the .shx extension. If this option is not provided, then warnings are
+      given unless the --no-warn option is also given.
 
+GENERATION OPTIONS:
    --map <src>:<dst>
       Source files located under src/<package-dir>/bin/<file-path>.sh are converted to entry-point functions
-      if this option maps them and creates bin/<dst> as the compiled result.
+      if this option maps them and creates bin/<dst> as the generated result.
 
       The <src> portion of the option can take either of the following forms:
 
@@ -134,7 +158,7 @@ COMPILER OPTIONS:
          <package-dir>/bin/<file-path>    # matches <package-dir>/bin/<file-path>.sh file
 
       Note that the .sh extension of the source file is omitted in the <src> specification.
-      In all cases, the compiled result is placed directly in the bin directory without the .sh extension
+      In all cases, the generated result is placed directly in the bin directory without the .sh extension
       and the file is made to be executable.
 
       The entry-point function in mapped files must be declared in the file as:
@@ -153,13 +177,17 @@ COMPILER OPTIONS:
       This option can be specified multiple times for as many mappings as desired.
 
    --optimize <level>
-      Optimized the compiled code to the specified <level>.  Supported levels include:
+      Optimize the generated code to the specified <level>.  Supported levels include:
 
          all   - all optimizations are performed including function normalization and macro substitution [default]
          none  - no optimizations are performed (identical to "all" but excludes function normalization)
 
    --no-warn
-      Functions with identical content are found are normally reported as duplicates.
+      Warnings are emitted under various circumstances:
+
+         - when functions with identical content are found
+         - when .shx files are being processed, but the --shx option is not specified
+
       This option supresses the that reporting.
 
 RETURN CODES
@@ -184,26 +212,32 @@ EOF
 :ProcessOptions()
 {
    local Options
-   Options=$(getopt -o 'p:t:o:hv' -l 'package:,tag:,any,all,map:,optimize:,no-warn,verbose,help' -n "${FUNCNAME[0]}" -- "$@") || return
+   Options=$(getopt -o 'p:t:o:hv' -l 'package:,tag:,any,all,shx:,map:,optimize:,no-warn,verbose,help' -n "${FUNCNAME[0]}" -- "$@") || return
    eval set -- "$Options"
 
-   local -ag _PackageRequests=()                         # Packages requested to be compiled
-   local -ag _PackageDirs=()                                # Process the indicated package dirs; empty == all
+   local -ag _PackageRequests=()                         # Packages requested to be generated
+   local -ag _PackageDirs=()                             # Process the indicated package dirs; empty == all
    local -ag _TagRequests=()
    local -g _Mode='any'
    local -ag _SrcDstMap=()                               # Map src/<package>/bin/file.sh to bin
    local -g _Warn=true
    local -gA _Optimize
    local -g _Verbose=false
+   local -g _ShxPassword=
 
    while true ; do
       case "$1" in
+      ### SELECTION
       -p|--package)  :list_append_to_array --list "$2" --var _PackageRequests; shift 2;;
                                                          # Allow comma-separated packages
       -t|--tag)      :list_append_to_array --list "$2" --var _TagRequests; shift 2;;
                                                          # Allow comma-separated tags
       --any)         _Mode=any; shift;;
       --all)         _Mode=all; shift;;
+
+      --shx)         _ShxPassword="$2"; shift 2;;
+
+      ### GENERATION
       --map)         _SrcDstMap+=( "$2" ); shift 2;;     # Add a src/dst mapping
 
       -o|--optimize) _Optimize[$2]=true; shift 2;;
@@ -216,6 +250,10 @@ EOF
       *)             break;;
       esac
    done
+
+   if [[ -z $_ShxPassword && -n $BASHG_SHX ]]; then
+      _ShxPassword="$BASHG_SHX"
+   fi
 
    if (( ${#_Optimize[@]} == 0 )); then
       _Optimize[none]=true
@@ -251,6 +289,32 @@ EOF
    _LibDir="$_BaseDir/lib"                               # The lib files for distribution
    __="$(basename "$0")"                                 # Get the script basename
    _FunctionsJSON='etc/functions.json'                   # The manifest of functions
+
+   shopt -s globstar nullglob
+
+   # Determine the entrypoint loader executable
+   local -ga _Loader
+   readarray -t _Loader < <(
+      cd "$_SrcDir/_/_/bin"
+      find . -mindepth 1 -maxdepth 1 -type f -name '*.sh' -print |
+      LC_ALL=C sed -e 's|\./||' -e 's|\.sh$||' -e '/^\s*$/d'
+   )
+   if (( ${#_Loader[@]} != 1 )); then
+      echo 'Missing entrypoint loader file'
+      return 1
+   fi
+
+   if :ArrayContains --anchored _SrcDstMap "$_Loader:"; then
+      readarray -t _Loader < <(
+         printf '%s\n' "${_SrcDstMap[@]}" |
+         grep "^$_Loader:" |
+         sed -e 's|[^:]*:||' -e '/^\s*$/d'
+      )
+      if (( ${#_Loader[@]} != 1 )); then
+         echo 'Missing mapping for entrypoint loader'
+         return 1
+      fi
+   fi
 
    if [[ $_ProgramDir = $_LibDir ]]; then
       rm -rf "$_SrcDir"
@@ -288,7 +352,13 @@ EOF
    local -Ag _DirTags                                    # Tags associated with a specific directory
    local -agx BashFilesToTransform=()                    # Array of .bash files requiring transformation
    local -ag ShFilesToTransform=()                       # Array of .sh files requiring transformation
+   local -ag ShcFilesToTransform=()
    local _PackageDir
+
+   local -ag _Extensions=( bash )                        # The .bash extension is always supported
+   ! command -v shc &>/dev/null || _Extensions+=( shc )  # If shc is in the path, then allow .shc files
+   ! command -v 7za &>/dev/null || _Extensions+=( shx )  # If 7za is in the path, then allow .shx files
+   _Extensions+=( sh )
 
    for _PackageDir in "${_PackageDirs[@]}"; do
 
@@ -312,7 +382,11 @@ EOF
          local -Ag _TAGS
          eval "${_DirTags[$_PackageSubDir]}"
 
-         for _Extension in bash sh; do                   # Iterate over bash and sh extensions
+         #############################################################
+         # ITERATE OVER EXTENSIONS: .bash .sh and possibly .shc .shx #
+         #############################################################
+         for _Extension in "${_Extensions[@]}"; do       # Iterate over bash and sh extensions
+
             cd "$_SrcDir/$_PackageSubDir"                # Ensure we're in the specific package subdirectory
 
             local -a _PackageSubDirFiles                 # Array containing matched files in the current directory
@@ -327,10 +401,59 @@ EOF
             # If this package subdirectory contains files, then process it #
             ################################################################
             if (( ${#_PackageSubDirFiles[@]} > 0 )); then
-               local _PackageSubDirFile                  # Iterator over _PackageSubDirFiles
+               local _SourceFile                         # Iterator over _PackageSubDirFiles
 
-               for _PackageSubDirFile in "${_PackageSubDirFiles[@]}"; do
-                  :UpdateTags "$_SrcDir/$_PackageSubDir/$_PackageSubDirFile"
+               for _SourceFile in "${_PackageSubDirFiles[@]}"; do
+
+                  local -g _IsShc=false
+
+                  if [[ $_Extension = shx ]]; then
+                     if [[ -z $_ShxPassword ]]; then
+                        echo "[WARNING] Skipping .shx file as no password provided: $_SourceFile"
+                        continue
+                     fi
+
+                     local _SourceExpected="${_SourceFile%.shx}.sh"
+
+                     if [[ $_ShxPassword = - ]]; then
+                        read -sp 'Password: ' _ShxPassword
+                        echo
+                     fi
+
+                     if [[ $(file -b "$_SourceFile") =~ archive ]]; then
+                        local -a _ShxFiles
+                        readarray -t _ShxFiles < <( unzip -Z1 "$_SourceFile" 2>/dev/null || true )
+                        if (( ${#_ShxFiles[@]} != 1 )); then
+                           echo "[WARNING] Skipping .shx file as archive size is not 1: $_SourceFile"
+                           continue
+                        fi
+
+                        if [[ $_ShxFiles != $_SourceExpected ]]; then
+                           echo "[WARNING] Skipping .shx file as archived file is not $_SourceExpected: $_SourceFile"
+                           continue
+                        fi
+
+                        if ! 7za e -y -o. -p"$_ShxPassword" "$_SourceFile" &>/dev/null; then
+                           echo "[WARNING] Skipping .shx file as decryption failed: $_SourceFile"
+
+                           rm -f "$_SourceExpected"
+                           continue
+                        fi
+
+                     else
+                        mv -f "$_SourceFile" "$_SourceExpected"
+                        7za a -tzip -p"$_ShxPassword" "$_SourceFile" "$_SourceExpected" &>/dev/null
+                     fi
+
+                     _IsShc=true
+                     _SourceFile="$_SourceExpected"
+                  fi
+
+                  if [[ $_Extension = shc ]]; then
+                     cp "$_SourceFile" "${_SourceFile%.shc}.sh"
+                  fi
+
+                  :UpdateTags "$_SrcDir/$_PackageSubDir/$_SourceFile"
                                                          # Update _TAGS to now include the tags in the file
 
                   if (( ${#_TagRequests[@]} > 0 && ${#_TAGS[@]} > 0 )); then
@@ -349,15 +472,20 @@ EOF
                      fi
 
                      if $_Satisfied; then                # If the tags conditions are satisfied, transform this file
-                        :Copy "$_PackageSubDir/$_PackageSubDirFile"
+                        :Copy "$_PackageSubDir/$_SourceFile"
                      fi
 
                   else
                      #####################################################################
                      # The file does NOT invoke :tag - unconditionally include this file #
                      #####################################################################
-                     :Copy "$_PackageSubDir/$_PackageSubDirFile"
+                     :Copy "$_PackageSubDir/$_SourceFile"
                   fi
+
+                  if $_IsShc; then
+                     rm -f "$_SourceFile"
+                  fi
+
                done
             fi
          done
@@ -763,7 +891,9 @@ EOF
 {
    local SrcFile="$1"                                    # The source file under $_SrcDir
    mkdir -p "$_LibDir/${SrcFile%/*}"                     # Ensure the lib destination directory exists
-   cp -p "$_SrcDir/$SrcFile" "$_LibDir/$SrcFile"
+   if ! $_IsShc; then
+      cp -p "$_SrcDir/$SrcFile" "$_LibDir/$SrcFile"
+   fi
 
    local Package
    local Remainder
@@ -776,7 +906,7 @@ EOF
       local BinFile="${DstFile#bin/}"                    # Get the portion following bin/
       local SrcMap=" $BinFile:[^ ]* "                    # Create a regex to find this src mapping
 
-      if (( ${#_SrcDstMap[@]} > 0 )) && ArrayContains --match _SrcDstMap "$SrcMap"; then
+      if (( ${#_SrcDstMap[@]} > 0 )) && :ArrayContains --match _SrcDstMap "$SrcMap"; then
                                                          # If the src mapping exists,
          local _MapIndex
          _MapIndex="$(declare -p _SrcDstMap | grep -oP "\[\K[0-9]+(?=\]=\"$BinFile(\.sh)?:.*\")")"
@@ -801,7 +931,21 @@ EOF
    else
       cp "$_SrcDir/$SrcFile" "$_BinDir/$DstFile"         # Copy the source file to the destination directory
       ShFilesToTransform+=( "$DstFile" )
+
+      if $_IsShc; then
+         ShcFilesToTransform+=( "$DstFile" )
+      fi
    fi
+}
+
+:ArrayHasElement()
+{
+   local ArrayName="$1"
+   local String="$2"
+   local Indirect="$ArrayName[*]"
+   local IFS=$'\x01'
+
+   [[ "$IFS${!Indirect}$IFS" =~ "$IFS${String}$IFS" ]]
 }
 
 :TransformFunctionFiles()
@@ -809,7 +953,7 @@ EOF
    cd "$_BaseDir"                                        # Results are created in the $_BaseDir
 
    if (( ${#BashFilesToTransform[@]} > 0 )); then
-      ! $_Verbose || echo -e "Compiling .bash Files\n"
+      ! $_Verbose || echo -e "Generating .bash Files\n"
 
       for BinFile in "${BashFilesToTransform[@]}"; do
          ! $_Verbose || echo "   $BinFile"
@@ -825,7 +969,7 @@ EOF
    fi
 
    if (( ${#ShFilesToTransform[@]} > 0 )); then
-      ! $_Verbose || echo -e "Compiling .sh Files\n"
+      ! $_Verbose || echo -e "Generating .sh Files\n"
 
       for BinFile in "${ShFilesToTransform[@]}"; do
          ! $_Verbose || echo "   $BinFile"
@@ -834,6 +978,13 @@ EOF
 
          if [[ -n ${_Optimize[all]} || -n ${_Optimize[normalize]} ]]; then
             :Normalize "$BinFile"
+         fi
+
+         if :ArrayHasElement ShcFilesToTransform "$BinFile"; then
+cp "$_BinDir/$BinFile" ~/file.sh
+            shc -f "$_BinDir/$BinFile" -o "$_BinDir/${BinFile%.sh}"
+            chmod 755 "$_BinDir/${BinFile%.sh}"
+            rm -f "$_BinDir/$BinFile.x.c" "$_BinDir/$BinFile"
          fi
       done
    fi
@@ -927,6 +1078,9 @@ EOF
 :Transform()
 {
    local DstFile="$1"                                    # Transform this source file to a destination file
+   local LoadOnly
+   LoadOnly='set -- --load-only "$@"; . "$(dirname "$0")/'
+   LoadOnly+="$( sed -e 's|/[^/]\+$||' -e 's|[^/]\+|..|g' <<<"$DstFile" )"'"'
 
    ############################################
    # Setup Package, Component, and Unit Names #
@@ -1141,6 +1295,7 @@ EOF
       ### OTHER
       s#\(^\|[^\]\)(||)#\1; (exit \$?) ||#g                             # (||) alternative to || - Does not mask errors (set -e)
       s#\(^\|[^\]\)(&&)#\1; (exit \$?) \&\&#g                           # (&&) alternative to && - Does not mask errors (set -e)
+      s#\(^\|[^\]\)(%LOAD_FUNCTIONS%)#\1$LoadOnly/$_Loader; shift#g     # Token replacement for the loader entrypoint
 
       ### Escaped idioms
       s,^\\\\\(-\s\+\),\1,                                              # Escape unit declaration
@@ -1203,28 +1358,27 @@ EOF
    )"
 }
 
-ArrayContains()
+:ArrayContains()
 {
-   local IFS=$'\x01'                                     # Use $IFS to separate array entries
-
    local Options
-   Options=$(getopt -o '' -l 'match:' -n "${FUNCNAME[0]}" -- "$@") || return
+   Options=$(getopt -o '' -l 'anchored' -n "${FUNCNAME[0]}" -- "$@") || return
    eval set -- "$Options"
 
-   local Match=false
+   local Anchored=false
    while true ; do
       case "$1" in
-      --match) Match=true; shift;;
-      --)      shift; break;;
-      *)       break;;
+      --anchored) Anchored=true; shift;;
+      --)         shift; break;;
+      *)          break;;
       esac
    done
 
    local ArrayName="$1"                                  # The array name to be checked
    local String="$2"                                     # The string: see if this is an element of the array
    local Indirect="$ArrayName[*]"                        # Create an indirection string: expand in place
+   local IFS=$'\x01'                                     # Use $IFS to separate array entries
 
-   if $Match; then
+   if $Anchored; then
       # Perform an anchored RegEx match
       [[ "$IFS${!Indirect}$IFS" =~ $IFS${String} ]]
    else

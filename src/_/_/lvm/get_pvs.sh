@@ -38,7 +38,7 @@ EOF
    done
 
    readarray -t "$(.)_Var" < <(
-      (-:launcher):CloseCustomFDs                        # lvm(1): requires only the std file descriptors are open
+      (+:launcher):CloseCustomFDs                        # lvm(1): requires only the std file descriptors are open
 
       pvs --noheadings -o pv_name |                      # Get the list of pvs; leading/trailing spaces are present
       sed 's/^\s*\([^ ]*\)\s*$/\1/' |                    # Trim whitespace

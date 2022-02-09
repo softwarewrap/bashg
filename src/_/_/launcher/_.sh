@@ -26,7 +26,9 @@
    #################################################
    # Execute Functions based on Command-Line Input #
    #################################################
-   (-):DispatchRequests "${(-)_Args[@]}"                 # Process the request
+   if [[ ${(+)_Config[LoadOnly]} != true ]]; then
+      (-):DispatchRequests "${(-)_Args[@]}"              # Process the request
+   fi
 
    ###############################
    # Perform an Orderly Shutdown #
@@ -79,6 +81,10 @@
 
    ### ENVIRONMENT VARIABLES
    local -gx LESS="-X -F -r"
+
+   if [[ ! :$PATH: =~ :/usr/local/bin: ]]; then
+      PATH="${PATH%:}:/usr/local/bin"
+   fi
 }
 
 - ProcessOptions()
@@ -94,7 +100,7 @@
 
    :getopts: begin \
       -o '=:eEhu:x' \
-      -l 'declare:,edit,edit-bin,help,log:,entryuser:,trace,no-color,stdout,mask-errors' \
+      -l 'declare:,edit,edit-bin,help,log:,load-only,entryuser:,trace,no-color,stdout,mask-errors,shx:' \
       -- $( envsubst <<<"\$$_env_var" ) "$@"
 
    local (.)_Option                                      # Option letter or word
@@ -110,9 +116,11 @@
       -x|--trace)       (-):ProcessOptions.trace;;
 
       --log)            (+)_Config[Log]="$(readlink -fm "$(.)_Value")";;
+      --load-only)      (+)_Config[LoadOnly]=true;;
       --no-color)       (+)_Config[HasColor]=false;;
       --stdout)         (+)_Config[DupLogToStdout]=true;;
       --mask-errors)    (+)_Config[MaskErrors]=true;;    # Ignore errors as they happen
+      --shx)            (+)_Config[ShxPassword]="$(.)_Value";;
 
       *)          break;;
       esac
@@ -181,6 +189,7 @@
       [HasColor]=true                                    # Color output is available
       [DupLogToStdout]=false                             # Send stdout/stderr to both the log file and stdout
       [Log]=                                             # Do not write to a log file (non-empty is the log file path)
+      [LoadOnly]=false                                   # Load functions only; do not run the dispatcher
    )
 
    local (.)_ConfigDefault
@@ -209,7 +218,7 @@
    ######################################
    # Define Additional File Descriptors #
    ######################################
-   (-):OpenCustomFDs
+   [[ ${(+)_Config[LoadOnly]} = true ]] || (+):OpenCustomFDs
 
    ################################
    # Perform Logging Redirections #
@@ -243,7 +252,7 @@
    fi
 }
 
-- OpenCustomFDs()
++ OpenCustomFDs()
 {
    # FDs 3, 4, and 5 preserve original FDs as is needed when input/output are being redirected to the log file
    { <&3; } 2>/dev/null || exec 3<&0                     # 3: scrin:  Duplicate of stdin
@@ -257,7 +266,7 @@
    { >&9; } 2>/dev/null || exec 9>/dev/null              # 9: API-specific purpose
 }
 
-- CloseCustomFDs()
++ CloseCustomFDs()
 {
    exec 3<&-                                             # Close duplicate of stdin or user-provided input file
    exec 4>&-                                             # Close duplicate of stdout our user-provided output file
@@ -277,8 +286,37 @@
       :help: "$@"
 
    elif (( $# == 0 )); then
-      :highlight: <<<"For help, invoke: <B>$__ help</B>"
       return 0
+
+   elif [[ -f $1 ]]; then
+      if [[ $1 = *.shx ]]; then
+         if ! command 7za &>/dev/null; then
+            :error: 'The command 7za is not installed'
+            return 1
+
+         elif [[ -n "${(+)_Config[ShxPassword]}" ]]; then
+            (
+               local (.)_Dir="$(dirname "$1")"
+               if [[ ${(+)_Config[ShxPassword]} = - ]]; then
+                  read -sp 'Password: ' (+)_Config[ShxPassword]
+                  echo
+               fi
+               7za e -y -o"$(.)_Dir" -p"${(+)_Config[ShxPassword]}" "$1" &>/dev/null || true
+            )
+
+            if [[ -s ${1%.shx}.sh ]]; then
+               echo "Unzipped: $1"
+            else
+               echo "Failed to unzip: $1"
+               rm -f "${1%.shx}.sh"
+               return 1
+            fi
+
+         else
+            :error: "The option --shx must be used to unzip: $1"
+            return 1
+         fi
+      fi
 
    elif :test:has_func "$1"; then
       if $(-)_Edit; then
@@ -344,7 +382,7 @@
       "$(.)_ShutdownFunction"
    done
 
-   (-):CloseCustomFDs                                          # Close additional file descriptors
+   (+):CloseCustomFDs                                          # Close additional file descriptors
 
    # When using tee with multiple file descriptors, output synchronization problems may occur.
    # Running a trivial command in a subshell is a workaround to force correct synchronization so

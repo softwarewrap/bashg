@@ -89,10 +89,13 @@ fu! RefreshEggHighlighting()
 
    let E_AndOr='\((||)\|(&&)\)'
    let E_Closure='\(({[^)]*)\|(})\)'
+   let E_Token='\((%[^%]\+%)\)'
 
    " Highlighting for in-use BashG macros
    call matchadd('bashgAndOr', E_AndOr, -1)
    call matchadd('bashgClosure', E_Closure, -1)
+   call matchadd('bashgToken', E_Token, -1)
+
    call matchadd('bashgPackageFunctionDecl', P_Function_Decl, -1)
    call matchadd('bashgPackageFunction', '(@' . P_RE . ')', -1)
    call matchadd('bashgPackageFunction', P_Function_Ref, -1)
@@ -132,6 +135,7 @@ fu! RefreshEggHighlighting()
 
    call matchadd('bashgEscaped','\\' . E_AndOr, -1)
    call matchadd('bashgEscaped','\\' . E_Closure, -1)
+   call matchadd('bashgEscaped','\\' . E_Token, -1)
 
    " Comments
    call matchadd('bashgComment','^\s*\zs#.*$', -1)

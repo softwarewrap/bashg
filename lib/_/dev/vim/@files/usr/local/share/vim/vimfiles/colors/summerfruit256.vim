@@ -302,6 +302,7 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 
     call <SID>X("bashgAndOr", "000000", "d7ffff", "")
     call <SID>X("bashgClosure", "000000", "ffafff", "bold")
+    call <SID>X("bashgToken", "000000", "87ffd7", "")
 
     call <SID>X("bashgEscaped", "005fd7", "e4e4e4", "")
 

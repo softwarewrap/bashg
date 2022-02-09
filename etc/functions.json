@@ -473,7 +473,7 @@
       "path": "_/_/json/is_valid.sh"
     },
     ":json:jq": {
-      "hash": "df84368ace5a4179e93ba8d8a0b69bf1",
+      "hash": "da9442f7cf3b2bf46af7544ce8032fdd",
       "path": "_/_/json/jq.sh"
     },
     ":json:jq%HELP": {
@@ -513,7 +513,7 @@
       "path": "_/_/kv/_.sh"
     },
     ":launcher:": {
-      "hash": "752794276faca0fe0d932ca484370478",
+      "hash": "f865601dced89c72b7a1939f2539df6e",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:%STARTUP-0": {
@@ -524,6 +524,14 @@
       "hash": "6051dcd00ac870724ad52a67303b2e18",
       "path": "_/_/launcher/_.sh"
     },
+    ":launcher:CloseCustomFDs": {
+      "hash": "9517d95b4bf02202f2629844378bd763",
+      "path": "_/_/launcher/_.sh"
+    },
+    ":launcher:OpenCustomFDs": {
+      "hash": "54e0c71090b31e5da808d7738f986070",
+      "path": "_/_/launcher/_.sh"
+    },
     ":launcher:_:%TEST.dump": {
       "hash": "5a3848e77bfc35271d49e2e9f2d95e27",
       "path": "_/_/launcher/_.sh"
@@ -532,12 +540,8 @@
       "hash": "ae010762d8058be3ca3f2b36c7821d0a",
       "path": "_/_/launcher/_.sh"
     },
-    ":launcher:_:CloseCustomFDs": {
-      "hash": "9517d95b4bf02202f2629844378bd763",
-      "path": "_/_/launcher/_.sh"
-    },
     ":launcher:_:DispatchRequests": {
-      "hash": "e20f84e86a9546d34b8b644e66df1bf7",
+      "hash": "565310e34712febd0615022d52b1267f",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:DispatchRequests.funcargs": {
@@ -552,16 +556,12 @@
       "hash": "cbb21150a1b6a6874de324b598851156",
       "path": "_/_/launcher/_.sh"
     },
-    ":launcher:_:OpenCustomFDs": {
-      "hash": "54e0c71090b31e5da808d7738f986070",
-      "path": "_/_/launcher/_.sh"
-    },
     ":launcher:_:PreStartup": {
-      "hash": "bdebe94d306dd6b8b92ce7b8ebbc01ef",
+      "hash": "44fc312ec4db6ab227a3a86900bff4f4",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:ProcessOptions": {
-      "hash": "25a89e8795950ccdd435bb0204116312",
+      "hash": "766a6e029365f639a666ccf83a44b603",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:ProcessOptions.declare": {
@@ -577,15 +577,15 @@
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:RedirectIO": {
-      "hash": "fbc919fa0088d9fe2b0eb6f1cc7b99aa",
+      "hash": "2bf762e55c07c94d66ebc53199669e53",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:Shutdown": {
-      "hash": "3044489da1d044fb111629e6911fe48e",
+      "hash": "8aa6e9c7423bdfc40b539f703812df83",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:_:Startup": {
-      "hash": "ac56153a341d2374596ee422212d2ced",
+      "hash": "d9c1c60653ecc3c68a72d48f85a833b0",
       "path": "_/_/launcher/_.sh"
     },
     ":launcher:persist": {
@@ -669,7 +669,7 @@
       "path": "_/_/log/_.sh"
     },
     ":lvm:get_pvs": {
-      "hash": "596372f4f912c4cfc5ae4cf66ce55a63",
+      "hash": "772fd1f51202c6ab23f5c21223ba2fa6",
       "path": "_/_/lvm/get_pvs.sh"
     },
     ":lvm:get_pvs%HELP": {

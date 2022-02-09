@@ -98,6 +98,8 @@ EOF
       fi
    fi
 
+   rm -f "$__json__jq__jq___ErrorFile"
+
    return $__json__jq__jq___Return
 }
 
