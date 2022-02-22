@@ -7,10 +7,14 @@
 
    :help: --set "$__git__reset__resetHELP___Synopsis" --usage "$__git__reset__resetHELP___Usage" <<EOF
 OPTIONS:
+   -d|--dir <dir>    ^A directory within the git project
    -n|--no-clean     ^Do not remove untracked files and directories
 
 DESCRIPTION:
    Perform a hard reset of the current or indicated <branch>.
+
+   If --dir is specified, then <dir> is taken to be a directory within the git project.
+   If --dir is not specified, then the directory at the time of invocation is used.
 
    If --no-clean is specified, then the <b>git clean -f -d</b> command is not issued.
 
@@ -28,12 +32,15 @@ EOF
 :git:reset()
 {
    local __git__reset__reset___Options
-   __git__reset__reset___Options=$(getopt -o 'n' -l 'no-clean' -n "${FUNCNAME[0]}" -- "$@") || return
+   __git__reset__reset___Options=$(getopt -o 'd:n' -l 'dir:,no-clean' -n "${FUNCNAME[0]}" -- "$@") || return
    eval set -- "$__git__reset__reset___Options"
 
    local __git__reset__reset___Clean=true
+   local __git__reset__reset___Dir="$_invocation_dir"
+
    while true ; do
       case "$1" in
+      -d|--dir)      __git__reset__reset___Dir="$2"; shift 2;;
       -n|--no-clean) __git__reset__reset___Clean=false; shift;;
       --)            shift; break;;
       *)             break;;
@@ -46,8 +53,8 @@ EOF
    local __git__reset__reset___Branch="$1"                                 # The requested branch
    local __git__reset__reset___Owner                                       # The owner of the project
 
-   __git__reset__reset___CurrentBranch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
-   __git__reset__reset___TopDir="$(git rev-parse --show-toplevel 2>/dev/null)"
+   __git__reset__reset___CurrentBranch="$(git -C "$__git__reset__reset___Dir" rev-parse --abbrev-ref HEAD 2>/dev/null)"
+   __git__reset__reset___TopDir="$(git -C "$__git__reset__reset___Dir" rev-parse --show-toplevel 2>/dev/null)"
 
    if [[ -z $__git__reset__reset___TopDir ]]; then
       :error: 1 'Not in a git project directory'         # If not within a git project, then raise an error
@@ -61,14 +68,14 @@ EOF
       return
    fi
 
-   __git__reset__reset___Remote="$(git remote show)"                       # Get the current git remote (commonly, origin)
+   __git__reset__reset___Remote="$(git -C "$__git__reset__reset___Dir" remote show)"         # Get the current git remote (commonly, origin)
    __git__reset__reset___Branch="${__git__reset__reset___Branch#$__git__reset__reset___Remote/}"               # Ensure the specified branch doesn't begin with the remote
 
    if [[ -n $__git__reset__reset___Branch && $__git__reset__reset___Branch != $__git__reset__reset___CurrentBranch ]]; then
                                                          # Is branch specified and different from the current branch?
-      if git rev-parse --verify "$__git__reset__reset___Remote/$__git__reset__reset___Branch" >/dev/null 2>&1; then
+      if git -C "$__git__reset__reset___Dir" rev-parse --verify "$__git__reset__reset___Remote/$__git__reset__reset___Branch" >/dev/null 2>&1; then
          __git__reset__reset___CurrentBranch="$__git__reset__reset___Branch"                 # If a valid branch, then update the current branch
-         :sudo "$__git__reset__reset___Owner" git checkout "$__git__reset__reset___CurrentBranch"
+         :sudo "$__git__reset__reset___Owner" git -C "$__git__reset__reset___Dir" checkout "$__git__reset__reset___CurrentBranch"
                                                          # ... and checkout the indicated branch to make it current
 
       else
@@ -77,11 +84,10 @@ EOF
       fi
    fi
 
-   :sudo "$__git__reset__reset___Owner" git reset --hard "$__git__reset__reset___Remote/$__git__reset__reset___CurrentBranch"
-
    if $__git__reset__reset___Clean; then
-      :sudo "$__git__reset__reset___Owner" git clean -f -d
+      :sudo "$__git__reset__reset___Owner" git -C "$__git__reset__reset___Dir" reset --hard "$__git__reset__reset___Remote/$__git__reset__reset___CurrentBranch"
+      :sudo "$__git__reset__reset___Owner" git -C "$__git__reset__reset___Dir" clean -f -d
    fi
 
-   :sudo "$__git__reset__reset___Owner" git pull --all
+   :sudo "$__git__reset__reset___Owner" git -C "$__git__reset__reset___Dir" pull --all
 }

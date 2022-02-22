@@ -52,20 +52,22 @@
    local (.)_Date
    (.)_Date="$(date +%Y-%m-%d.%H%M%S)"
 
-   if $(.)_Push; then
-      echo                                               # Make push/pop messages standout with blank line
-   fi
+   {
+      if $(.)_Push; then
+         echo                                            # Make push/pop messages standout with blank line
+      fi
 
-   if (( (+)_Level > 0 )); then
-      echo -e "[$(.)_Date] $(printf '#%0.s' $( seq -s ' ' 1 $(+)_Level ) ) $(.)_Prefix${(+)_Message[$(+)_Level]}"
+      if (( (+)_Level > 0 )); then
+         echo -e "[$(.)_Date] $(printf '#%0.s' $( seq -s ' ' 1 $(+)_Level ) ) $(.)_Prefix${(+)_Message[$(+)_Level]}"
                                                          # Add indent
-   else
-      echo -e "[$(.)_Date] $(.)_Prefix${(+)_Message[$(+)_Level]}"
-   fi
+      else
+         echo -e "[$(.)_Date] $(.)_Prefix${(+)_Message[$(+)_Level]}"
+      fi
 
-   if $(.)_Pop; then
-      echo                                               # Make push/pop messages standout with blank line
-   fi
+      if $(.)_Pop; then
+         echo                                            # Make push/pop messages standout with blank line
+      fi
+   } >&2
 
    if $(.)_Push; then                                    # Do any log level increases after outputting message
       (+)_Level="$(( (+)_Level+1 ))"

@@ -52,7 +52,7 @@
 
    :log: --push 'Installing git from endpoint-repo'
 
-   yum -y install https://packages.endpoint.com/rhel/7/os/x86_64/endpoint-repo-1.9-1.x86_64.rpm || true
+   yum -y install https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo-1.9-1.x86_64.rpm || true
    yum -y install git || true
 
    :log: --pop

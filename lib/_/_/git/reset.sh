@@ -7,10 +7,14 @@
 
    :help: --set "$(.)_Synopsis" --usage "$(.)_Usage" <<EOF
 OPTIONS:
+   -d|--dir <dir>    ^A directory within the git project
    -n|--no-clean     ^Do not remove untracked files and directories
 
 DESCRIPTION:
    Perform a hard reset of the current or indicated <branch>.
+
+   If --dir is specified, then <dir> is taken to be a directory within the git project.
+   If --dir is not specified, then the directory at the time of invocation is used.
 
    If --no-clean is specified, then the <b>git clean -f -d</b> command is not issued.
 
@@ -28,12 +32,15 @@ EOF
 + reset()
 {
    local (.)_Options
-   (.)_Options=$(getopt -o 'n' -l 'no-clean' -n "${FUNCNAME[0]}" -- "$@") || return
+   (.)_Options=$(getopt -o 'd:n' -l 'dir:,no-clean' -n "${FUNCNAME[0]}" -- "$@") || return
    eval set -- "$(.)_Options"
 
    local (.)_Clean=true
+   local (.)_Dir="$_invocation_dir"
+
    while true ; do
       case "$1" in
+      -d|--dir)      (.)_Dir="$2"; shift 2;;
       -n|--no-clean) (.)_Clean=false; shift;;
       --)            shift; break;;
       *)             break;;
@@ -46,8 +53,8 @@ EOF
    local (.)_Branch="$1"                                 # The requested branch
    local (.)_Owner                                       # The owner of the project
 
-   (.)_CurrentBranch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
-   (.)_TopDir="$(git rev-parse --show-toplevel 2>/dev/null)"
+   (.)_CurrentBranch="$(git -C "$(.)_Dir" rev-parse --abbrev-ref HEAD 2>/dev/null)"
+   (.)_TopDir="$(git -C "$(.)_Dir" rev-parse --show-toplevel 2>/dev/null)"
 
    if [[ -z $(.)_TopDir ]]; then
       :error: 1 'Not in a git project directory'         # If not within a git project, then raise an error
@@ -61,14 +68,14 @@ EOF
       return
    fi
 
-   (.)_Remote="$(git remote show)"                       # Get the current git remote (commonly, origin)
+   (.)_Remote="$(git -C "$(.)_Dir" remote show)"         # Get the current git remote (commonly, origin)
    (.)_Branch="${(.)_Branch#$(.)_Remote/}"               # Ensure the specified branch doesn't begin with the remote
 
    if [[ -n $(.)_Branch && $(.)_Branch != $(.)_CurrentBranch ]]; then
                                                          # Is branch specified and different from the current branch?
-      if git rev-parse --verify "$(.)_Remote/$(.)_Branch" >/dev/null 2>&1; then
+      if git -C "$(.)_Dir" rev-parse --verify "$(.)_Remote/$(.)_Branch" >/dev/null 2>&1; then
          (.)_CurrentBranch="$(.)_Branch"                 # If a valid branch, then update the current branch
-         :sudo "$(.)_Owner" git checkout "$(.)_CurrentBranch"
+         :sudo "$(.)_Owner" git -C "$(.)_Dir" checkout "$(.)_CurrentBranch"
                                                          # ... and checkout the indicated branch to make it current
 
       else
@@ -77,11 +84,10 @@ EOF
       fi
    fi
 
-   :sudo "$(.)_Owner" git reset --hard "$(.)_Remote/$(.)_CurrentBranch"
-
    if $(.)_Clean; then
-      :sudo "$(.)_Owner" git clean -f -d
+      :sudo "$(.)_Owner" git -C "$(.)_Dir" reset --hard "$(.)_Remote/$(.)_CurrentBranch"
+      :sudo "$(.)_Owner" git -C "$(.)_Dir" clean -f -d
    fi
 
-   :sudo "$(.)_Owner" git pull --all
+   :sudo "$(.)_Owner" git -C "$(.)_Dir" pull --all
 }

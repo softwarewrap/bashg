@@ -52,20 +52,22 @@
    local __log________Date
    __log________Date="$(date +%Y-%m-%d.%H%M%S)"
 
-   if $__log________Push; then
-      echo                                               # Make push/pop messages standout with blank line
-   fi
+   {
+      if $__log________Push; then
+         echo                                            # Make push/pop messages standout with blank line
+      fi
 
-   if (( __log___Level > 0 )); then
-      echo -e "[$__log________Date] $(printf '#%0.s' $( seq -s ' ' 1 $__log___Level ) ) $__log________Prefix${__log___Message[$__log___Level]}"
+      if (( __log___Level > 0 )); then
+         echo -e "[$__log________Date] $(printf '#%0.s' $( seq -s ' ' 1 $__log___Level ) ) $__log________Prefix${__log___Message[$__log___Level]}"
                                                          # Add indent
-   else
-      echo -e "[$__log________Date] $__log________Prefix${__log___Message[$__log___Level]}"
-   fi
+      else
+         echo -e "[$__log________Date] $__log________Prefix${__log___Message[$__log___Level]}"
+      fi
 
-   if $__log________Pop; then
-      echo                                               # Make push/pop messages standout with blank line
-   fi
+      if $__log________Pop; then
+         echo                                            # Make push/pop messages standout with blank line
+      fi
+   } >&2
 
    if $__log________Push; then                                    # Do any log level increases after outputting message
       __log___Level="$(( __log___Level+1 ))"
