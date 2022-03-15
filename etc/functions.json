@@ -861,11 +861,11 @@
       "path": "_/_/test/can_sudo.sh"
     },
     ":test:has_command": {
-      "hash": "5d121e7e992b26bced1055c7248761cf",
+      "hash": "fd3462d59eebefe5960d956d01acb785",
       "path": "_/_/test/has_command.sh"
     },
     ":test:has_command%HELP": {
-      "hash": "18053395722fd78e1636f920c11cd6f1",
+      "hash": "1b8c14dc1b3257b68d440245d379bcfe",
       "path": "_/_/test/has_command.sh"
     },
     ":test:has_func": {
