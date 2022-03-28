@@ -10,18 +10,27 @@ Functions are used to instrument various object-oriented behaviors:
 
 The code samples below are presented using italics, bold, and color to convey examples in a practical manner.
 
-| Style                              | Meaning                 |
-|------------------------------------|-------------------------|
-| _Italics_                          | Abstract Generalization |
-| **Bold**                           | Literal                 |
-| <span style="color:red">Red</span> | Indicative Macro        |
-| <i style="color:blue">Blue</i>     | Indicative String       |
+| Style                           | Meaning           |
+|---------------------------------|-------------------|
+| **Bold** or Regular             | Literal           |
+| _Italics_ or **_Bold Italics_** | Indicative Syntax |
 
-Examples of **_indicative macros_** include scoping macros such as
-<span style="color:red">@</span> or <span style="color:red">+</span>
-or <span style="color:red">-</span> for
-package-, component-, or unit-level scoping.
-Examples of _**indicative strings**_ include definitions such as <i style="color:blue">ClassName</i>.
+**Bold** is used with a concrete instance to refer to a class of possible substitutions,
+any of which can be used. Non-bold text can also have this meaning, if introduced
+earlier by bold text.
+
+_Italics_ or **_Bold Italics_** is used to convey the syntax of allowed substitutions.
+In this case, bold is added only for additional emphasis.
+
+Here is an example that includes all of these:
+
+<pre>
+<b>+ <i style="color:blue">Class:public_method</i>()</b>
+{
+   <b style="color:blue">(+):</b><i style="color:blue">Class:StaticPrivateMethod</i>
+   <b>$this</b> <i style="color:blue">public_method arg1 arg2...</i>
+}
+</pre>
 
 ## Constructors
 

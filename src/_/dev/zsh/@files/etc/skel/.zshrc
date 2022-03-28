@@ -44,6 +44,8 @@ setopt                        \
    TYPESET_SILENT             \
    ZLE
 
+zle_highlight=('paste:none')
+
 setopt -m
 bindkey -v
 compctl -c man
@@ -103,14 +105,14 @@ plimit()
 term_style_fancy()
 {
     term_style=fancy
-    PROMPT="%S%D{%b %e %T} !%! [$(pfrag $(print -P %~)|sed 's|%|%%|g')$PROMPT_END%s
+    PROMPT="%S%D{%b %e %T} !%! [$(pfrag "$(print -P %~)"|sed 's|%|%%|g')$PROMPT_END%s
 "
 }
 
 term_style_plain()
 {
     term_style=plain
-    PROMPT="%D{%b %e %T} !%! [$(pfrag $(print -P %~)|sed 's|%|%%|g')$PROMPT_END
+    PROMPT="%D{%b %e %T} !%! [$(pfrag "$(print -P %~)"|sed 's|%|%%|g')$PROMPT_END
 "
 }
 
