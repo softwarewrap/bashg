@@ -969,11 +969,11 @@
       "path": "_/_/var/unsetro.sh"
     },
     ":vi:diff": {
-      "hash": "da51487faf5eabad59065ce8d6f4c0f2",
+      "hash": "e9b159c2e566ef4f3ec90fb75b00c64d",
       "path": "_/_/vi/diff.sh"
     },
     ":vi:diff%HELP": {
-      "hash": "b9f6a52a59438647c14f39a0ef8928bf",
+      "hash": "a1384cbd31c1ff73b2411a43ad086cac",
       "path": "_/_/vi/diff.sh"
     },
     ":vi:diff:ViDiffCleanup": {

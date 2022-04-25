@@ -296,13 +296,13 @@ auto BufWritePre * call RemoveTrailingSpaces()
 " Toggle what happens when you press the ENTER key (selection)
 fu! ToggleKeywordIsPropertyState()
     if $nextKeywordIsPropertyState == 0
-        set iskeyword=@,48-57,_,192-255,@-@,+,-,.,(,),:
+        set iskeyword=@,47-57,_,192-255,.
         let $nextKeywordIsPropertyState=1
-        echo "ENTER key now also selects extended function and variable set"
-    elseif $nextKeywordIsPropertyState == 1
-        set iskeyword=@,48-57,_,192-255,.
-        let $nextKeywordIsPropertyState=2
         echo "ENTER key now also selects dotted properties"
+    elseif $nextKeywordIsPropertyState == 1
+        set iskeyword=@,47-57,_,192-255,@-@,+,-,.,(,),:
+        let $nextKeywordIsPropertyState=2
+        echo "ENTER key now also selects extended function and variable set"
     else
         set iskeyword=@,48-57,_,192-255
         let $nextKeywordIsPropertyState=0

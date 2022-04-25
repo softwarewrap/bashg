@@ -15,6 +15,7 @@ OPTIONS:
    -x|--exclude <pat>   ^Exclude files matching the glob pattern <pat> (can be used multiple times)
    -1|--exclude-1       ^Exclude files that are present on only one side of the directories
 
+   -g|--group           ^Group by deleted first, common next, and added last [default: dictionary order]
    -n|--no-dirs         ^Do not create directories as needed for one-sided diffs
 
    -l|--list            ^List filenames whose contents are different instead of invoking vi
@@ -42,11 +43,16 @@ EOF
 
 + diff()
 {
+   if [[ -f $HOME/.vim/diff.conf ]]; then
+      set -- $( printf '%q\n' $( cat ~/.vim/diff.conf ) | xargs echo ) "$@"
+   fi
+
    local (.)_Options
-   (.)_Options=$(getopt -o '._pi:x:1nls' -l "hidden,underscore,prune,include:,exclude:,exclude-1,no-dirs,list,same" -n "${FUNCNAME[0]}" -- "$@") || return
+   (.)_Options=$(getopt -o '._pi:x:1gnls' -l "hidden,underscore,prune,include:,exclude:,exclude-1,group,no-dirs,list,same" -n "${FUNCNAME[0]}" -- "$@") || return
    eval set -- "$(.)_Options"
 
    local (.)_Exclude1=false
+   local (.)_Group=
    local (.)_CreateDirs=true
    local (.)_List=false
    local (.)_Same=false
@@ -61,6 +67,7 @@ EOF
       -i|--include)     (.)_Include+=( -o -name "$2" ); shift 2;;
       -x|--exclude)     (.)_Exclude+=( -o -name "$2" ); shift 2;;
       -1|--exclude-1)   (.)_Exclude1=true; shift;;
+      -g|--group)       (.)_Group=true; shift;;
       -n|--no-dirs)     (.)_CreateDirs=false; shift;;
       -l|--list)        (.)_List=true; shift;;
       -s|--same)        (.)_List=true; (.)_Same=true; shift;;
@@ -128,7 +135,7 @@ EOF
                (.)_Script[$(.)_File]="echo '$( :highlight: <<<"   <G>$(.)_File</G>" )'"
             fi
          elif $(.)_List; then
-            (.)_Script[$(.)_File]="echo '$( :highlight: <<<"<b>!=</b> <B>$(.)_File</B>" )'"
+            (.)_Script[${(.)_Group:+2}$(.)_File]="echo '$( :highlight: <<<"<b> </b> <B>$(.)_File</B>" )'"
          else
             (.)_Script[$(.)_File]="vi -d '$(.)_Dir1/$(.)_File' '$(.)_Dir2/$(.)_File'"
          fi
@@ -136,7 +143,7 @@ EOF
       # Else this is a one-sided diff
       elif ! $(.)_Exclude1; then
          if $(.)_List; then
-            (.)_Script[$(.)_File]="echo '$( :highlight: <<<"<b><<</b> <R>$(.)_File</R>" )'"
+            (.)_Script[${(.)_Group:+1}$(.)_File]="echo '$( :highlight: <<<"<b>-</b> <R>$(.)_File</R>" )'"
          elif $(.)_CreateDirs; then
             (.)_Script[$(.)_File]="mkdir -p '$(.)_Dir2'; vi -d '$(.)_Dir1/$(.)_File' '$(.)_Dir2/$(.)_File'"
          else
@@ -150,7 +157,7 @@ EOF
    for (.)_File in "${(.)_Path2Files[@]}"; do
       if [[ ${(.)_Found[$(.)_File]} != true ]] && ! $(.)_Exclude1; then
          if $(.)_List; then
-            (.)_Script[$(.)_File]="echo '$( :highlight: <<<"<b>>></b> <R>$(.)_File</R>" )'"
+            (.)_Script[${(.)_Group:+3}$(.)_File]="echo '$( :highlight: <<<"<b>+</b> <G>$(.)_File</G>" )'"
          elif $(.)_CreateDirs; then
             (.)_Script[$(.)_File]="mkdir -p '$(.)_Dir1'; vi -d '$(.)_Dir1/$(.)_File' '$(.)_Dir2/$(.)_File'"
          else
@@ -163,7 +170,7 @@ EOF
    local -a (.)_Keys
    readarray -t (.)_Keys < <(
       printf '%s\n' "${!(.)_Script[@]}" |
-      LC_ALL=C sort |
+      LC_ALL=C sort -f |
       sed '/^$/d'
    )
 

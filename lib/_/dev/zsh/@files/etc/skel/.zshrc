@@ -8,8 +8,8 @@ export ENV_HOME=$HOME
 export EDITOR=vi
 export PAGER=less
 export LESS="-X -F -r"
-export LANG="C"
-export LC_ALL="C"
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
 export DIRSTACKSIZE=20
 export HISTSIZE=999999
 export SAVEHIST=$HISTSIZE
@@ -21,6 +21,7 @@ export READNULLCMD=less
 export SHELL=/bin/zsh
 export TAB=$'\011'
 export TERM=xterm-256color
+export QUOTING_STYLE=literal
 
 setopt                        \
    AUTOMENU                   \

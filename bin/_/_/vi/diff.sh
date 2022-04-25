@@ -15,6 +15,7 @@ OPTIONS:
    -x|--exclude <pat>   ^Exclude files matching the glob pattern <pat> (can be used multiple times)
    -1|--exclude-1       ^Exclude files that are present on only one side of the directories
 
+   -g|--group           ^Group by deleted first, common next, and added last [default: dictionary order]
    -n|--no-dirs         ^Do not create directories as needed for one-sided diffs
 
    -l|--list            ^List filenames whose contents are different instead of invoking vi
@@ -42,11 +43,16 @@ EOF
 
 :vi:diff()
 {
+   if [[ -f $HOME/.vim/diff.conf ]]; then
+      set -- $( printf '%q\n' $( cat ~/.vim/diff.conf ) | xargs echo ) "$@"
+   fi
+
    local __vi__diff__diff___Options
-   __vi__diff__diff___Options=$(getopt -o '._pi:x:1nls' -l "hidden,underscore,prune,include:,exclude:,exclude-1,no-dirs,list,same" -n "${FUNCNAME[0]}" -- "$@") || return
+   __vi__diff__diff___Options=$(getopt -o '._pi:x:1gnls' -l "hidden,underscore,prune,include:,exclude:,exclude-1,group,no-dirs,list,same" -n "${FUNCNAME[0]}" -- "$@") || return
    eval set -- "$__vi__diff__diff___Options"
 
    local __vi__diff__diff___Exclude1=false
+   local __vi__diff__diff___Group=
    local __vi__diff__diff___CreateDirs=true
    local __vi__diff__diff___List=false
    local __vi__diff__diff___Same=false
@@ -61,6 +67,7 @@ EOF
       -i|--include)     __vi__diff__diff___Include+=( -o -name "$2" ); shift 2;;
       -x|--exclude)     __vi__diff__diff___Exclude+=( -o -name "$2" ); shift 2;;
       -1|--exclude-1)   __vi__diff__diff___Exclude1=true; shift;;
+      -g|--group)       __vi__diff__diff___Group=true; shift;;
       -n|--no-dirs)     __vi__diff__diff___CreateDirs=false; shift;;
       -l|--list)        __vi__diff__diff___List=true; shift;;
       -s|--same)        __vi__diff__diff___List=true; __vi__diff__diff___Same=true; shift;;
@@ -128,7 +135,7 @@ EOF
                __vi__diff__diff___Script[$__vi__diff__diff___File]="echo '$( :highlight: <<<"   <G>$__vi__diff__diff___File</G>" )'"
             fi
          elif $__vi__diff__diff___List; then
-            __vi__diff__diff___Script[$__vi__diff__diff___File]="echo '$( :highlight: <<<"<b>!=</b> <B>$__vi__diff__diff___File</B>" )'"
+            __vi__diff__diff___Script[${__vi__diff__diff___Group:+2}$__vi__diff__diff___File]="echo '$( :highlight: <<<"<b> </b> <B>$__vi__diff__diff___File</B>" )'"
          else
             __vi__diff__diff___Script[$__vi__diff__diff___File]="vi -d '$__vi__diff__diff___Dir1/$__vi__diff__diff___File' '$__vi__diff__diff___Dir2/$__vi__diff__diff___File'"
          fi
@@ -136,7 +143,7 @@ EOF
       # Else this is a one-sided diff
       elif ! $__vi__diff__diff___Exclude1; then
          if $__vi__diff__diff___List; then
-            __vi__diff__diff___Script[$__vi__diff__diff___File]="echo '$( :highlight: <<<"<b><<</b> <R>$__vi__diff__diff___File</R>" )'"
+            __vi__diff__diff___Script[${__vi__diff__diff___Group:+1}$__vi__diff__diff___File]="echo '$( :highlight: <<<"<b>-</b> <R>$__vi__diff__diff___File</R>" )'"
          elif $__vi__diff__diff___CreateDirs; then
             __vi__diff__diff___Script[$__vi__diff__diff___File]="mkdir -p '$__vi__diff__diff___Dir2'; vi -d '$__vi__diff__diff___Dir1/$__vi__diff__diff___File' '$__vi__diff__diff___Dir2/$__vi__diff__diff___File'"
          else
@@ -150,7 +157,7 @@ EOF
    for __vi__diff__diff___File in "${__vi__diff__diff___Path2Files[@]}"; do
       if [[ ${__vi__diff__diff___Found[$__vi__diff__diff___File]} != true ]] && ! $__vi__diff__diff___Exclude1; then
          if $__vi__diff__diff___List; then
-            __vi__diff__diff___Script[$__vi__diff__diff___File]="echo '$( :highlight: <<<"<b>>></b> <R>$__vi__diff__diff___File</R>" )'"
+            __vi__diff__diff___Script[${__vi__diff__diff___Group:+3}$__vi__diff__diff___File]="echo '$( :highlight: <<<"<b>+</b> <G>$__vi__diff__diff___File</G>" )'"
          elif $__vi__diff__diff___CreateDirs; then
             __vi__diff__diff___Script[$__vi__diff__diff___File]="mkdir -p '$__vi__diff__diff___Dir1'; vi -d '$__vi__diff__diff___Dir1/$__vi__diff__diff___File' '$__vi__diff__diff___Dir2/$__vi__diff__diff___File'"
          else
@@ -163,7 +170,7 @@ EOF
    local -a __vi__diff__diff___Keys
    readarray -t __vi__diff__diff___Keys < <(
       printf '%s\n' "${!__vi__diff__diff___Script[@]}" |
-      LC_ALL=C sort |
+      LC_ALL=C sort -f |
       sed '/^$/d'
    )
 
