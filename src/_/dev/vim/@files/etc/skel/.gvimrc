@@ -296,21 +296,21 @@ auto BufWritePre * call RemoveTrailingSpaces()
 " Toggle what happens when you press the ENTER key (selection)
 fu! ToggleKeywordIsPropertyState()
     if $nextKeywordIsPropertyState == 0
-        set iskeyword=@,47-57,_,192-255,.
-        let $nextKeywordIsPropertyState=1
-        echo "ENTER key now also selects dotted properties"
-    elseif $nextKeywordIsPropertyState == 1
-        set iskeyword=@,47-57,_,192-255,@-@,+,-,.,(,),:
-        let $nextKeywordIsPropertyState=2
-        echo "ENTER key now also selects extended function and variable set"
-    else
         set iskeyword=@,48-57,_,192-255
-        let $nextKeywordIsPropertyState=0
+        let $nextKeywordIsPropertyState=1
         echo "ENTER key selects: Standard characters only"
+    elseif $nextKeywordIsPropertyState == 1
+        set iskeyword=@,47-57,_,192-255,.
+        let $nextKeywordIsPropertyState=2
+        echo "ENTER key now also selects dotted properties"
+    else
+        set iskeyword=@,47-57,_,192-255,@-@,+,-,.,(,),:
+        let $nextKeywordIsPropertyState=0
+        echo "ENTER key now also selects extended function and variable set"
     endif
 endfunc
-let $nextKeywordIsPropertyState=0
 set iskeyword=@,48-57,_,192-255
+let $nextKeywordIsPropertyState=1
 
 let g:highlightword = 1
 fu! ToggleHighlightWord()
@@ -470,6 +470,7 @@ endfunction
 fu! SetBufWinEnter()
    let w:display_color_columns = 0
    let &colorcolumn = ""
+   let w:display_color_column_set = ""
 
    if &filetype ==# 'sh'
       if ! exists('&w:display_color_column_set')
@@ -650,10 +651,14 @@ fu! DiffSetup()
     map <left> :diffput<CR>
     map <down> ]cz.<c-w><c-w><c-w><c-w>
     map <up> [cz.<c-w><c-w><c-w><c-w>
-    map <s-down> do
-    map <s-up> dp
+
+    map <s-down> do|                                     " pull other change into current buffer
+    map <s-up> dp|                                       " push current change into other buffer
+
+    map <m-s-down> :%diffget<CR>|                        " pull all other changes into current buffer
+    map <m-s-up> :%diffput<CR>|                          " pull all current changes into other buffer
     map <m-down> <c-w>wyy<c-w>wPjddk
-    map <m-s-down> <c-w>wyy<c-w>wPj
+
     map u :u<cr>:dif<cr>
     map U :red<cr>:dif<cr>
     let $currentFontSize=8

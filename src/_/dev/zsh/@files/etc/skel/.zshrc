@@ -7,7 +7,7 @@
 export ENV_HOME=$HOME
 export EDITOR=vi
 export PAGER=less
-export LESS="-X -F -r"
+export LESS="-X -F -R"
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export DIRSTACKSIZE=20
@@ -135,11 +135,27 @@ chpwd ()
 }
 
 # Directory
-push() { old="$PWD"; pushd $*; d }
+push()
+{
+   local Options
+   Options=$(getopt -o 'r' -l 'resolve' -n "$FUNCNAME" -- "$@") || return
+   eval set -- "$Options"
+
+   local Resolve=false
+
+   while true ; do
+      case "$1" in
+      -r|--resolve)  Resolve=true; shift;;
+      --)            shift; break;;
+      *)             break;;
+      esac
+   done
+   $Resolve && pushd "$(readlink -fm "$1" )" || pushd "$1"
+   d
+}
 
 pop()
 {
-   old="$PWD"
    if [ "x$1" = "x=" ] ; then
       shift
       COUNT="$1"
