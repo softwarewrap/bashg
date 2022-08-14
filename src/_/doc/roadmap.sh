@@ -8,7 +8,7 @@
 
    Idioms fall into only 6 categories:
 
-      <namespace-group> <function>()                     ^<K# Declare functions with namespace protection
+      <namespace> <function>()                           ^<K# Declare functions with namespace protection
          @ + -                                           ^<K# The namespaces in which functions can be declared
 
       (<idiom-id><idiom-detail>)[<idiom-type>]           ^<K# Most idioms syntactically match this pattern
@@ -262,6 +262,10 @@
 3. OBJECT ORIENTATION:
 
    Bash++ offers object-oriented capabilities.
+
+3.1 DECLARATIONS
+
+   @ <Class>:()                                          ^<K# Class constructor
 
 3.1 CONSTRUCTOR, DESTRUCTOR, AND METHOD DECLARATIONS:
 

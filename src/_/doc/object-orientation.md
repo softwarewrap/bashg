@@ -1,6 +1,9 @@
 # Object Orientation: Implementation Overview
 
 BashG offers object-oriented capabilities.
+<details>
+<summary markdown="span">Overview</summary>
+
 Functions are used to instrument various object-oriented behaviors:
 
 * Constructors
@@ -21,16 +24,7 @@ earlier by bold text.
 
 _Italics_ or **_Bold Italics_** is used to convey the syntax of allowed substitutions.
 In this case, bold is added only for additional emphasis.
-
-Here is an example that includes all of these:
-
-<pre>
-<b>+ <i style="color:blue">Class:public_method</i>()</b>
-{
-   <b style="color:blue">(+):</b><i style="color:blue">Class:StaticPrivateMethod</i>
-   <b>$this</b> <i style="color:blue">public_method arg1 arg2...</i>
-}
-</pre>
+</details>
 
 ## Constructors
 
