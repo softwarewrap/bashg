@@ -8,17 +8,24 @@
 
    Idioms fall into only 6 categories:
 
-      <namespace> <function>()                           ^<K# Declare functions with namespace protection
-         @ + -                                           ^<K# The namespaces in which functions can be declared
+   1) <namespace>                                        ^<K# Ensure function and variable names are safe to use
+         <func-namespace>:    @ + -                      ^<K# Function namespaces: package, component, and unit
+         <var-namespace>:     @ + - .                    ^<K# Variable namespaces include the function namespace (.)
 
-      (<idiom-id><idiom-detail>)[<idiom-type>]           ^<K# Most idioms syntactically match this pattern
+         <func-namespace> <function>()                   ^<K# Declare a function with namespace protection
+         [local <options>] (<var-namespace>)_<variable>  ^<K# Declare a variable with namespace protection
+
+         (<func-namespace>[<modifier>]):<function>       ^<K# Reference (use) a function
+         (<var-namespace>[<modifier>])_<variable>        ^<K# Reference (use) a variable
+
+   2) (<idiom-id><idiom-detail>)[<idiom-type>]           ^<K# Most idioms syntactically match this pattern
          <idiom-id>:    @ + - ! { } < >                  ^<K# Idioms for: namespace, indirection, plugins, redirection
          <idiom-type>:  _ : / =                          ^<K# Variable, function, path, and access idioms
 
-      .. <instance>                                      ^<K# Set instance for chaining
-      + <method> <args>                                  ^<K# Chain current instance and invoke method with args
-      : <annotation>                                     ^<K# Idiom is outside of functions: modifies code generation
-      = <injection>                                      ^<K# Facilitate hooks and callbacks code injection
+   3) .. <instance>                                      ^<K# Set instance for chaining
+   4) + <method> <args>                                  ^<K# Chain current instance and invoke method with args
+   5) : <annotation>                                     ^<K# Idiom is outside of functions: modifies code generation
+   6) = <injection>                                      ^<K# Facilitate hooks and callbacks code injection
 
    Everything below is an expanded discussion of the above summary.
 
