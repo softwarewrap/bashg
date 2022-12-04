@@ -57,6 +57,7 @@ EOF
    local (.)_RequiredVersion="$1"
 
    :: require_epel                                       # Require the epel repository
+   dnf config-manager --set-enabled powertools           # Needed for xorg-x11-apps
 
    local (.)_AvailableVersion
    (.)_AvailableVersion="$( yum list available jq | grep '^jq' | awk '{print $2}' | sort -V | tail -1 )"

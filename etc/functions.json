@@ -733,7 +733,7 @@
       "path": "_/_/need/require_jq.sh"
     },
     ":need:require_jq:install_jq": {
-      "hash": "7743ac2fcf492c2cbacc20091f4e3b41",
+      "hash": "9e4c472df1820d09a5e2f4ea95647031",
       "path": "_/_/need/require_jq.sh"
     },
     ":nop:": {

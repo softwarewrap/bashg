@@ -57,6 +57,7 @@ EOF
    local __need__require_jq__install_jq___RequiredVersion="$1"
 
    :: require_epel                                       # Require the epel repository
+   dnf config-manager --set-enabled powertools           # Needed for xorg-x11-apps
 
    local __need__require_jq__install_jq___AvailableVersion
    __need__require_jq__install_jq___AvailableVersion="$( yum list available jq | grep '^jq' | awk '{print $2}' | sort -V | tail -1 )"
