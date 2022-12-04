@@ -39,7 +39,8 @@
    (.)_NIC="$(comm -23 "$(.)_FirstSample" "$(.)_SecondSample" | tail -1 | awk '{print $1}' | sed 's/:$//')"
    /bin/rm -f "$(.)_FirstSample" "$(.)_SecondSample"     # Clean up
 
-   if [[ -z $(.)_NIC && $(.)_Wait -le $MaxWait ]]; then  # If no data changes were observed...
+   if [[ -z $(.)_NIC && $(.)_Wait -le $(.)_MaxWait ]]; then
+                                                         # If no data changes were observed...
       (.)_NIC="$( (+):get_nic $(($(.)_Wait * 2)) )"      # then try again, doubling the wait time
    fi
 

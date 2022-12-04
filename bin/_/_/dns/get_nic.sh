@@ -39,7 +39,8 @@
    __dns__get_nic__get_nic___NIC="$(comm -23 "$__dns__get_nic__get_nic___FirstSample" "$__dns__get_nic__get_nic___SecondSample" | tail -1 | awk '{print $1}' | sed 's/:$//')"
    /bin/rm -f "$__dns__get_nic__get_nic___FirstSample" "$__dns__get_nic__get_nic___SecondSample"     # Clean up
 
-   if [[ -z $__dns__get_nic__get_nic___NIC && $__dns__get_nic__get_nic___Wait -le $MaxWait ]]; then  # If no data changes were observed...
+   if [[ -z $__dns__get_nic__get_nic___NIC && $__dns__get_nic__get_nic___Wait -le $__dns__get_nic__get_nic___MaxWait ]]; then
+                                                         # If no data changes were observed...
       __dns__get_nic__get_nic___NIC="$( :dns:get_nic $(($__dns__get_nic__get_nic___Wait * 2)) )"      # then try again, doubling the wait time
    fi
 

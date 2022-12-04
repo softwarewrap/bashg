@@ -19,7 +19,7 @@
    done
 
    printf -v "$__dns__get_host__get_host___Var" "$(
-      { host -TtA "$(hostname -s)" || true; } |          # Perform DNS lookup of the hostname, and get the A record
+      { host -TtA "$(hostname -f)" || true; } |          # Perform DNS lookup of the hostname, and get the A record
       { grep "has address" || true; } |                  # This will indicate A record lines
       tail -1 |                                          # Get at most just one entry (1 in most cases)
       awk '{print $1}'                                   # Get the symbolic name associated with the A record

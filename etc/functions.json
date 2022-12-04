@@ -297,7 +297,7 @@
       "path": "_/_/curl/_.sh"
     },
     ":dns:get_host": {
-      "hash": "87a2419bdc8d6bd505e73216eb8fa7e6",
+      "hash": "eaa47f33cf8f7607b90726912c61c627",
       "path": "_/_/dns/get_host.sh"
     },
     ":dns:get_ip": {
@@ -305,7 +305,7 @@
       "path": "_/_/dns/get_ip.sh"
     },
     ":dns:get_nic": {
-      "hash": "7bf3ac20ea627e8b76c0d7cf714b7227",
+      "hash": "65130479c19f164b7eb2f6fffda80fcc",
       "path": "_/_/dns/get_nic.sh"
     },
     ":dns:get_nic:GetNetworkData": {
