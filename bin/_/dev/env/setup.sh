@@ -61,7 +61,8 @@ EOF
    :: xvfb                                               # Install virtual framebuffer for X11
    :: mount_all                                          # Ensure that all defined mounts are mounted
    :: os_packages $_dev__env__setup__setup___GUI                               # Install extra OS packages
-   :: disable_user_list                                  # Disable login page listing user names
+
+   [[ -z $_dev__env__setup__setup___GUI ]] || :: disable_user_list             # Disable login page listing user names
    :: install_fonts                                      # Install fonts (e.g., for use by vnc)
    :: autofs                                             # Install the auto-mount daemon
 
