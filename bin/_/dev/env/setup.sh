@@ -6,8 +6,9 @@
 
    :help: --set "$_dev__env__setup__setupHELP___Synopsis" <<EOF
 OPTIONS:
-   -h|--hypervisor>     ^The environment is a hypervisor, not a VM
-   -p|--port <port>     ^Set the SSH Port to <port> [default: 22]
+   --gui             ^Install GNOME GUI software
+   --hypervisor      ^The environment is a hypervisor, not a VM
+   --port <port>     ^Set the SSH Port to <port> [default: 22]
 
 DESCRIPTION:
    Setup a Linux environment: a VM or a hypervisor
@@ -24,18 +25,20 @@ EOF
    :sudo || :reenter                                     # This function must run as root
 
    local _dev__env__setup__setup___Options
-   _dev__env__setup__setup___Options=$(getopt -o 'hp:' -l 'hypervisor,port:' -n "${FUNCNAME[0]}" -- "$@") || return
+   _dev__env__setup__setup___Options=$(getopt -o '' -l 'gui,hypervisor,port:' -n "${FUNCNAME[0]}" -- "$@") || return
    eval set -- "$_dev__env__setup__setup___Options"
 
+   local _dev__env__setup__setup___GUI=
    local _dev__env__setup__setup___IsAHypervisor=false
    local _dev__env__setup__setup___Port=22
 
    while true ; do
       case "$1" in
-      -h|--hypervisor)  _dev__env__setup__setup___IsAHypervisor=true; shift;;
-      -p|--port)        _dev__env__setup__setup___Port="$2"; shift 2;;
-      --)               shift; break;;
-      *)                break;;
+      --gui)         _dev__env__setup__setup___GUI='--gui'; shift;;
+      --hypervisor)  _dev__env__setup__setup___IsAHypervisor=true; shift;;
+      --port)        _dev__env__setup__setup___Port="$2"; shift 2;;
+      --)            shift; break;;
+      *)             break;;
       esac
    done
 
@@ -57,7 +60,7 @@ EOF
    :: tune_limits                                        # Tune /etc/security/limits.conf parameters
    :: xvfb                                               # Install virtual framebuffer for X11
    :: mount_all                                          # Ensure that all defined mounts are mounted
-   :: os_packages                                        # Install extra OS packages
+   :: os_packages $_dev__env__setup__setup___GUI                               # Install extra OS packages
    :: disable_user_list                                  # Disable login page listing user names
    :: install_fonts                                      # Install fonts (e.g., for use by vnc)
    :: autofs                                             # Install the auto-mount daemon

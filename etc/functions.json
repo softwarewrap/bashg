@@ -33,11 +33,11 @@
       "path": "_/dev/env/netfilter.sh"
     },
     ".dev:env:setup": {
-      "hash": "5b8e79273ab02213fcf184bdb631f64c",
+      "hash": "5a1830a436a869e73bdb1e37ed7a761b",
       "path": "_/dev/env/setup.sh"
     },
     ".dev:env:setup%HELP": {
-      "hash": "1b56df583a004a0ed8f922ec97dc5afc",
+      "hash": "526a1742454c74879c038c3096eb6a1f",
       "path": "_/dev/env/setup.sh"
     },
     ".dev:need:%STARTUP-1": {
@@ -97,7 +97,7 @@
       "path": "_/dev/need/mount_all.sh"
     },
     ".dev:need:os_packages:": {
-      "hash": "a818e3d83155a98160cec5236907f2eb",
+      "hash": "319e3d1b1ab8adedfae83687bb28a745",
       "path": "_/dev/need/os_packages.sh"
     },
     ".dev:need:python:": {
@@ -115,10 +115,6 @@
     ".dev:need:rsh:linux-8": {
       "hash": "898001b4c46e63694d03da23cf1a926e",
       "path": "_/dev/need/rsh.sh"
-    },
-    ".dev:need:set_timezone:linux-6": {
-      "hash": "2ff5cf8932693d01009719225fc687f3",
-      "path": "_/dev/need/set_timezone.sh"
     },
     ".dev:need:set_timezone:linux-7": {
       "hash": "905ebec8b22199edd0d7e2215faf667d",

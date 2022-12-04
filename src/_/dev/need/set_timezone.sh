@@ -1,15 +1,5 @@
 #!/bin/bash
 
-- linux-6()
-{
-   :sudo || :reenter                                     # This function must run as root
-
-   local (.)_Timezone="${1:-America/New_York}"           # The default timezone
-
-   rm -f /etc/localtime
-   ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
-}
-
 - linux-7()
 {
    :sudo || :reenter                                     # This function must run as root
