@@ -6,6 +6,8 @@
 {
    :sudo || :reenter                                     # This function must run as root
 
+   :: -- packages ipset
+
    local _dev__env__netfilter___NetFilterDir='/etc/netfilter'
 
    local _dev__env__netfilter__netfilter___Options

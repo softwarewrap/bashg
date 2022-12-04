@@ -6,6 +6,8 @@
 {
    :sudo || :reenter                                     # This function must run as root
 
+   :: -- packages ipset
+
    local (-)_NetFilterDir='/etc/netfilter'
 
    local (.)_Options
