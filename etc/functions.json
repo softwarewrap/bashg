@@ -296,6 +296,22 @@
       "hash": "2dac980e759654e9a138746a6b44eb2c",
       "path": "_/_/curl/_.sh"
     },
+    ":dns:get_host": {
+      "hash": "87a2419bdc8d6bd505e73216eb8fa7e6",
+      "path": "_/_/dns/get_host.sh"
+    },
+    ":dns:get_ip": {
+      "hash": "34e06bef8676189f549c73829944c249",
+      "path": "_/_/dns/get_ip.sh"
+    },
+    ":dns:get_nic": {
+      "hash": "7bf3ac20ea627e8b76c0d7cf714b7227",
+      "path": "_/_/dns/get_nic.sh"
+    },
+    ":dns:get_nic:GetNetworkData": {
+      "hash": "72ab512e8fecf8ef22865f60f42ee423",
+      "path": "_/_/dns/get_nic.sh"
+    },
     ":echo:": {
       "hash": "6e386399f384e285c8b18db48a3371b7",
       "path": "_/_/echo/_.sh"
