@@ -6,7 +6,13 @@
 
    cd /usr/share/fonts
 
-   [[ -d lucida && -d msttcore && -d vera ]] || return 0 # Fonts are already installed
+   if [[ -d lucida && -d msttcore && -d vera ]]; then
+      return 0                                           # Fonts are already installed
+   fi
+
+   :log: --push-section 'Installing font files' "$FUNCNAME $@"
 
    ( cd (+:env)/@fonts; tar cpf - . ) | tar xpf -
+
+   :log: --pop
 }

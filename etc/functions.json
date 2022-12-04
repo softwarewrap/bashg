@@ -65,7 +65,7 @@
       "path": "_/dev/need/disable_user_list.sh"
     },
     ".dev:need:install_fonts:": {
-      "hash": "1c7ec20d5837cd74a1032f7f48bcaada",
+      "hash": "954cbe052dfda87a032f7f63ec66d4b4",
       "path": "_/dev/need/install_fonts.sh"
     },
     ".dev:need:install_package_git:centos": {
@@ -97,7 +97,7 @@
       "path": "_/dev/need/mount_all.sh"
     },
     ".dev:need:os_packages:": {
-      "hash": "319e3d1b1ab8adedfae83687bb28a745",
+      "hash": "e990df13ba48be9a495b6e7bd5b1bfdb",
       "path": "_/dev/need/os_packages.sh"
     },
     ".dev:need:python:": {

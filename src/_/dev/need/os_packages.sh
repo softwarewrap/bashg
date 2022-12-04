@@ -24,7 +24,7 @@
       return 0                                           # No need to take any action
    fi
 
-   :log: --push-section 'Installing Server with GUI and supporting packages' "$FUNCNAME $@"
+   :log: --push-section 'Installing Server with supporting packages' "$FUNCNAME $@"
 
    local -a (.)_Items=(                                  # For @^ and @ shorthand, see yum -v grouplist and man 8 yum
       '@development'                                     # Development Tools;                @ =  group
