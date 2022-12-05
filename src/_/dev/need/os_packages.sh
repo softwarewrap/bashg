@@ -26,6 +26,8 @@
 
    :log: --push-section 'Installing Server with supporting packages' "$FUNCNAME $@"
 
+   dnf config-manager --set-enabled powertools
+
    local -a (.)_Items=(                                  # For @^ and @ shorthand, see yum -v grouplist and man 8 yum
       '@development'                                     # Development Tools;                @ =  group
       expect                                             # Automate interactive applications
@@ -38,7 +40,7 @@
 
    if $(.)_GUI; then
       (.)_Items+=(
-         '@^graphical-server-environment'                # Server with GUI;                  @^ = environment group
+         '@graphical-server-environment'                 # Server with GUI;                  @ = environment group
          '@graphical-admin-tools'                        # Graphical Administration Tools;   @ =  group
          gnome-shell-extension-dash-to-dock              # GNOME dashboard shell extension
          xorg-x11-apps                                   # A collection of common X Window System applications
