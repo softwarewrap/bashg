@@ -27,6 +27,7 @@
    :log: --push-section 'Installing Server with supporting packages' "$FUNCNAME $@"
 
    dnf config-manager --set-enabled powertools
+   :: require_epel
 
    local -a (.)_Items=(                                  # For @^ and @ shorthand, see yum -v grouplist and man 8 yum
       '@development'                                     # Development Tools;                @ =  group
