@@ -61,6 +61,12 @@
       systemctl restart rsyslog
    fi
 
+   if [[ ! -f /var/log/netfilter ]]; then
+      mkdir -p /var/log/netfilter
+      chmod 777 /var/log/netfilter
+      chown nobody:nobody /var/log/netfilter
+   fi
+
    if :test:has_func "(-):${1^}"; then
       "(-):${1^}"
    fi
