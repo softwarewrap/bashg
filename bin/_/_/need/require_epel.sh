@@ -19,12 +19,12 @@
    fi
 }
 
-:need:require_epel:centos-7()
+:need:require_epel:linux-7()
 {
    :sudo || :reenter                                     # This function must run as root
 
    if ! :need:require_epel:EPELisInstalled; then
-      :log: --push-section 'Require EPEL on CentOS 7' "$FUNCNAME $@"
+      :log: --push-section 'Require EPEL on Linux 7' "$FUNCNAME $@"
 
       :need:require_epel:InstallEPEL 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'
 
@@ -51,12 +51,12 @@
    fi
 }
 
-:need:require_epel:centos-8()
+:need:require_epel:linux-8()
 {
    :sudo || :reenter                                     # This function must run as root
 
    if ! :need:require_epel:EPELisInstalled; then
-      :log: --push-section 'Require EPEL on CentOS 8' "$FUNCNAME $@"
+      :log: --push-section 'Require EPEL on Linux 8' "$FUNCNAME $@"
 
       :need:require_epel:InstallEPEL 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm'
 

@@ -646,6 +646,19 @@ EOF
                cat "$_BinDir/$_BashFile"                 # Load all .bash files prior to sourcing .sh files
             done                                         # as this may change the parsing of the .sh files
 
+            ############################################################
+            # Ensure no exported functions are present before starting #
+            ############################################################
+            declare -a ExportedFunctions
+            readarray -t ExportedFunctions < <(
+               declare -xpF | awk '{print $3}'
+            )
+
+            declare ExportedFunction
+            for ExportedFunction in "${ExportedFunctions[@]}"; do
+               unset "$ExportedFunction"
+            done
+
             cat "$_BinDir/$_ShFile"                      # Emit the current .sh file (defines functions)
 
             #############################################################################

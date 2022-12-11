@@ -97,7 +97,7 @@
       "path": "_/dev/need/mount_all.sh"
     },
     ".dev:need:os_packages:": {
-      "hash": "7aad337cfbf438fbca5a6ced8534206a",
+      "hash": "529fd8b6c1c0cc28bdf74c52edca0837",
       "path": "_/dev/need/os_packages.sh"
     },
     ".dev:need:python:": {
@@ -708,12 +708,12 @@
       "hash": "eeb5a46a09085ae8d0f6c08e4b7e8855",
       "path": "_/_/need/require_epel.sh"
     },
-    ":need:require_epel:centos-7": {
-      "hash": "9bec02ac8df8826c1be97c3e0d7bd5b5",
+    ":need:require_epel:linux-7": {
+      "hash": "1707b7ed3725474b4a27eba9ea49a2a8",
       "path": "_/_/need/require_epel.sh"
     },
-    ":need:require_epel:centos-8": {
-      "hash": "26d8ae5d077fe21c11f604e4acdd00a8",
+    ":need:require_epel:linux-8": {
+      "hash": "884127a15b0951e76b1b78989ae9c149",
       "path": "_/_/need/require_epel.sh"
     },
     ":need:require_epel:redhat-7": {
