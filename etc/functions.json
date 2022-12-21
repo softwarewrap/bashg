@@ -736,6 +736,18 @@
       "hash": "9e4c472df1820d09a5e2f4ea95647031",
       "path": "_/_/need/require_jq.sh"
     },
+    ":need:require_powertools:PowerToolsisInstalled": {
+      "hash": "61f9cc8e04728a79f8a4dd43632926ed",
+      "path": "_/_/need/require_powertools.sh"
+    },
+    ":need:require_powertools:linux": {
+      "hash": "a21a49d84761ac0c80e4041f9a2c13dd",
+      "path": "_/_/need/require_powertools.sh"
+    },
+    ":need:require_powertools:linux-8": {
+      "hash": "149fb080a757599541ef6aca3a7a5370",
+      "path": "_/_/need/require_powertools.sh"
+    },
     ":nop:": {
       "hash": "736216a638b0d0da9c2becc148190b84",
       "path": "_/_/nop/_.sh"
