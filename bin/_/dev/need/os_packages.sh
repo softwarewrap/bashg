@@ -26,6 +26,8 @@
 
    :log: --push-section 'Installing Server with supporting packages' "$FUNCNAME $@"
 
+   :: require_epel                                       # Require the epel repository
+
    local -a _dev__need__os_packages_____Items=(                                  # For @^ and @ shorthand, see yum -v grouplist and man 8 yum
       '@development'                                     # Development Tools;                @ =  group
       expect                                             # Automate interactive applications
