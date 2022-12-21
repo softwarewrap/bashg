@@ -27,6 +27,7 @@
    :log: --push-section 'Installing Server with supporting packages' "$FUNCNAME $@"
 
    :: require_epel                                       # Require the epel repository
+   :: require_powertools                                 # Require PowerTools to deliver xorg-x11-apps
 
    local -a (.)_Items=(                                  # For @^ and @ shorthand, see yum -v grouplist and man 8 yum
       '@development'                                     # Development Tools;                @ =  group
