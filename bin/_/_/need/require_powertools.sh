@@ -8,6 +8,8 @@
       :log: --push-section 'Require PowerTools on Linux 8' "$FUNCNAME $@"
 
       dnf config-manager --set-enabled powertools
+
+      :log: --pop
    fi
 }
 
