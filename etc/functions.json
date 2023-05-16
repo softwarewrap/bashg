@@ -181,7 +181,7 @@
       "path": "_/doc/comp/unit/demo.sh"
     },
     ".doc:roadmap": {
-      "hash": "5f7a416462851b622b1d0580e1a04940",
+      "hash": "2788610ef4879b878ba8d0c44743eef2",
       "path": "_/doc/roadmap.sh"
     },
     "::": {
@@ -401,7 +401,7 @@
       "path": "_/_/git/is_remote_branch.sh"
     },
     ":git:log": {
-      "hash": "892a1367757828990403366f2f1e9f6b",
+      "hash": "71c4e9bcffbcfc0a5c8a81b131d2964c",
       "path": "_/_/git/log.sh"
     },
     ":git:log%HELP": {

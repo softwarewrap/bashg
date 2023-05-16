@@ -76,7 +76,7 @@ EOF
       --decorate
       --name-status
       --date='format:%Y-%m-%d.%H:%M'
-      --format='format:%C(bold blue)%h%C(reset) - %C(bold green)%ar (%ad)%C(reset) - %C(bold black)%s%C(reset) - %C(bold magenta)%an%C(reset)%C(bold yellow)%d%C(reset)%n'
+      --format='format:%C(bold blue)%h%C(reset) - %C(bold green)%ar (%ad)%C(reset) - %C(bold black)%s%C(reset) - %C(bold magenta)%an%C(reset)%C(bold)%d%C(reset)%n'
    )
 
    local -g __git__log__log___Args=()                                  # Store any remaining args in this variable

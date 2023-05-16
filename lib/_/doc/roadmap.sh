@@ -8,18 +8,46 @@
 
    Idioms fall into only 6 categories:
 
-   1) <namespace>                                        ^<K# Ensure function and variable names are safe to use
-         <func-namespace>:    @ + -                      ^<K# Function namespaces: package, component, and unit
-         <var-namespace>:     @ + - .                    ^<K# Variable namespaces include the function namespace (.)
+   1) Namespace: Identify package, file, and function hierarchies
 
-         <func-namespace> <function>()                   ^<K# Declare a function with namespace protection
-         [local <options>] (<var-namespace>)_<variable>  ^<K# Declare a variable with namespace protection
+         A modifier can follow the namespace character(s) to resolve to a specific package.
+         In the examples below, any of the above namespace indicators can be used.
 
-         (<func-namespace>[<modifier>]):<function>       ^<K# Reference (use) a function
-         (<var-namespace>[<modifier>])_<variable>        ^<K# Reference (use) a variable
+            @@array  com.eggsh.array
+            @array   com.acme.array
+         <modifier>: <alias> | "."<subpackage>           ^<K# Package is an alias or a subpackage relative to a namespace
+
+   1) Expressions: Are of the syntax: (<operator>)<suffix>
+
+      a) Namespace Expressions
+
+         Consider namespace evaluation for content for the file: com.acme/db/mysql/query.sh below:
+
+          IDIOM   EVALUATES TO
+           (@@)   _                                      ^<K# System namespace found in the special _ directory
+           (@)    com.acme                               ^<K# Reverse top-level domain (rTLD) name
+           (+)    com.acme.db                            ^<K# Immediate subpackage of the rTLD name
+           (-)    com.acme.db.mysql.query                ^<K# Package name implied by the directory path of a file
+           (.)    com.acme.db.mysql.query:sql:read       ^<K# Fully-qualified name: package:file:method
+
+         Expressions are of the form: (<namespace>[<alias>|.<subpackage>)
+
+            (@@)        _                                ^<K# For files anywhere under the system directory
+            (@)         com.acme                         ^<K# For files anywhere under the com.acme directory
+            (@db)       com.acme.db                      ^<K# Where db is a package alias for com.acme.db
+            (@.db)      com.acme.db
+            (+)         com.acme.db                      ^<K# For files in the com.acme/db directory
+            (+.query)   com.acme.db.mysql.query         ^<K# For files in the com.acme/db/mysql directory
+
+         (@):function_name
+         (<namespace>[<modifier>]):<function>            ^<K# Function name
+         (<namespace>[<modifier>]):<Class>:              ^<K# class name
+         (<namespace>[<modifier>]):<Class>:method        ^<K# Method name
+         (<namespace>[<modifier>])_<variable>            ^<K# Variable name
+
 
    2) (<idiom-id><idiom-detail>)[<idiom-type>]           ^<K# Most idioms syntactically match this pattern
-         <idiom-id>:    @ + - ! { } < >                  ^<K# Idioms for: namespace, indirection, plugins, redirection
+         <idiom-id>:    @@ @ + - ! { } < >               ^<K# Idioms for: namespace, indirection, plugins, redirection
          <idiom-type>:  _ : / =                          ^<K# Variable, function, path, and access idioms
 
    3) .. <instance>                                      ^<K# Set instance for chaining
@@ -28,6 +56,11 @@
    6) = <injection>                                      ^<K# Facilitate hooks and callbacks code injection
 
    Everything below is an expanded discussion of the above summary.
+
+(.):f()
+{
+   echo hi
+}
 
 ======================================================================================================================
 
@@ -46,6 +79,27 @@
    u: unit                                               ^<K# Example: complex
 
    <b>PACKAGE NAMESPACE</b>
+
+   ESCAPED           UNESCAPED         EXPANDED
+   ==============    ==============    ==============
+   \\(@@)_Var         \(@@)_Var          (@@)_Var
+   \\(@@a)_Var        \(@@a)_Var         (@@a)_Var
+
+   \\(@)_Var          \(@)_Var           (@)_Var
+   \\(@a)_Var         \(@a)_Var          (@a)_Var
+   \\(@.s)_Var        \(@.s)_Var         (@.s)_Var
+
+   \\(+)_Var          \(+)_Var           (+)_Var
+   \\(+a)_Var         \(+a)_Var          (+a)_Var
+   \\(+.s)_Var        \(+.s)_Var         (+.s)_Var
+
+   \\(-)_Var          \(-)_Var           (-)_Var
+   \\(-a)_Var         \(-a)_Var          (-a)_Var
+   \\(-.s)_Var        \(-.s)_Var         (-.s)_Var
+
+   \\(.)_Var          \(.)_Var           (.)_Var
+
+##########################################################
 
    ESCAPED           UNESCAPED         EXPANDED
    ==============    ==============    ==============
