@@ -21,7 +21,7 @@
       :log: --pop
    fi
 
-   if ! (+:service):is_active; then
+   if ! (++:service):is_active; then
       :log: --push-section 'Restarting autofs'
 
       (+:.dev:autofs):restart                            # Restart the autofs service

@@ -45,7 +45,7 @@
       "path": "_/dev/need/_.sh"
     },
     ".dev:need:autofs:": {
-      "hash": "4ef3d12a2adab02ae432932b8377d70b",
+      "hash": "0d1f230a9a94103dd6415a60d9ca2a44",
       "path": "_/dev/need/autofs.sh"
     },
     ".dev:need:clean_yum:": {
