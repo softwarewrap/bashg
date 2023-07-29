@@ -1,0 +1,26 @@
+   local -ga (-)_Args=()                                 # Store any remaining args in this variable
+
+   :getopts: begin \
+      -o '' \
+      -l '' \
+      -- "$@"
+
+   local (.)_Option                                      # Option letter or word
+   local (.)_Value                                       # Value stores a value for options that take a value
+   local (.)_EncounteredStopRequest=false                # encountered --: what follows is search taking args
+
+   while :getopts: next (.)_Option (.)_Value (.)_EncounteredStopRequest; do
+      case "$(.)_Option" in
+      -f|--flag)  echo "Got flag";;
+      -a|--arg)   echo "$(.)_Value";;
+
+      *)          break;;
+      esac
+   done
+
+   :getopts: end --save (-)_Args                         # Save unused args
+   set -- "${(-)_Args[@]}"
+
+   if $(.)_EncounteredStopRequest; then
+      echo 'do something with additional arguments'
+   fi

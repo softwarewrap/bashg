@@ -1,0 +1,17 @@
+* text eol=lf
+*.bat          binary
+*.dbf          binary
+*.exe          binary
+*.gif          binary
+*.ico          binary
+*.jar          binary
+*.mht          binary
+*.pdf          binary
+*.png          binary
+*.rtf          binary
+*.tar          binary
+*.tgz          binary
+*.ttf          binary
+*.x            binary
+*.xls          binary
+*.zip          binary

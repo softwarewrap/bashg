@@ -1,0 +1,8 @@
+#######
+# CVS #
+#######
+-A INPUT -p tcp -m tcp --sport 2401 -m state --state ESTABLISHED -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 2401 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+-A OUTPUT -p tcp -m tcp --sport 2401 -m state --state ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp --dport 2401 -m state --state NEW,ESTABLISHED -j ACCEPT

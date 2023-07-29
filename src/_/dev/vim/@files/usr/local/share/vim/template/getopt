@@ -1,0 +1,19 @@
+   local (.)_Options
+   (.)_Options=$(getopt -o 'fa:o::' -l 'flag,arg:,optionalarg::' -n "$FUNCNAME" -- "$@") || return
+   eval set -- "$(.)_Options"
+
+   local (.)_Flag=false             # Or set to false: (.)_Flag=false
+   local (.)_Arg='default'          # Or set to null:  (.)_Arg=
+   local (.)_Optional='default'     # Or set to null:  (.)_
+
+   while true ; do
+      case "$1" in
+      -f|--flag)        (.)_Flag=true; shift;;
+      -a|--arg)         (.)_Arg="$2"; shift 2;;
+      -o|--optionalarg) (.)_Var="${2:-$(.)_Optional}"; shift 2;;
+
+      -h|--help)        $FUNCNAME%HELP; return 0;;
+      --)               shift; break;;
+      *)                break;;
+      esac
+   done

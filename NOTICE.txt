@@ -1,0 +1,40 @@
+PRODUCT
+=======
+
+Product Name: Bash Generator
+
+Bash Generator is a project intended to make powerful scripting easy.
+You can learn more about this framework by visiting:
+
+   https://bashg.com
+
+COPYRIGHT
+=========
+
+© Copyright 2005-2021 Server Science Incorporated.
+
+This product includes software developed at:
+
+   Server Science Incorporated (http://www.serverscience.com)
+
+Copyright inquiries may be directed via e-mail to:
+
+   copyright@serverscience.com
+
+LICENSE
+=======
+
+This product is licensed under the Apache License, Version 2.0 (the "License").
+You may not use or distribute this product except in compliance with the License.
+
+A copy of the License is included in the product distribution as the file LICENSE.txt.
+You may also obtain a copy of the License at:
+
+   http://www.apache.org/licenses/LICENSE-2.0.txt
+
+If any differences exist between these two license sources, then the license found
+on the apache.org website shall supersede the LICENSE.txt file included herein.
+
+License inquiries may be directed via e-mail to:
+
+   license@serverscience.com

@@ -1,0 +1,12 @@
+#######
+# NFS #
+#######
+-A INPUT -p udp -m multiport --dports 111,662,892,2049,32769 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -p tcp -m multiport --dports 111,662,892,2049,32803 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -p udp -m multiport --sports 111,662,892,2049,32769 -m state --state ESTABLISHED -j ACCEPT
+-A INPUT -p tcp -m multiport --sports 111,662,892,2049,32803 -m state --state ESTABLISHED -j ACCEPT
+
+-A OUTPUT -p udp -m multiport --sports 111,662,892,2049,32769 -m state --state ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m multiport --sports 111,662,892,2049,32803 -m state --state ESTABLISHED -j ACCEPT
+-A OUTPUT -p udp -m multiport --dports 111,662,892,2049,32769 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m multiport --dports 111,662,892,2049,32803 -m state --state NEW,ESTABLISHED -j ACCEPT

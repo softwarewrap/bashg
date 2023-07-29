@@ -1,0 +1,8 @@
+#######
+# SSH #
+#######
+-A INPUT -p tcp -m tcp --dport %{SSHPort}% -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -p tcp -m tcp --sport %{SSHPort}% -m state --state ESTABLISHED -j ACCEPT
+
+-A OUTPUT -p tcp -m tcp --dport %{SSHPort}% -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp --sport %{SSHPort}% -m state --state ESTABLISHED -j ACCEPT

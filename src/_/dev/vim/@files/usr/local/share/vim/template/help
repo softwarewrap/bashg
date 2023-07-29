@@ -1,0 +1,15 @@
+{
+   local (.)_Synopsis=''
+   local (.)_Usage=''
+
+   :help: --set "$(.)_Synopsis" --usage "$(.)_Usage" <<EOF
+OPTIONS:
+   -a|--arg <value>           ^Description [default: ]
+
+DESCRIPTION:
+   Description here
+
+EXAMPLES:
+   Example here               ^: comment here
+EOF
+}

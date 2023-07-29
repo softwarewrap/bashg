@@ -1,0 +1,12 @@
+#######
+# DNS #
+#######
+-A INPUT -p tcp -m tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -p tcp -m tcp --sport 53 -m state --state ESTABLISHED -j ACCEPT
+-A INPUT -p udp -m udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -p udp -m udp --sport 53 -m state --state ESTABLISHED -j ACCEPT
+
+-A OUTPUT -p tcp -m tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp --sport 53 -m state --state ESTABLISHED -j ACCEPT
+-A OUTPUT -p udp -m udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p udp -m udp --sport 53 -m state --state ESTABLISHED -j ACCEPT
