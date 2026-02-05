@@ -3,6 +3,22 @@
 .doc:roadmap()
 {
    :highlight: <<'EOF'
+This software wrapper around Bash adds new capabilities to Bash:
+
+   - Organizes code as packages and adds package management
+
+   - New capabilities are syntactic idioms that cause the generation of standard Bash code. Idioms include:
+      (<scope>)<suffix> - Namespace protection for functions and variables
+      + <args>          - Access instance methods or data
+      - <args>          - Send to a handler
+      - <args>          - Perform injection operations
+      : <args>          - Perform an annotation that can modify code behavior
+
+
+It accomplishes the above by adding syntax to the language that is translated to to standard Bash code
+
+
+
 
 0. IDIOM OVERVIEW:
 
@@ -17,7 +33,7 @@
             @array   com.acme.array
          <modifier>: <alias> | "."<subpackage>           ^<K# Package is an alias or a subpackage relative to a namespace
 
-   1) Expressions: Are of the syntax: (<operator>)<suffix>
+      Expressions: Are of the syntax: (<operator>)<suffix>
 
       a) Namespace Expressions
 

@@ -19,6 +19,8 @@
 #include <grp.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <unistd.h>
+#include <string.h>
 
 #define HT  '\011'
 

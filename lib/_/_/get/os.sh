@@ -115,6 +115,16 @@ EOF
       printf -v "$(-)_Var[distro-major-version]" '%s' "rocky-${(.)_Version%%.*}"       # rocky-8
       printf -v "$(-)_Var[distro]"               '%s' 'rocky'                          # rocky
 
+   # UBUNTU
+   elif [[ -f /etc/lsb-release && ! -h /etc/lsb-release ]]; then
+      (.)_Version="$( grep -Po '^DISTRIB_RELEASE=\K.*' /etc/lsb-release )"
+
+      # Hierarchical distro names                                                      # EXAMPLE
+      printf -v "$(-)_Var[distro-full-version]"  '%s' "ubuntu-$(.)_Version-$(.)_Arch"  # ubuntu-24.04-x86_64
+      printf -v "$(-)_Var[distro-minor-version]" '%s' "ubuntu-$(.)_Version"            # ubuntu-24.04
+      printf -v "$(-)_Var[distro-major-version]" '%s' "ubuntu-${(.)_Version%%.*}"      # ubuntu-24
+      printf -v "$(-)_Var[distro]"               '%s' 'ubuntu'                         # ubuntu
+
    else
       :error: 1 'Could not determine operating system version'
    fi

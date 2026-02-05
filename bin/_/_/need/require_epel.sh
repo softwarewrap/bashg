@@ -1,67 +1,87 @@
 #!/bin/bash
 
-:need:require_epel:redhat-7()
+:need:require_epel:linux-9()
 {
    :sudo || :reenter                                     # This function must run as root
 
-   if ! :need:require_epel:EPELisInstalled; then
-      :log: --push-section 'Require EPEL on RHEL 7' "$FUNCNAME $@"
+   ! :need:require_epel:EPELisInstalled || return 0
 
-      :need:require_epel:InstallEPEL 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'
+   :log: --push-section 'Require EPEL on Linux 9' "$FUNCNAME $@"
 
-      local -a ___Options=(
-         --enable='rhel-*-optional-rpms'
-         --enable='rhel-*-extras-rpms'
-      )
-      subscription-manager repos "${___Options[@]}"
+   dnf config-manager --set-enabled crb
 
-      :log: --pop
-   fi
-}
+   local -a ___Packages=(
+      https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+      https://dl.fedoraproject.org/pub/epel/epel-next-release-latest-9.noarch.rpm
+   )
 
-:need:require_epel:linux-7()
-{
-   :sudo || :reenter                                     # This function must run as root
+   dnf -y install "${___Packages[@]}"
 
-   if ! :need:require_epel:EPELisInstalled; then
-      :log: --push-section 'Require EPEL on Linux 7' "$FUNCNAME $@"
-
-      :need:require_epel:InstallEPEL 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'
-
-      :log: --pop
-   fi
+   :log: --pop
 }
 
 :need:require_epel:redhat-8()
 {
    :sudo || :reenter                                     # This function must run as root
 
-   if ! :need:require_epel:EPELisInstalled; then
-      :log: --push-section 'Require EPEL on RHEL 8' "$FUNCNAME $@"
+   ! :need:require_epel:EPELisInstalled || return 0
 
-      :need:require_epel:InstallEPEL 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm'
+   :log: --push-section 'Require EPEL on RHEL 8' "$FUNCNAME $@"
 
-      local -a ___Options=(
-         --enable "codeready-builder-for-rhel-8-$(arch)-rpms"
-      )
-      subscription-manager repos "${___Options[@]}"
-      dnf config-manager --set-enabled PowerTools 2>/dev/null || true
+   :need:require_epel:InstallEPEL 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm'
 
-      :log: --pop
-   fi
+   local -a ___Options=(
+      --enable "codeready-builder-for-rhel-8-$(arch)-rpms"
+   )
+   subscription-manager repos "${___Options[@]}"
+   dnf config-manager --set-enabled PowerTools 2>/dev/null || true
+
+   :log: --pop
 }
 
 :need:require_epel:linux-8()
 {
    :sudo || :reenter                                     # This function must run as root
 
-   if ! :need:require_epel:EPELisInstalled; then
-      :log: --push-section 'Require EPEL on Linux 8' "$FUNCNAME $@"
+   ! :need:require_epel:EPELisInstalled || return 0
 
-      :need:require_epel:InstallEPEL 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm'
+   :log: --push-section 'Require EPEL on Linux 8' "$FUNCNAME $@"
 
-      :log: --pop
-   fi
+   :need:require_epel:InstallEPEL 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm'
+
+   :log: --pop
+}
+
+:need:require_epel:redhat-7()
+{
+   :sudo || :reenter                                     # This function must run as root
+
+   ! :need:require_epel:EPELisInstalled || return 0
+
+   :log: --push-section 'Require EPEL on RHEL 7' "$FUNCNAME $@"
+
+   :need:require_epel:InstallEPEL 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'
+
+   local -a ___Options=(
+      --enable='rhel-*-optional-rpms'
+      --enable='rhel-*-extras-rpms'
+   )
+   subscription-manager repos "${___Options[@]}"
+
+   :log: --pop
+}
+
+:need:require_epel:linux-7()
+{
+   :sudo || :reenter                                     # This function must run as root
+
+   ! :need:require_epel:EPELisInstalled || return 0
+
+   :log: --push-section 'Require EPEL on Linux 7' "$FUNCNAME $@"
+
+   :need:require_epel:InstallEPEL 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'
+
+   :log: --pop
 }
 
 :need:require_epel:InstallEPEL()

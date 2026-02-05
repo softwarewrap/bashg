@@ -35,6 +35,8 @@ set t_Co=256
 set timeout
 set timeoutlen=500
 set t_BE=
+set t_ti=
+set t_te=
 let c_minlines=400
 let savevers_dirs=&backupdir
 let g:showmarks_hlline_upper=1
@@ -415,29 +417,29 @@ call ToggleDisplayErrors()
 
 fu! ToggleColorColumns()
    if w:display_color_columns
-      let &colorcolumn=w:display_color_column_set
+      let &colorcolumn=g:display_color_column_set
    else
       set colorcolumn=
    endif
     let w:display_color_columns = ! w:display_color_columns
 endfunc
 fu! ToggleColorColumnSet()
-   if w:display_color_column_set == "58,118"
-      let w:display_color_column_set = "58,67,118"
-   elseif w:display_color_column_set == "58,67,118"
-      let w:display_color_column_set = "58,76,118"
-   elseif w:display_color_column_set == "58,76,118"
-      let w:display_color_column_set = "58,85,118"
-   elseif w:display_color_column_set == "58,85,118"
-      let w:display_color_column_set = "58,94,118"
-   elseif w:display_color_column_set == "58,94,118"
-      let w:display_color_column_set = "58,103,118"
-   elseif w:display_color_column_set == "58,103,118"
-      let w:display_color_column_set = ""
-   elseif w:display_color_column_set == ""
-      let w:display_color_column_set = "58,118"
+   if g:display_color_column_set == "58,118"
+      let g:display_color_column_set = "58,67,118"
+   elseif g:display_color_column_set == "58,67,118"
+      let g:display_color_column_set = "58,76,118"
+   elseif g:display_color_column_set == "58,76,118"
+      let g:display_color_column_set = "58,85,118"
+   elseif g:display_color_column_set == "58,85,118"
+      let g:display_color_column_set = "58,94,118"
+   elseif g:display_color_column_set == "58,94,118"
+      let g:display_color_column_set = "58,103,118"
+   elseif g:display_color_column_set == "58,103,118"
+      let g:display_color_column_set = ""
+   elseif g:display_color_column_set == ""
+      let g:display_color_column_set = "58,118"
    endif
-   let &colorcolumn=w:display_color_column_set
+   let &colorcolumn=g:display_color_column_set
 endfunc
 
 nnoremap <silent> ,/ :call <SID>SearchMode()<CR>
@@ -470,19 +472,22 @@ endfunction
 fu! SetBufWinEnter()
    let w:display_color_columns = 0
    let &colorcolumn = ""
-   let w:display_color_column_set = ""
+   let g:display_color_column_set = ""
 
-   if &filetype ==# 'sh'
-      if ! exists('&w:display_color_column_set')
-         let w:display_color_column_set = "58,118"
+   let extensions = ['sh', 'java', 'groovy', 'gradle', 'properties']
+   let extension = expand('%:e')
+
+   if index(extensions, extension) != -1
+      if ! exists('&g:display_color_column_set')
+         let g:display_color_column_set = "58,118"
       endif
 
-      let &colorcolumn=w:display_color_column_set
+      let &colorcolumn=g:display_color_column_set
       let w:display_color_columns = 1
    endif
 endfunc
 
-auto BufWinEnter * call SetBufWinEnter()
+auto BufRead,BufNewFile * call SetBufWinEnter()
 
 map ,* yiw:match MyGroup /<c-r>"/<CR>
 
@@ -688,6 +693,23 @@ map ,B ^i# <ESC>$a #<ESC>O#<ESC>:se nowrap<CR>125a#<ESC>jhlklDyyjp:se wrap<CR>
 let @R='^\(\(\s*\(#.*\|\s*echo.*\)\)\@!..*\)$'
 map ,R /<C-R>R<CR>
 
+fu! FoldBashLib()
+   let save_view = winsaveview()
+   normal! gg
+
+   if search("^###{BASH_LIBRARY}###", "W")
+      let old_errorbells = &errorbells
+      set noerrorbells
+
+      let @/ = '###{BASH_LIBRARY}###'
+      :silent normal! ggnzfG
+      let &errorbells = old_errorbells
+   endif
+
+   call winrestview(save_view)
+endfunc
+noremap! <silent> ,fb :call FoldBashLib()<CR>
+
 auto BufNewFile,BufRead *.conf set filetype=conf
 auto BufNewFile,BufRead * if &syntax == '' | set syntax=sh | endif
 auto VimEnter * if &diff | let $wrapState=0 | call ToggleWrap() | endif
@@ -696,6 +718,7 @@ if &diff
     call DiffSetup()
 else
    auto BufNewFile,BufRead * call RefreshEggHighlighting()
+   auto BufNewFile,BufRead *.sh silent! call FoldBashLib()
 endif
 
 auto BufEnter * let &titlestring = expand("%:t")

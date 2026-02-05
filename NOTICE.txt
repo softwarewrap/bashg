@@ -11,7 +11,7 @@ You can learn more about this framework by visiting:
 COPYRIGHT
 =========
 
-© Copyright 2005-2023 Server Science Incorporated.
+© Copyright 2005-2021 Server Science Incorporated.
 
 This product includes software developed at:
 

@@ -1,26 +1,41 @@
 #!/bin/bash
 
-.dev:need:os_packages:()
+-linux9()
 {
    :sudo || :reenter                                     # This function must run as root
 
-   local _dev__need__os_packages_____Options
-   _dev__need__os_packages_____Options=$(getopt -o 'f' -l 'force,gui' -n "${FUNCNAME[0]}" -- "$@") || return
-   eval set -- "$_dev__need__os_packages_____Options"
+   .dev:need:os_packages:GetOptions "$@"
+}
 
-   local _dev__need__os_packages_____Force=false
-   local _dev__need__os_packages_____GUI=false
+.dev:need:os_packages:linux()
+{
+   :sudo || :reenter                                     # This function must run as root
+
+   .dev:need:os_packages:GetOptions "$@"
+}
+
+.dev:need:os_packages:GetOptions()
+{
+   local _dev__need__os_packages__GetOptions___Options
+   _dev__need__os_packages__GetOptions___Options=$(getopt -o 'f' -l 'force,gui' -n "${FUNCNAME[0]}" -- "$@") || return
+   eval set -- "$_dev__need__os_packages__GetOptions___Options"
+
+   local -g _dev__need__os_packages___Force=false
+   local -g _dev__need__os_packages___GUI=false
 
    while true ; do
       case "$1" in
-      --gui)      _dev__need__os_packages_____GUI=true; shift;;
-      -f|--force) _dev__need__os_packages_____Force=true; shift;;
+      --gui)      _dev__need__os_packages___GUI=true; shift;;
+      -f|--force) _dev__need__os_packages___Force=true; shift;;
       --)         shift; break;;
       *)          break;;
       esac
    done
+}
 
-   if $_dev__need__os_packages_____GUI && ! $_dev__need__os_packages_____Force && :yum:is_installed --environment 'Server with GUI'; then
+.dev:need:os_packages:()
+{
+   if $_dev__need__os_packages___GUI && ! $_dev__need__os_packages_____Force && :yum:is_installed --environment 'Server with GUI'; then
       return 0                                           # No need to take any action
    fi
 
@@ -39,7 +54,7 @@
       xrdp                                               # X Remote Desktop, works with Windows Remote Desktop
    )
 
-   if $_dev__need__os_packages_____GUI; then
+   if $_dev__need__os_packages___GUI; then
       _dev__need__os_packages_____Items+=(
          '@graphical-server-environment'                 # Server with GUI;                  @^ = environment group
          '@graphical-admin-tools'                        # Graphical Administration Tools;   @ =  group
@@ -51,7 +66,7 @@
 
    yum -y install "${_dev__need__os_packages_____Items[@]}"                      # Install items specified above
 
-   if $_dev__need__os_packages_____GUI; then
+   if $_dev__need__os_packages___GUI; then
       systemctl set-default graphical.target
       systemctl start graphical.target
    fi

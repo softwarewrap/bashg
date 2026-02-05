@@ -5,8 +5,9 @@
    local (.)_Source="$1"
    local (.)_Destination="$2"
 
-   declare -Ag "$(.)_Destination"=
-   eval "$(.)_Destination"=$(declare -p "$(.)_Source" | LC_ALL=C sed -e 's|^[^=]*=||' -e "s|^'||" -e "s|'$||")
+   local (.)_Copy
+   (.)_Copy="$( declare -p "$(.)_Source" )"
+   eval declare -Ag "$(.)_Destination=${(.)_Copy#*=}"
 }
 
 + copy_associative%TEST()

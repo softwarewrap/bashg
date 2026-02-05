@@ -581,7 +581,8 @@ EOF
    #######################################################################################
    local -a _BashFiles
    readarray -t _BashFiles < <(
-      find . -mindepth 2 -name '[%@]*' -prune -o -type f -name '*.bash' -print |
+      find . -name '[@%]*' -prune -o -type f -name '*.bash' -print |
+      grep '/[^/]\+/[^/]\+/' |
                                                          # Get all .bash files
       LC_ALL=C sort |                                    # Lexically sort them
       sed -e 's|^\./||' -e '/^\s*$/d'                    # Remove leading ./ and remove any blank lines
@@ -592,7 +593,8 @@ EOF
    #####################################################################################
    local -a _ShFiles
    readarray -t _ShFiles < <(
-      find . -mindepth 2 -name '[%@]*' -prune -o -type f -name '*.sh' -print |
+      find . -name '[@%]*' -prune -o -type f -name '*.sh' -print |
+      grep '/[^/]\+/[^/]\+/' |
                                                          # Get all .sh files
       LC_ALL=C sort |                                    # Lexically sort them
       sed -e 's|^\./||' -e '/^\s*$/d'                    # Remove leading ./ and remove any blank lines

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-- centos()
+- linux()
 {
    local (.)_NeedToInstallGit=false
 

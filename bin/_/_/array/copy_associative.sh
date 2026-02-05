@@ -5,8 +5,9 @@
    local __array__copy_associative__copy_associative___Source="$1"
    local __array__copy_associative__copy_associative___Destination="$2"
 
-   declare -Ag "$__array__copy_associative__copy_associative___Destination"=
-   eval "$__array__copy_associative__copy_associative___Destination"=$(declare -p "$__array__copy_associative__copy_associative___Source" | LC_ALL=C sed -e 's|^[^=]*=||' -e "s|^'||" -e "s|'$||")
+   local __array__copy_associative__copy_associative___Copy
+   __array__copy_associative__copy_associative___Copy="$( declare -p "$__array__copy_associative__copy_associative___Source" )"
+   eval declare -Ag "$__array__copy_associative__copy_associative___Destination=${__array__copy_associative__copy_associative___Copy#*=}"
 }
 
 :array:copy_associative%TEST()

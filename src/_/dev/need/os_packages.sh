@@ -1,26 +1,41 @@
 #!/bin/bash
 
-- ()
+-linux9()
 {
    :sudo || :reenter                                     # This function must run as root
 
+   (-):GetOptions "$@"
+}
+
+- linux()
+{
+   :sudo || :reenter                                     # This function must run as root
+
+   (-):GetOptions "$@"
+}
+
+- GetOptions()
+{
    local (.)_Options
    (.)_Options=$(getopt -o 'f' -l 'force,gui' -n "${FUNCNAME[0]}" -- "$@") || return
    eval set -- "$(.)_Options"
 
-   local (.)_Force=false
-   local (.)_GUI=false
+   local -g (-)_Force=false
+   local -g (-)_GUI=false
 
    while true ; do
       case "$1" in
-      --gui)      (.)_GUI=true; shift;;
-      -f|--force) (.)_Force=true; shift;;
+      --gui)      (-)_GUI=true; shift;;
+      -f|--force) (-)_Force=true; shift;;
       --)         shift; break;;
       *)          break;;
       esac
    done
+}
 
-   if $(.)_GUI && ! $(.)_Force && :yum:is_installed --environment 'Server with GUI'; then
+- ()
+{
+   if $(-)_GUI && ! $(.)_Force && :yum:is_installed --environment 'Server with GUI'; then
       return 0                                           # No need to take any action
    fi
 
@@ -39,7 +54,7 @@
       xrdp                                               # X Remote Desktop, works with Windows Remote Desktop
    )
 
-   if $(.)_GUI; then
+   if $(-)_GUI; then
       (.)_Items+=(
          '@graphical-server-environment'                 # Server with GUI;                  @^ = environment group
          '@graphical-admin-tools'                        # Graphical Administration Tools;   @ =  group
@@ -51,7 +66,7 @@
 
    yum -y install "${(.)_Items[@]}"                      # Install items specified above
 
-   if $(.)_GUI; then
+   if $(-)_GUI; then
       systemctl set-default graphical.target
       systemctl start graphical.target
    fi

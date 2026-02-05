@@ -1,0 +1,151 @@
+#!/bin/bash
+
+###############
+# CONVENTIONS #
+###############
+   {
+   : FOLLOW THESE CONVENTIONS TO PREPARE YOUR CODE FOR REUSE
+#     Function Names:
+#        :<name>                                         # Prepare for future conversion to reusable code
+#        <package>[:<component>][:<unit>]:<name>         # Convert for reuse: Add at least the <package> prefix
+#
+#     Variable Names:
+#        _<name>                                         # Prepare for conversion to reusable code: global vars only
+#        <package>[__<component>][__<unit>]___<name>     # For reuse: Add at least the <package> prefix and trailing __
+#
+#     Standard Library Function and Variable Names:      # Get files from: /net/shake/export/vchvol01/public/bash
+#        ::<name>                                        # Leading :: indicates function is from the standard library
+#        __<name>                                        # Leading __ indicates variable is from the standard library
+#
+#     <name> Syntax:
+#        -  Names may not begin nor end with an underscore
+#        -  The capitalization of names indicates how they are to be used:
+#              public_name                               # public_name is an API
+#              PrivateName                               # PrivateName is an internal implementation
+#
+# The :main function can be changed to be more meaningful and more closely match the program name.
+# In all cases below, if converting for reuse, change all function names :main[-*] as indicated above.
+   }
+
+#################
+# API FUNCTIONS #
+#################
+
+:main-HELP()
+{
+   cat <<-EOF
+	SYNOPSIS: $__entry [OPTIONS]
+
+	DESCRIPTION:
+	   Summary sentence
+
+	   Overview paragraphs
+
+	OPTIONS:
+	   -f|--flag
+	         Flag option (boolean)
+
+	   -a|--arg <value>
+	         Argument option (takes a value)
+
+	  --help
+	         Show this help
+
+	URLS:
+	   https://URL
+	         Description
+
+	FILES:
+	   Filename
+	         Description
+
+	RETURN STATUS:
+	   0  Success
+	   1  An unexpected error occurred
+
+	EXAMPLES:
+	   Command or script
+	         # Comment
+
+	   $__program <OPTIONS>
+	         # Invocation
+
+	   $__program --unit-test
+	         # Run unit test(s)
+	EOF
+}
+
+:main()
+{
+   ::setup_environment                                   # Perform standard environment setup
+
+   local Options
+   Options=$(getopt -o 'fa:' -l 'flag,arg:' -n "$FUNCNAME" -- "$@") || return
+   eval set -- "$Options"
+
+   local Flag=false             # Or set to false: Flag=false
+   local Arg='default'          # Or set to null:  Arg=
+   local Optional='default'     # Or set to null:
+
+   while true ; do
+      case "$1" in
+      -f|--flag)        Flag=true; shift;;
+      -a|--arg)         Arg="$2"; shift 2;;
+
+      -h|--help)        $FUNCNAME%HELP; return 0;;
+      --)               shift; break;;
+      *)                break;;
+      esac
+   done
+}
+
+################
+# UNIT TEST(S) #
+################
+
+:main-TEST()
+{
+   local Options
+   Options=$(getopt -o 'fa:h' -l 'flag,arg:,unit-test' -n "$FUNCNAME" -- "$@") || return
+   eval set -- "$Options"
+
+   local Flag=false                                      # Example: Set to a "boolean" (false or true)
+   local Arg='default'                                   # Example: set to a default or null
+
+   while true ; do
+      case "$1" in
+      -f|--flag)        Flag=true; shift;;               # Example of a flag option
+      -a|--arg)         Arg="$2"; shift 2;;              # Example of an option taking a required value
+
+      --unit-test)      shift;;                          # Already testing: ignore this option
+
+      --)               shift; break;;                   # Stop processing arguments
+      *)                break;;                          # Non-option stops processing
+      esac
+   done
+}
+
+#####################
+# LIBRARY FUNCTIONS #
+#####################
+
+::setup_environment()
+{
+   local -g __program                                    # Full path to this script (for re-execution)
+   local -g __                                           # Basename of this script
+   local -g __base_dir                                   # Directory containing this script
+   local -g __invocation_dir                             # The directory from which the script was invoked
+   local -g __entry                                      # The entry function name
+
+   __program="$(readlink -f "$BASH_SOURCE")"             # Get the canonical path to this script
+   __="$(basename "$__program")"                         # Get the script basename
+   __base_dir="$(dirname "$__program")"                  # base directory: where this script lives
+   __invocation_dir="$(readlink -f .)"                   # Get the directory from which this script was called
+   __entry="${FUNCNAME[1]}"                              # Get the entry function name
+
+   set -o errexit                                        # Fail on any error
+   set -o pipefail                                       # Fail on any pipe error
+   set -o errtrace                                       # Enable error tracing
+}
+
+:configure "$@"

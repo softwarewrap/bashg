@@ -1,20 +1,20 @@
 #!/bin/bash
 
-.dev:need:install_package_git:centos()
+.dev:need:install_package_git:linux()
 {
-   local _dev__need__install_package_git__centos___NeedToInstallGit=false
+   local _dev__need__install_package_git__linux___NeedToInstallGit=false
 
    if :test:has_command git; then
-      local _dev__need__install_package_git__centos___Version
-      printf -v _dev__need__install_package_git__centos___Version '%s' "$( git --version 2>/dev/null | grep -Po '[^0-9]*\K[0-9.]*' 2>/dev/null || true )"
+      local _dev__need__install_package_git__linux___Version
+      printf -v _dev__need__install_package_git__linux___Version '%s' "$( git --version 2>/dev/null | grep -Po '[^0-9]*\K[0-9.]*' 2>/dev/null || true )"
 
-      :test:version_compare "$_dev__need__install_package_git__centos___Version" -ge 2.7.6 || _dev__need__install_package_git__centos___NeedToInstallGit=true
+      :test:version_compare "$_dev__need__install_package_git__linux___Version" -ge 2.7.6 || _dev__need__install_package_git__linux___NeedToInstallGit=true
 
    else
-      _dev__need__install_package_git__centos___NeedToInstallGit=true
+      _dev__need__install_package_git__linux___NeedToInstallGit=true
    fi
 
-   if $_dev__need__install_package_git__centos___NeedToInstallGit; then
+   if $_dev__need__install_package_git__linux___NeedToInstallGit; then
       .dev:need:install_package_git:install_git_centos
    fi
 }

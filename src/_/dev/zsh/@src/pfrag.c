@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/param.h>
+#include <unistd.h>
 
 int
 main(int argc, char **argv)
