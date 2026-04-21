@@ -118,8 +118,8 @@ vstart()
    elif [[ -f $HOME/.venv/$1/bin/activate ]]; then
       source "$HOME/.venv/$1/bin/activate"
 
-   elif [[ -f /opt/venv/$1/bin/activate ]]; then
-      source "/opt/venv/$1/bin/activate"
+   elif [[ -f /opt/venvs/$1/bin/activate ]]; then
+      source "/opt/venvs/$1/bin/activate"
 
    else
       echo "Could not determine the python environment to activate"
@@ -131,7 +131,7 @@ vstart()
 
 vstop()
 {
-   if command -v deactivate; then
+   if command -v deactivate &>/dev/null; then
       deactivate
    fi
 }
@@ -148,7 +148,8 @@ term_style_fancy()
 {
     term_style=fancy
     PROMPT_VENV="${VIRTUAL_ENV##*/}"
-    PROMPT="${PROMPT_VENV:+[}$PROMPT_VENV${PROMPT_VENV:+] }%S%D{%b %e %T} !%! [$(pfrag "$(print -P %~)"|sed 's|%|%%|g')$PROMPT_END%s
+    PROMPT_PREFIX='%K{33}%F{15}' # Blue background, White foreground
+    PROMPT="${PROMPT_VENV:+${PROMPT_PREFIX}[}$PROMPT_VENV${PROMPT_VENV:+]%f%k }%S%D{%b %e %T} !%! [$(pfrag "$(print -P %~)"|sed 's|%|%%|g')$PROMPT_END%s
 "
 }
 
